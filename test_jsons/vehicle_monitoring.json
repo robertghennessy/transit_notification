@@ -1,0 +1,72 @@
+{
+    "Siri": {
+        "ServiceDelivery": {
+            "ResponseTimestamp": "2022-06-08T22:45:23Z",
+            "ProducerRef": "CT",
+            "Status": true,
+            "VehicleMonitoringDelivery": {
+                "version": "1.4",
+                "ResponseTimestamp": "2022-06-08T22:45:23Z",
+                "VehicleActivity": [
+                    {
+                        "RecordedAtTime": "2022-06-08T22:45:15Z",
+                        "ValidUntilTime": "",
+                        "MonitoredVehicleJourney": {
+                            "LineRef": "L1",
+                            "DirectionRef": "S",
+                            "FramedVehicleJourneyRef": {
+                                "DataFrameRef": "2022-06-08",
+                                "DatedVehicleJourneyRef": "122"
+                            },
+                            "PublishedLineName": "Local",
+                            "OperatorRef": "CT",
+                            "OriginRef": "70012",
+                            "OriginName": "San Francisco Caltrain Station",
+                            "DestinationRef": "70272",
+                            "DestinationName": "Tamien",
+                            "Monitored": true,
+                            "InCongestion": null,
+                            "VehicleLocation": {
+                                "Longitude": "-122.193558",
+                                "Latitude": "37.4618797"
+                            },
+                            "Bearing": null,
+                            "Occupancy": null,
+                            "VehicleRef": "122",
+                            "MonitoredCall": {
+                                "StopPointRef": "70162",
+                                "StopPointName": "Menlo Park Caltrain Station",
+                                "VehicleLocationAtStop": "",
+                                "VehicleAtStop": "",
+                                "AimedArrivalTime": "2022-06-08T22:38:00Z",
+                                "ExpectedArrivalTime": "2022-06-08T22:44:29Z",
+                                "AimedDepartureTime": "2022-06-08T22:38:00Z",
+                                "ExpectedDepartureTime": "2022-06-08T22:45:29Z"
+                            },
+                            "OnwardCalls": {
+                                "OnwardCall": [
+                                    {
+                                        "StopPointRef": "70172",
+                                        "StopPointName": "Palo Alto Caltrain Station",
+                                        "AimedArrivalTime": "2022-06-08T22:41:00Z",
+                                        "ExpectedArrivalTime": "2022-06-08T22:46:34Z",
+                                        "AimedDepartureTime": "2022-06-08T22:41:00Z",
+                                        "ExpectedDepartureTime": "2022-06-08T22:47:34Z"
+                                    },
+                                    {
+                                        "StopPointRef": "70192",
+                                        "StopPointName": "California Avenue Caltrain Station",
+                                        "AimedArrivalTime": "2022-06-08T22:45:00Z",
+                                        "ExpectedArrivalTime": "2022-06-08T22:49:29Z",
+                                        "AimedDepartureTime": "2022-06-08T22:45:00Z",
+                                        "ExpectedDepartureTime": "2022-06-08T22:50:29Z"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}
