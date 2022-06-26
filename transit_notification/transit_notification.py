@@ -1,34 +1,34 @@
 """Main module."""
-import os
-import dateutil.parser as dp
-import datetime as dt
 import json
 import pandas as pd
 from geopy import distance
 from zoneinfo import ZoneInfo
 import numpy as np
 
+from siri_transit_api_client import siri_client
+import configparser
 import vehicle as vh
 
-"""
-Steps
-1. Query operators and confirm that operator has vehicles monitoring
-2. Parse the data into vehicles
-3. construct information to send to push notification
 
-"""
-# Configuration file
+# import the configuration file which has the api keys
+config = configparser.ConfigParser()
+config.read("../config.ini")
+transit_api_key = config["keys"]["Transit511Key"]
+
+client = siri_client.SiriClient(api_key=transit_api_key)
+
+
+# Configuration
 operator_name = "SF"
 route_name = "14"
 direction_id = "IB"
-# can get the following from google maps
-stop_coordinates = {"lat": 37.759565551910285, "long": -122.41900156132917} # nearest stop = 15557
+# can get the following from Google Maps
+stop_coordinates = {"lat": 37.759565551910285, "long": -122.41900156132917}
 local_tz = ZoneInfo('America/Los_Angeles')
 utc = ZoneInfo('UTC')
 
 # Check if operator is valid
-with open("/Users/roberthennessy/Documents/python_project/json/sfmta/operators.json", "r") as file:
-    operators_dict = json.load(file)
+operators_dict = client.operators()
 
 operators_df = pd.DataFrame(operators_dict)
 if operator_name not in operators_df["Id"].values:
@@ -37,8 +37,7 @@ if not operators_df.loc[operators_df["Id"] == operator_name, "Monitored"].all():
     raise ValueError("Vehicles not monitored")
 
 # check if valid route id
-with open("/Users/roberthennessy/Documents/python_project/json/sfmta/lines.json", "r") as file:
-    lines_dict = json.load(file)
+lines_dict = client.lines(operator_name)
 
 routes_df = pd.DataFrame(lines_dict)
 if route_name not in routes_df["Id"].values:
@@ -46,15 +45,12 @@ if route_name not in routes_df["Id"].values:
 if not routes_df.loc[routes_df["Id"] == route_name, "Monitored"].all():
     raise ValueError("Vehicles not monitored for specified route. ")
 
-with open("/Users/roberthennessy/Documents/python_project/json/sfmta/patterns_route_14.json", "r") as file:
-    patterns_dict = json.load(file)
-
+patterns_dict = client.patterns(operator_name, route_name)
 direction_df = pd.DataFrame(patterns_dict['directions'])
-if direction_df not in direction_df["DirectionId"].values:
-    raise ValueError("Invalid route id.")
+if direction_id not in direction_df["DirectionId"].values:
+    raise ValueError("Invalid directions.")
 
-with open("/Users/roberthennessy/Documents/python_project/json/sfmta/stops_route_14_IB.json", "r") as file:
-    stops_dict = json.load(file)
+stops_dict = client.stops(operator_id=operator_name, line_id=route_name, direction_id=direction_id)
 
 stops_df = pd.json_normalize(stops_dict["Contents"]["dataObjects"]["ScheduledStopPoint"])
 stops_df['Location.Latitude'] = pd.to_numeric(stops_df['Location.Latitude'], errors='coerce')
@@ -67,8 +63,7 @@ nearest_stop = stops_df.iloc[0]
 nearest_stop_id = nearest_stop["id"]
 nearest_stop_name = nearest_stop["Name"]
 
-with open("/Users/roberthennessy/Documents/python_project/json/sfmta/stop_monitoring_15557.json", "r") as file:
-    stop_monitoring = json.load(file)
+stop_monitoring = client.stop_monitoring(agency=operator_name, stop_code=nearest_stop_id)
 
 vehicles = []
 vehicle_list = stop_monitoring["ServiceDelivery"]["StopMonitoringDelivery"]["MonitoredStopVisit"]
@@ -88,8 +83,11 @@ for veh in upcoming_vehicles:
 expected_time = np.floor(np.array(expected_time) / 60)
 expected_time = expected_time.astype(int)
 
-message_body = f"Route: {route_name}\nStop: {nearest_stop_name}\nStop ID: {nearest_stop_id}\nNext arriavals: "
-message_body = message_body + f"{expected_time[0]} min, {expected_time[1]} min, {expected_time[2]} min"
+message_body = f"Route: {route_name}\nStop: {nearest_stop_name}\nStop ID: {nearest_stop_id}\nNext arrivals: "
+for ind in range(len(expected_time)):
+    message_body = message_body + f"{expected_time[ind]} min"
+    if ind < len(expected_time) - 1:
+        message_body = message_body + ", "
 
 print(message_body)
 print(len(message_body))
