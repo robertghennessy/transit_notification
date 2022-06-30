@@ -1,11 +1,10 @@
 """Main module."""
-import json
 import pandas as pd
 from geopy import distance
 from zoneinfo import ZoneInfo
 import numpy as np
 
-from siri_transit_api_client import siri_client
+import siri_transit_api_client
 import configparser
 import vehicle as vh
 
@@ -15,11 +14,11 @@ config = configparser.ConfigParser()
 config.read("../config.ini")
 transit_api_key = config["keys"]["Transit511Key"]
 
-client = siri_client.SiriClient(api_key=transit_api_key)
+siri_client = siri_transit_api_client.SiriClient(api_key=transit_api_key)
 
 
 # Configuration
-operator_name = "SF"
+operator_name = "CT"
 route_name = "14"
 direction_id = "IB"
 # can get the following from Google Maps
@@ -28,7 +27,7 @@ local_tz = ZoneInfo('America/Los_Angeles')
 utc = ZoneInfo('UTC')
 
 # Check if operator is valid
-operators_dict = client.operators()
+operators_dict = siri_client.operators()
 
 operators_df = pd.DataFrame(operators_dict)
 if operator_name not in operators_df["Id"].values:
@@ -37,7 +36,7 @@ if not operators_df.loc[operators_df["Id"] == operator_name, "Monitored"].all():
     raise ValueError("Vehicles not monitored")
 
 # check if valid route id
-lines_dict = client.lines(operator_name)
+lines_dict = siri_client.lines(operator_name)
 
 routes_df = pd.DataFrame(lines_dict)
 if route_name not in routes_df["Id"].values:
@@ -45,12 +44,12 @@ if route_name not in routes_df["Id"].values:
 if not routes_df.loc[routes_df["Id"] == route_name, "Monitored"].all():
     raise ValueError("Vehicles not monitored for specified route. ")
 
-patterns_dict = client.patterns(operator_name, route_name)
+patterns_dict = siri_client.patterns(operator_name, route_name)
 direction_df = pd.DataFrame(patterns_dict['directions'])
 if direction_id not in direction_df["DirectionId"].values:
     raise ValueError("Invalid directions.")
 
-stops_dict = client.stops(operator_id=operator_name, line_id=route_name, direction_id=direction_id)
+stops_dict = siri_client.stops(operator_id=operator_name, line_id=route_name, direction_id=direction_id)
 
 stops_df = pd.json_normalize(stops_dict["Contents"]["dataObjects"]["ScheduledStopPoint"])
 stops_df['Location.Latitude'] = pd.to_numeric(stops_df['Location.Latitude'], errors='coerce')
@@ -63,7 +62,7 @@ nearest_stop = stops_df.iloc[0]
 nearest_stop_id = nearest_stop["id"]
 nearest_stop_name = nearest_stop["Name"]
 
-stop_monitoring = client.stop_monitoring(agency=operator_name, stop_code=nearest_stop_id)
+stop_monitoring = siri_client.stop_monitoring(agency=operator_name, stop_code=nearest_stop_id)
 
 vehicles = []
 vehicle_list = stop_monitoring["ServiceDelivery"]["StopMonitoringDelivery"]["MonitoredStopVisit"]
@@ -78,10 +77,7 @@ stop_monitoring_df = stop_monitoring_df.loc[filter_line_ref & filter_direction]
 upcoming_vehicles = stop_monitoring_df["stops"].values
 expected_time = []
 for veh in upcoming_vehicles:
-    expected_time.append(veh["ArrivalDelta"].dt.total_seconds().values[0])
-
-expected_time = np.floor(np.array(expected_time) / 60)
-expected_time = expected_time.astype(int)
+    expected_time.append(veh["ArrivalDeltaMin"].values[0])
 
 message_body = f"Route: {route_name}\nStop: {nearest_stop_name}\nStop ID: {nearest_stop_id}\nNext arrivals: "
 for ind in range(len(expected_time)):

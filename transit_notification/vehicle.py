@@ -17,14 +17,21 @@ class Vehicle:
         :type input_dict: dict
         """
 
-        self.recorded_at_time = dp.parse(input_dict["RecordedAtTime"])
+        self.recorded_at_time = input_dict["RecordedAtTime"] #dp.parse(input_dict["RecordedAtTime"])
         monitored_vehicle_journey = input_dict["MonitoredVehicleJourney"]
         self.line_ref = monitored_vehicle_journey["LineRef"]
         self.line_name = monitored_vehicle_journey["PublishedLineName"]
         self.direction = monitored_vehicle_journey["DirectionRef"]
         self.vehicle_journey_ref = monitored_vehicle_journey["FramedVehicleJourneyRef"]["DatedVehicleJourneyRef"]
-        self.longitude = float(monitored_vehicle_journey["VehicleLocation"]["Longitude"])
-        self.latitude = float(monitored_vehicle_journey["VehicleLocation"]["Latitude"])
+        self.data_frame_ref = monitored_vehicle_journey["FramedVehicleJourneyRef"]["DataFrameRef"]
+        if monitored_vehicle_journey["VehicleLocation"]["Longitude"]:
+            self.longitude = float(monitored_vehicle_journey["VehicleLocation"]["Longitude"])
+        else:
+            self.longitude = np.NAN
+        if monitored_vehicle_journey["VehicleLocation"]["Latitude"]:
+            self.latitude = float(monitored_vehicle_journey["VehicleLocation"]["Latitude"])
+        else:
+            self.latitude = np.NAN
         if "MonitoredCall" in monitored_vehicle_journey:
             monitored_call = monitored_vehicle_journey["MonitoredCall"]
             next_stop = {
@@ -41,6 +48,9 @@ class Vehicle:
             else:
                 future_stops = [next_stop]
             self.stops = self.parse_stops(pd.DataFrame(future_stops))
+        else:
+            self.stops = pd.DataFrame()
+
 
     @staticmethod
     def parse_stops(df: pd.DataFrame) -> pd.DataFrame:
@@ -60,7 +70,41 @@ class Vehicle:
         df["ArrivalDelay"] = df["ExpectedArrivalTime"] - df["AimedArrivalTime"]
         df["DepartureDelta"] = df["ExpectedDepartureTime"] - utc_now
         df["ArrivalDelta"] = df["ExpectedArrivalTime"] - utc_now
+        expected_time = df["ArrivalDelta"].dt.total_seconds()
+        expected_time = np.floor(np.array(expected_time) / 60)
+        expected_time = expected_time.astype(int)
+        df["ArrivalDeltaMin"] = expected_time
         return df
+
+    def output_stops_df(self) -> pd.DataFrame:
+        """
+        Output the stops dataframe for potential storage.
+
+        :return: parsed DataFrame
+        :rtype: Pandas DataFrame
+        """
+        df = self.stops.copy()
+        df["DatedVehicleJourneyRef"] = self.vehicle_journey_ref
+        df["DataFrameRef"] = self.data_frame_ref
+        return df
+
+    def output_vehicle_ser(self) -> pd.Series:
+        """
+        Output the stops dataframe for potential storage.
+
+        :return: parsed Series
+        :rtype: Pandas Series
+        """
+        return pd.Series( {
+            "DatedVehicleJourneyRef":  self.vehicle_journey_ref,
+            "DataFrameRef": self.data_frame_ref,
+            "LineRef": self.line_ref,
+            "PublishedLineName": self.line_name,
+            "DirectionRef": self.direction,
+            "RecordedAtTime": self.recorded_at_time,
+            "Longitude": self.longitude,
+            "Latitude": self.latitude
+        })
 
     def output_series(self) -> pd.Series:
         """
