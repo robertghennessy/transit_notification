@@ -18,7 +18,7 @@ siri_client = siri_transit_api_client.SiriClient(api_key=transit_api_key)
 
 
 # Configuration
-operator_name = "CT"
+operator_name = "SF"
 route_name = "14"
 direction_id = "IB"
 # can get the following from Google Maps
