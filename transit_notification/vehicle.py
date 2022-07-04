@@ -8,6 +8,7 @@ from zoneinfo import ZoneInfo
 STOP_DF_TIME_COLS = ["AimedArrivalTime", "ExpectedArrivalTime", "AimedDepartureTime", "ExpectedDepartureTime"]
 utc = ZoneInfo('UTC')
 
+
 class Vehicle:
     def __init__(self, input_dict: dict):
         """
