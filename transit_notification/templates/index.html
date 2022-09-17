@@ -1,38 +1,14 @@
-<!doctype html>
-<form>
-    <select id="operator">
-        <option></option>
-    </select>
-    <select id="line"></select>
-    <button type="submit">Submit</button>
-</form>
-<script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    "use strict";
-
-    var operators = {{ operators|tojson }};
-
-    var form = $('form');
-    var operator = $('select#operator');
-    var line = $('select#line');
-
-    for (var key in operators) {
-        operator.append($('<option/>', {'value': key, 'text': key}));
-    }
-
-    operator.change(function(ev) {
-        line.empty();
-        line.append($('<option/>'));
-
-        var lines = operators[operator.val()];
-
-        for (var i in lines) {
-            line.append($('<option/>', {'value': lines[i], 'text': lines[i]}));
-        }
-    });
-
-    form.submit(function(ev) {
-        ev.preventDefault();
-        alert("playing " + line.val() + " on " + operator.val());
-    });
-</script>
+{% extends 'base.html' %}
+{% block content %}
+  {% if error %}
+    <p class=error><strong>Error:</strong> {{ error }}
+  {% endif %}
+Choose an operator
+   <form name="operator" method='POST'>
+        <SELECT name="operator">
+            {% for operator in operators %}
+                <OPTION value={{operator.id}}>{{operator.name}}</option>
+            {% endfor %}
+        </SELECT>
+        <button type="submit">Submit</button>
+{% endblock %}

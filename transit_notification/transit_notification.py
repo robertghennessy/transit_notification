@@ -6,13 +6,12 @@ import numpy as np
 
 import siri_transit_api_client
 import configparser
-import vehicle as vh
 
 
 # import the configuration file which has the api keys
 config = configparser.ConfigParser()
 config.read("../config.ini")
-transit_api_key = config["keys"]["Transit511Key"]
+transit_api_key = config["SIRI"]["api_key"]
 
 siri_client = siri_transit_api_client.SiriClient(api_key=transit_api_key)
 
