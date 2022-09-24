@@ -1,14 +1,19 @@
 {% extends 'base.html' %}
+
 {% block content %}
-  {% if error %}
-    <p class=error><strong>Error:</strong> {{ error }}
-  {% endif %}
-Choose an operator
-   <form name="operator" method='POST'>
-        <SELECT name="operator">
+    <h1>{% block title %} Select Operator {% endblock %}</h1>
+    {% if error %}
+        <p class=error><strong>Error:</strong> {{ error }}
+    {% endif %}
+    Please select an operator from the list below.
+    <table>
+        <tbody>
             {% for operator in operators %}
-                <OPTION value={{operator.id}}>{{operator.name}}</option>
+                <tr>
+                    <td><a href="{{ url_for('routes.render_lines', operator_id=operator.id) }}">{{operator.name}}</a></td>
+                </tr>
             {% endfor %}
-        </SELECT>
-        <button type="submit">Submit</button>
+        </tbody>
+    </table>
 {% endblock %}
+

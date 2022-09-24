@@ -3,6 +3,8 @@ import datetime as dt
 from transit_notification.models import Operators, Lines, Stops, Vehicles
 import siri_transit_api_client
 import configparser
+import numpy as np
+from natsort import index_natsorted
 
 config_filename = "config.ini"
 
@@ -25,10 +27,19 @@ def commit_lines(siri_db, operator_id):
     siri_client = siri_transit_api_client.SiriClient(api_key=transit_api_key, base_url=siri_base_url)
     lines_dict = siri_client.lines(operator_id=operator_id)
     lines_df = pd.DataFrame(lines_dict)
-
-    lines = [Lines(id=row['Id'], operator_id=row['OperatorRef'],  name=row['Name'], monitored=row['Monitored'])
-             for _, row in lines_df.iterrows()]
-
+    lines_df.sort_values(by="Id",
+                         key=lambda x: np.argsort(index_natsorted(lines_df["Id"])),
+                         inplace=True,
+                         ignore_index=True
+                         )
+    lines = [Lines(id=row['Id'],
+                   operator_id=row['OperatorRef'],
+                   name=row['Name'],
+                   monitored=row['Monitored'],
+                   sort_index=index)
+             for index, row in lines_df.iterrows()]
+    Lines.query.filter_by(operator_id=operator_id).delete()
+    siri_db.session.commit()
     siri_db.session.add_all(lines)
     siri_db.session.commit()
     current_time = dt.datetime.utcnow()
@@ -51,7 +62,8 @@ def commit_stops(siri_db, operator_id):
                    longitude=float(stop["Location"]["Longitude"]),
                    latitude=float(stop["Location"]["Latitude"]))
              for stop in stop_list]
-
+    Stops.query.filter_by(operator_id=operator_id).delete()
+    siri_db.session.commit()
     siri_db.session.add_all(stops)
     siri_db.session.commit()
     current_time = dt.datetime.utcnow()
@@ -76,7 +88,8 @@ def commit_vehicle_monitoring(siri_db, operator_id):
                          longitude=float(vehicle["MonitoredVehicleJourney"]["VehicleLocation"]["Longitude"]),
                          latitude=float(vehicle["MonitoredVehicleJourney"]["VehicleLocation"]["Latitude"]))
                 for vehicle in vehicle_list]
-
+    Vehicles.query.filter_by(operator_id=operator_id).delete()
+    siri_db.session.commit()
     siri_db.session.add_all(vehicles)
     siri_db.session.commit()
     current_time = dt.datetime.utcnow()
@@ -84,7 +97,6 @@ def commit_vehicle_monitoring(siri_db, operator_id):
     operator.vehicle_monitoring_updated = current_time
     siri_db.session.commit()
     return None
-
 
 
 def get_dropdown_values():
@@ -98,12 +110,7 @@ could be defined globally
     #
     # Read from the database the list of cars and the list of models.
     # With this information, build a dictionary that includes the list of models by brand.
-    # This dictionary is used to feed the drop down boxes of car brands and car models that belong to a car brand.
-    #
-    # Example:
-    #
-    # {'Toyota': ['Tercel', 'Prius'],
-    #  'Honda': ['Accord', 'Brio']}
+    # This dictionary is used to feed the drop-down boxes of car brands and car models that belong to a car brand.
 
     operators = Operators.query.all()
     # Create an empty dictionary

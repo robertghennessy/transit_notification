@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <h1>{% block title %} Select Stop {% endblock %}</h1>
+    {% if error %}
+        <p class=error><strong>Error:</strong> {{ error }}
+    {% endif %}
+    Please select an Line from the list below.
+    <table>
+        <tbody>
+            {% for line in lines %}
+                <tr>
+                    <td><a href="{{ url_for('routes.render_stops', operator_id=line.operator_id, line_id=line.id) }}">{{line.id}}</a></td>
+                    <td><a href="{{ url_for('routes.render_stops', operator_id=line.operator_id, line_id=line.id) }}">{{line.name}}</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

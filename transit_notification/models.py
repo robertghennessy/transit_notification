@@ -13,7 +13,9 @@ class Operators(db.Model):
     stops = db.relationship('Stops', backref='operator', lazy=True)
 
     def __repr__(self):
-        return f"Id : {self.id}, Name: {self.name}, Monitored: {self.monitored}, Lines Date: {self.lines_date}"
+        return f"Id : {self.id}, Name: {self.name}, Monitored: {self.monitored}, " \
+               f"Lines Updated: {self.lines_updated}, "f"Stops Updated: {self.stops_updated}, " \
+               f"Vehicle Monitoring Updated: {self.vehicle_monitoring_updated}"
 
 
 class Lines(db.Model):
@@ -21,6 +23,9 @@ class Lines(db.Model):
     id = db.Column(db.String(10), primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     monitored = db.Column(db.Boolean, nullable=False)
+    sort_index = db.Column(db.Float, nullable=False)
+    direction_1 = db.Column(db.String(10))
+    direction_2 = db.Column(db.String(10))
 
     def __repr__(self):
         return f"Id : {self.id}, Name: {self.name}, Monitored: {self.monitored}"

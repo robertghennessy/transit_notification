@@ -41,8 +41,9 @@ def create_app(test_config=None) -> Flask:
 
     app.register_blueprint(views.bp)
     app.register_blueprint(routes.routes)
+
     @app.route('/hello')
     def hello():
-        return ('Hello World!')
+        return 'Hello World!'
 
     return app
