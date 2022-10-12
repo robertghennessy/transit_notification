@@ -24,16 +24,20 @@ class Lines(db.Model):
     name = db.Column(db.String(100), nullable=False)
     monitored = db.Column(db.Boolean, nullable=False)
     sort_index = db.Column(db.Float, nullable=False)
-    direction_1 = db.Column(db.String(10))
-    direction_2 = db.Column(db.String(10))
+    direction_0_id = db.Column(db.String(10))
+    direction_0_name = db.Column(db.String(100))
+    direction_1_id = db.Column(db.String(10))
+    direction_1_name = db.Column(db.String(100))
 
     def __repr__(self):
-        return f"Id : {self.id}, Name: {self.name}, Monitored: {self.monitored}"
+        return f"Id: {self.id}, Name: {self.name}, Monitored: {self.monitored}, " \
+               f"Direction 0 Id: {self.direction_0_id}, Direction 0 Name: {self.direction_0_name}, " \
+               f"Direction 1 Id: {self.direction_1_id}, Direction 0 Name: {self.direction_1_name}"
 
 
 class Stops(db.Model):
     operator_id = db.Column(db.String(2), db.ForeignKey("operators.id"), nullable=False, primary_key=True)
-    id = db.Column(db.String(2), primary_key=True)
+    id = db.Column(db.String(10), primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     longitude = db.Column(db.Float, nullable=False)
     latitude = db.Column(db.Float, nullable=False)
@@ -54,3 +58,19 @@ class Vehicles(db.Model):
     def __repr__(self):
         return f"Vehicle : {self.vehicle_journey_ref}, DateFrameRef: {self.dataframe_ref}, " \
                f"Direction: {self.direction}, Longitude: {self.longitude}, Latitude: {self.latitude}"
+
+
+class Patterns(db.Model):
+    operator_id = db.Column(db.String(2), db.ForeignKey("operators.id"), nullable=False, primary_key=True)
+    line_id = db.Column(db.String(10), db.ForeignKey("lines.id"), nullable=False, primary_key=True)
+    id = db.Column(db.Float, nullable=False, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    direction = db.Column(db.String(10))
+    trip_count = db.Column(db.Float)
+
+
+class StopPatterns(db.Model):
+    operator_id = db.Column(db.String(2), db.ForeignKey("operators.id"), nullable=False, primary_key=True)
+    pattern_id = db.Column(db.Float, db.ForeignKey("patterns.id"), nullable=False, primary_key=True)
+    stop_id = db.Column(db.Float, db.ForeignKey("stops.id"))
+    stop_order = db.Column(db.Float)

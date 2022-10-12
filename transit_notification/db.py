@@ -1,6 +1,6 @@
 import pandas as pd
 import datetime as dt
-from transit_notification.models import Operators, Lines, Stops, Vehicles
+from transit_notification.models import Operators, Lines, Stops, Vehicles, Patterns, StopPatterns
 import siri_transit_api_client
 import configparser
 import numpy as np
@@ -95,6 +95,31 @@ def commit_vehicle_monitoring(siri_db, operator_id):
     current_time = dt.datetime.utcnow()
     operator = Operators.query.filter_by(id=operator_id).first()
     operator.vehicle_monitoring_updated = current_time
+    siri_db.session.commit()
+    return None
+
+
+def commit_pattern(siri_db, operator_id, line_id):
+    transit_api_key, siri_base_url = read_configuration_file()
+    siri_client = siri_transit_api_client.SiriClient(api_key=transit_api_key, base_url=siri_base_url)
+    pattern_json = siri_client.patterns(operator_id=operator_id, line_id=line_id)
+    directions = pattern_json["directions"]
+    line = Lines.query.where(siri_db.and_(Lines.operator_id == operator_id, Lines.id == line_id)).first()
+    line.direction_0_id = directions[0]["DirectionId"]
+    line.direction_0_name = directions[0]["Name"]
+    line.direction_1_id = directions[1]["DirectionId"]
+    line.direction_1_name = directions[1]["Name"]
+    siri_db.session.commit()
+    patterns = [Patterns(operator_id=operator_id,
+                         line_id=pattern['LineRef'],
+                         id=pattern['serviceJourneyPatternRef'],
+                         name=pattern['Name'],
+                         direction=pattern['DirectionRef'],
+                         trip_count=pattern['TripCount'])
+                for pattern in pattern_json['journeyPatterns']]
+    Patterns.query.filter(siri_db.and_(Patterns.operator_id == operator_id, Patterns.line_id == line_id)).delete()
+    siri_db.session.commit()
+    siri_db.session.add_all(patterns)
     siri_db.session.commit()
     return None
 

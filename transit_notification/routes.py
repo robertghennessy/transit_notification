@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from transit_notification import db
 from transit_notification.models import Operators, Lines
 from transit_notification.db import commit_operators, commit_lines, commit_stops, commit_vehicle_monitoring, \
-    get_dropdown_values, write_configuration_file
+    get_dropdown_values, write_configuration_file, commit_pattern
 import siri_transit_api_client
 
 routes = Blueprint('routes', __name__)
@@ -102,5 +102,6 @@ def render_stops(operator_id, line_id):
         error = 'Operator {0} with line {1} is not supported.'.format(operator_id, line_id)
         return render_template('show_lines.html',
                                lines=Lines.query.filter(Lines.operator_id == operator_id).order_by(Lines.sort_index.asc()))
+    commit_pattern(db, operator_id, line_id)
     return render_template('show_lines.html',
                            lines=Lines.query.filter(Lines.operator_id == operator_id).order_by(Lines.sort_index.asc()))
