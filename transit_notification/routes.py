@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, render_template_string
 from transit_notification import db
 from transit_notification.models import Operators, Lines
-from transit_notification.db import commit_operators, commit_lines, commit_stops, commit_vehicle_monitoring, \
+from transit_notification.db_commands import commit_operators, commit_lines, commit_stops, commit_vehicle_monitoring, \
     get_dropdown_values, write_configuration_file, commit_pattern
 import siri_transit_api_client
 

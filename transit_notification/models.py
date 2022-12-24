@@ -65,12 +65,13 @@ class Patterns(db.Model):
     line_id = db.Column(db.String(10), db.ForeignKey("lines.id"), nullable=False, primary_key=True)
     id = db.Column(db.Float, nullable=False, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    direction = db.Column(db.String(10))
-    trip_count = db.Column(db.Float)
+    direction = db.Column(db.String(10), nullable=False)
+    trip_count = db.Column(db.Float, nullable=False)
 
 
 class StopPatterns(db.Model):
     operator_id = db.Column(db.String(2), db.ForeignKey("operators.id"), nullable=False, primary_key=True)
     pattern_id = db.Column(db.Float, db.ForeignKey("patterns.id"), nullable=False, primary_key=True)
-    stop_id = db.Column(db.Float, db.ForeignKey("stops.id"))
-    stop_order = db.Column(db.Float)
+    stop_order = db.Column(db.Float, nullable=False, primary_key=True)
+    stop_id = db.Column(db.Float, db.ForeignKey("stops.id"), nullable=False)
+

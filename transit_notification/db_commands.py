@@ -110,18 +110,34 @@ def commit_pattern(siri_db, operator_id, line_id):
     line.direction_1_id = directions[1]["DirectionId"]
     line.direction_1_name = directions[1]["Name"]
     siri_db.session.commit()
-    patterns = [Patterns(operator_id=operator_id,
-                         line_id=pattern['LineRef'],
-                         id=pattern['serviceJourneyPatternRef'],
-                         name=pattern['Name'],
-                         direction=pattern['DirectionRef'],
-                         trip_count=pattern['TripCount'])
-                for pattern in pattern_json['journeyPatterns']]
+    patterns = []
+    for pattern in pattern_json['journeyPatterns']:
+        patterns.append(Patterns(operator_id=operator_id,
+                                 line_id=pattern['LineRef'],
+                                 id=pattern['serviceJourneyPatternRef'],
+                                 name=pattern['Name'],
+                                 direction=pattern['DirectionRef'],
+                                 trip_count=pattern['TripCount']))
+        commit_stop_pattern(siri_db, pattern['PointsInSequence']['StopPointInJourneyPattern'], operator_id,
+                            pattern['serviceJourneyPatternRef'])
     Patterns.query.filter(siri_db.and_(Patterns.operator_id == operator_id, Patterns.line_id == line_id)).delete()
     siri_db.session.commit()
     siri_db.session.add_all(patterns)
     siri_db.session.commit()
     return None
+
+
+def commit_stop_pattern(siri_db, stop_pattern_json, operator_id, pattern_id):
+    stop_patterns = [StopPatterns(operator_id=operator_id,
+                                  pattern_id=pattern_id,
+                                  stop_order=stop_pattern["Order"],
+                                  stop_id=stop_pattern["ScheduledStopPointRef"])
+                     for stop_pattern in stop_pattern_json]
+    StopPatterns.query.filter(siri_db.and_(StopPatterns.operator_id == operator_id,
+                                       StopPatterns.pattern_id == pattern_id)).delete()
+    siri_db.session.commit()
+    siri_db.session.add_all(stop_patterns)
+    siri_db.session.commit()
 
 
 def get_dropdown_values():
