@@ -104,4 +104,5 @@ ENV/
 # IDE settings
 .vscode/
 .idea/
+/key_api.ini
 /config.ini

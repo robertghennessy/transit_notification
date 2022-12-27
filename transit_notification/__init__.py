@@ -5,6 +5,8 @@ from flask import Flask
 from flask.cli import with_appcontext
 from flask_sqlalchemy import SQLAlchemy
 import os
+import configparser
+
 
 __author__ = """Robert G Hennessy"""
 __email__ = 'robertghennessy@gmail.com'
@@ -14,25 +16,21 @@ db = SQLAlchemy()
 
 def create_app(test_config=None) -> Flask:
     app = Flask(__name__)
-    #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(app.instance_path, 'database.db')
-    #app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    #app.config['SECRET_KEY'] = 'ZlfMlXwgvW5ZaomcnVRWYn1E'
 
-    # some deploy systems set the database url in the environ
-    db_url = os.environ.get("DATABASE_URL")
-
-    if db_url is None:
+    config = configparser.ConfigParser()
+    config.read(os.environ.get("CONFIG_FILE", "dev"))
+    # some deploy systems set the database url in the environment
+    if "DATABASE_URL" in config["FILE_LOCATIONS"]:
+        db_url = config["FILE_LOCATIONS"]["DATABASE_URL"]
+    else:
         # default to a sqlite database in the instance folder
         db_url = 'sqlite:///' + os.path.join(app.instance_path, 'database.db')
 
     app.config.from_mapping(
-        # default secret that should be overridden in environ or config
-        SECRET_KEY='ZlfMlXwgvW5ZaomcnVRWYn1E',
-        #os.environ.get("SECRET_KEY", "dev"),#
+        SECRET_KEY=os.environ.get("SECRET_KEY", "dev"),
         SQLALCHEMY_DATABASE_URI=db_url,
-        SQLALCHEMY_TRACK_MODIFICATIONS= False
+        SQLALCHEMY_TRACK_MODIFICATIONS=False
     )
-
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
@@ -47,14 +45,17 @@ def create_app(test_config=None) -> Flask:
     except OSError:
         pass
 
-    db.init_app(app)
-
     # initialize Flask-SQLAlchemy and the init-db command
     db.init_app(app)
     app.cli.add_command(init_db_command)
 
-    from transit_notification import views, routes
+    if bool(os.environ.get("RESET_TABLES", "dev")) is True:
+        with app.app_context():
+            from transit_notification import models
+            db.drop_all()
+            db.create_all()  # Create sql tables for our data models
 
+    from transit_notification import views, routes
     app.register_blueprint(views.bp)
     app.register_blueprint(routes.routes)
 
@@ -68,6 +69,7 @@ def create_app(test_config=None) -> Flask:
 def init_db():
     db.drop_all()
     db.create_all()
+
 
 @click.command("init-db")
 @with_appcontext

@@ -14,7 +14,7 @@ import configparser
 
 # import the configuration file which has the api keys
 config = configparser.ConfigParser()
-config.read("../config.ini")
+config.read("../key_api.ini")
 transit_api_key = config["keys"]["Transit511Key"]
 
 siri_client = siri_transit_api_client.SiriClient(api_key=transit_api_key)
