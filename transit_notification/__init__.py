@@ -17,12 +17,11 @@ db = SQLAlchemy()
 def create_app(test_config=None) -> Flask:
     app = Flask(__name__)
 
-    config = configparser.ConfigParser()
-    config.read(os.environ.get("CONFIG_FILE", "dev"))
-    # some deploy systems set the database url in the environment
-    if "DATABASE_URL" in config["FILE_LOCATIONS"]:
-        db_url = config["FILE_LOCATIONS"]["DATABASE_URL"]
-    else:
+    # some deploy systems set the database url in the environ
+    db_url = os.environ.get("DATABASE_URL")
+    db_url = 'sqlite:////Users/roberthennessy/Documents/python_project/transit_notification/tests/test_database/scratch.db'
+
+    if db_url is None:
         # default to a sqlite database in the instance folder
         db_url = 'sqlite:///' + os.path.join(app.instance_path, 'database.db')
 

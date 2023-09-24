@@ -1,0 +1,2005 @@
+{
+    "directions": [
+        {
+            "DirectionId": "OB",
+            "Name": "Outbound"
+        },
+        {
+            "DirectionId": "IB",
+            "Name": "Inbound"
+        }
+    ],
+    "journeyPatterns": [
+        {
+            "serviceJourneyPatternRef": "219278",
+            "LineRef": "14",
+            "Name": "Mission St & San Jose Ave",
+            "DirectionRef": "OB",
+            "DestinationDisplayView": {
+                "FontText": "Daly City"
+            },
+            "PointsInSequence": {
+                "StopPointInJourneyPattern": [
+                    {
+                        "StopPointInJourneyPatternId": "15363345",
+                        "Order": "2",
+                        "ScheduledStopPointRef": "15623",
+                        "Name": "Mission St & Spear St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363346",
+                        "Order": "3",
+                        "ScheduledStopPointRef": "15579",
+                        "Name": "Mission St & Beale St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363347",
+                        "Order": "4",
+                        "ScheduledStopPointRef": "15528",
+                        "Name": "Mission St & 1st St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363348",
+                        "Order": "5",
+                        "ScheduledStopPointRef": "15529",
+                        "Name": "Mission St & 2nd St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363349",
+                        "Order": "6",
+                        "ScheduledStopPointRef": "15532",
+                        "Name": "Mission St & 3rd St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363350",
+                        "Order": "7",
+                        "ScheduledStopPointRef": "15534",
+                        "Name": "Mission St & 4th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363352",
+                        "Order": "9",
+                        "ScheduledStopPointRef": "15538",
+                        "Name": "Mission St & 6th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363353",
+                        "Order": "10",
+                        "ScheduledStopPointRef": "15539",
+                        "Name": "Mission St & 7th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363354",
+                        "Order": "11",
+                        "ScheduledStopPointRef": "15540",
+                        "Name": "Mission St & 8th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363355",
+                        "Order": "12",
+                        "ScheduledStopPointRef": "15543",
+                        "Name": "Mission St & 9th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363357",
+                        "Order": "14",
+                        "ScheduledStopPointRef": "15836",
+                        "Name": "Otis St & 12th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363358",
+                        "Order": "15",
+                        "ScheduledStopPointRef": "15835",
+                        "Name": "150 Otis St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363359",
+                        "Order": "16",
+                        "ScheduledStopPointRef": "15548",
+                        "Name": "Mission St & 14th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363361",
+                        "Order": "18",
+                        "ScheduledStopPointRef": "15554",
+                        "Name": "Mission St & 18th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363362",
+                        "Order": "19",
+                        "ScheduledStopPointRef": "15558",
+                        "Name": "Mission St & 20th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363363",
+                        "Order": "20",
+                        "ScheduledStopPointRef": "15562",
+                        "Name": "Mission St & 22nd St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363365",
+                        "Order": "22",
+                        "ScheduledStopPointRef": "15568",
+                        "Name": "Mission St & 26th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363366",
+                        "Order": "23",
+                        "ScheduledStopPointRef": "15626",
+                        "Name": "Mission St & Valencia St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363368",
+                        "Order": "25",
+                        "ScheduledStopPointRef": "15584",
+                        "Name": "Mission St & Cortland Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363369",
+                        "Order": "26",
+                        "ScheduledStopPointRef": "15578",
+                        "Name": "Mission St & Appleton Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363370",
+                        "Order": "27",
+                        "ScheduledStopPointRef": "15597",
+                        "Name": "Mission St & Highland Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363371",
+                        "Order": "28",
+                        "ScheduledStopPointRef": "15614",
+                        "Name": "Mission St & Richland Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363372",
+                        "Order": "29",
+                        "ScheduledStopPointRef": "15580",
+                        "Name": "Mission St & Bosworth St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363373",
+                        "Order": "30",
+                        "ScheduledStopPointRef": "15573",
+                        "Name": "4080 Mission St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363374",
+                        "Order": "31",
+                        "ScheduledStopPointRef": "15625",
+                        "Name": "Mission St & Trumbull St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363376",
+                        "Order": "33",
+                        "ScheduledStopPointRef": "15590",
+                        "Name": "Mission St & Francis St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363377",
+                        "Order": "34",
+                        "ScheduledStopPointRef": "15616",
+                        "Name": "Mission St & Ruth St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363378",
+                        "Order": "35",
+                        "ScheduledStopPointRef": "15609",
+                        "Name": "Mission St & Onondaga Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363379",
+                        "Order": "36",
+                        "ScheduledStopPointRef": "15598",
+                        "Name": "Mission St & Italy Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363381",
+                        "Order": "38",
+                        "ScheduledStopPointRef": "15604",
+                        "Name": "Mission St & Mt Vernon Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363382",
+                        "Order": "39",
+                        "ScheduledStopPointRef": "15589",
+                        "Name": "Mission St & Foote Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363384",
+                        "Order": "41",
+                        "ScheduledStopPointRef": "15627",
+                        "Name": "Mission St & Whittier St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363385",
+                        "Order": "42",
+                        "ScheduledStopPointRef": "15600",
+                        "Name": "Mission St & Lawrence Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363386",
+                        "Order": "43",
+                        "ScheduledStopPointRef": "15619",
+                        "Name": "Mission St & Sickles Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363387",
+                        "Order": "44",
+                        "ScheduledStopPointRef": "15594",
+                        "Name": "Mission St & Goethe St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363388",
+                        "Order": "45",
+                        "ScheduledStopPointRef": "15588",
+                        "Name": "Mission St & Flournoy St",
+                        "DestinationDisplayView": ""
+                    }
+                ],
+                "TimingPointInJourneyPattern": [
+                    {
+                        "TimingPointInJourneyPatternId": "15363344",
+                        "Order": "1",
+                        "ScheduledStopPointRef": "16498",
+                        "Name": "Steuart St & Mission St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363351",
+                        "Order": "8",
+                        "ScheduledStopPointRef": "15536",
+                        "Name": "Mission St & 5th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363356",
+                        "Order": "13",
+                        "ScheduledStopPointRef": "15545",
+                        "Name": "Mission St & 11th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363360",
+                        "Order": "17",
+                        "ScheduledStopPointRef": "15552",
+                        "Name": "Mission St & 16th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363364",
+                        "Order": "21",
+                        "ScheduledStopPointRef": "15566",
+                        "Name": "Mission St & 24th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363367",
+                        "Order": "24",
+                        "ScheduledStopPointRef": "15572",
+                        "Name": "Mission St & 30th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363375",
+                        "Order": "32",
+                        "ScheduledStopPointRef": "15621",
+                        "Name": "Mission St & Silver Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363380",
+                        "Order": "37",
+                        "ScheduledStopPointRef": "15592",
+                        "Name": "Mission St & Geneva Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363383",
+                        "Order": "40",
+                        "ScheduledStopPointRef": "15602",
+                        "Name": "Mission St & Lowell St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363389",
+                        "Order": "46",
+                        "ScheduledStopPointRef": "17099",
+                        "Name": "Mission St & San Jose Ave",
+                        "DestinationDisplayView": ""
+                    }
+                ]
+            },
+            "LinksInSequence": {
+                "ServiceLinkInJourneyPattern": ""
+            },
+            "TripCount": 1104
+        },
+        {
+            "serviceJourneyPatternRef": "219279",
+            "LineRef": "14",
+            "Name": "Morse St & Lowell St",
+            "DirectionRef": "OB",
+            "DestinationDisplayView": {
+                "FontText": "Lowell Street"
+            },
+            "PointsInSequence": {
+                "StopPointInJourneyPattern": [
+                    {
+                        "StopPointInJourneyPatternId": "15363391",
+                        "Order": "2",
+                        "ScheduledStopPointRef": "15623",
+                        "Name": "Mission St & Spear St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363392",
+                        "Order": "3",
+                        "ScheduledStopPointRef": "15579",
+                        "Name": "Mission St & Beale St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363393",
+                        "Order": "4",
+                        "ScheduledStopPointRef": "15528",
+                        "Name": "Mission St & 1st St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363394",
+                        "Order": "5",
+                        "ScheduledStopPointRef": "15529",
+                        "Name": "Mission St & 2nd St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363395",
+                        "Order": "6",
+                        "ScheduledStopPointRef": "15532",
+                        "Name": "Mission St & 3rd St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363396",
+                        "Order": "7",
+                        "ScheduledStopPointRef": "15534",
+                        "Name": "Mission St & 4th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363398",
+                        "Order": "9",
+                        "ScheduledStopPointRef": "15538",
+                        "Name": "Mission St & 6th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363399",
+                        "Order": "10",
+                        "ScheduledStopPointRef": "15539",
+                        "Name": "Mission St & 7th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363400",
+                        "Order": "11",
+                        "ScheduledStopPointRef": "15540",
+                        "Name": "Mission St & 8th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363401",
+                        "Order": "12",
+                        "ScheduledStopPointRef": "15543",
+                        "Name": "Mission St & 9th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363403",
+                        "Order": "14",
+                        "ScheduledStopPointRef": "15836",
+                        "Name": "Otis St & 12th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363404",
+                        "Order": "15",
+                        "ScheduledStopPointRef": "15835",
+                        "Name": "150 Otis St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363405",
+                        "Order": "16",
+                        "ScheduledStopPointRef": "15548",
+                        "Name": "Mission St & 14th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363407",
+                        "Order": "18",
+                        "ScheduledStopPointRef": "15554",
+                        "Name": "Mission St & 18th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363408",
+                        "Order": "19",
+                        "ScheduledStopPointRef": "15558",
+                        "Name": "Mission St & 20th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363409",
+                        "Order": "20",
+                        "ScheduledStopPointRef": "15562",
+                        "Name": "Mission St & 22nd St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363411",
+                        "Order": "22",
+                        "ScheduledStopPointRef": "15568",
+                        "Name": "Mission St & 26th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363412",
+                        "Order": "23",
+                        "ScheduledStopPointRef": "15626",
+                        "Name": "Mission St & Valencia St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363414",
+                        "Order": "25",
+                        "ScheduledStopPointRef": "15584",
+                        "Name": "Mission St & Cortland Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363415",
+                        "Order": "26",
+                        "ScheduledStopPointRef": "15578",
+                        "Name": "Mission St & Appleton Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363416",
+                        "Order": "27",
+                        "ScheduledStopPointRef": "15597",
+                        "Name": "Mission St & Highland Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363417",
+                        "Order": "28",
+                        "ScheduledStopPointRef": "15614",
+                        "Name": "Mission St & Richland Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363418",
+                        "Order": "29",
+                        "ScheduledStopPointRef": "15580",
+                        "Name": "Mission St & Bosworth St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363419",
+                        "Order": "30",
+                        "ScheduledStopPointRef": "15573",
+                        "Name": "4080 Mission St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363420",
+                        "Order": "31",
+                        "ScheduledStopPointRef": "15625",
+                        "Name": "Mission St & Trumbull St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363422",
+                        "Order": "33",
+                        "ScheduledStopPointRef": "15590",
+                        "Name": "Mission St & Francis St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363423",
+                        "Order": "34",
+                        "ScheduledStopPointRef": "15616",
+                        "Name": "Mission St & Ruth St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363424",
+                        "Order": "35",
+                        "ScheduledStopPointRef": "15609",
+                        "Name": "Mission St & Onondaga Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363425",
+                        "Order": "36",
+                        "ScheduledStopPointRef": "15598",
+                        "Name": "Mission St & Italy Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363427",
+                        "Order": "38",
+                        "ScheduledStopPointRef": "15604",
+                        "Name": "Mission St & Mt Vernon Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363428",
+                        "Order": "39",
+                        "ScheduledStopPointRef": "15589",
+                        "Name": "Mission St & Foote Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363430",
+                        "Order": "41",
+                        "ScheduledStopPointRef": "15627",
+                        "Name": "Mission St & Whittier St",
+                        "DestinationDisplayView": ""
+                    }
+                ],
+                "TimingPointInJourneyPattern": [
+                    {
+                        "TimingPointInJourneyPatternId": "15363390",
+                        "Order": "1",
+                        "ScheduledStopPointRef": "16498",
+                        "Name": "Steuart St & Mission St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363397",
+                        "Order": "8",
+                        "ScheduledStopPointRef": "15536",
+                        "Name": "Mission St & 5th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363402",
+                        "Order": "13",
+                        "ScheduledStopPointRef": "15545",
+                        "Name": "Mission St & 11th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363406",
+                        "Order": "17",
+                        "ScheduledStopPointRef": "15552",
+                        "Name": "Mission St & 16th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363410",
+                        "Order": "21",
+                        "ScheduledStopPointRef": "15566",
+                        "Name": "Mission St & 24th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363413",
+                        "Order": "24",
+                        "ScheduledStopPointRef": "15572",
+                        "Name": "Mission St & 30th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363421",
+                        "Order": "32",
+                        "ScheduledStopPointRef": "15621",
+                        "Name": "Mission St & Silver Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363426",
+                        "Order": "37",
+                        "ScheduledStopPointRef": "15592",
+                        "Name": "Mission St & Geneva Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363429",
+                        "Order": "40",
+                        "ScheduledStopPointRef": "15602",
+                        "Name": "Mission St & Lowell St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363431",
+                        "Order": "42",
+                        "ScheduledStopPointRef": "17742",
+                        "Name": "Morse St & Lowell St",
+                        "DestinationDisplayView": ""
+                    }
+                ]
+            },
+            "LinksInSequence": {
+                "ServiceLinkInJourneyPattern": ""
+            },
+            "TripCount": 44
+        },
+        {
+            "serviceJourneyPatternRef": "219280",
+            "LineRef": "14",
+            "Name": "Mission St & San Jose Ave",
+            "DirectionRef": "OB",
+            "DestinationDisplayView": {
+                "FontText": "Daly City"
+            },
+            "PointsInSequence": {
+                "StopPointInJourneyPattern": [
+                    {
+                        "StopPointInJourneyPatternId": "15363433",
+                        "Order": "2",
+                        "ScheduledStopPointRef": "15626",
+                        "Name": "Mission St & Valencia St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363434",
+                        "Order": "3",
+                        "ScheduledStopPointRef": "15572",
+                        "Name": "Mission St & 30th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363435",
+                        "Order": "4",
+                        "ScheduledStopPointRef": "15584",
+                        "Name": "Mission St & Cortland Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363436",
+                        "Order": "5",
+                        "ScheduledStopPointRef": "15578",
+                        "Name": "Mission St & Appleton Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363437",
+                        "Order": "6",
+                        "ScheduledStopPointRef": "15597",
+                        "Name": "Mission St & Highland Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363438",
+                        "Order": "7",
+                        "ScheduledStopPointRef": "15614",
+                        "Name": "Mission St & Richland Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363439",
+                        "Order": "8",
+                        "ScheduledStopPointRef": "15580",
+                        "Name": "Mission St & Bosworth St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363440",
+                        "Order": "9",
+                        "ScheduledStopPointRef": "15573",
+                        "Name": "4080 Mission St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363441",
+                        "Order": "10",
+                        "ScheduledStopPointRef": "15625",
+                        "Name": "Mission St & Trumbull St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363443",
+                        "Order": "12",
+                        "ScheduledStopPointRef": "15590",
+                        "Name": "Mission St & Francis St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363444",
+                        "Order": "13",
+                        "ScheduledStopPointRef": "15616",
+                        "Name": "Mission St & Ruth St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363445",
+                        "Order": "14",
+                        "ScheduledStopPointRef": "15609",
+                        "Name": "Mission St & Onondaga Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363446",
+                        "Order": "15",
+                        "ScheduledStopPointRef": "15598",
+                        "Name": "Mission St & Italy Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363448",
+                        "Order": "17",
+                        "ScheduledStopPointRef": "15604",
+                        "Name": "Mission St & Mt Vernon Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363449",
+                        "Order": "18",
+                        "ScheduledStopPointRef": "15589",
+                        "Name": "Mission St & Foote Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363451",
+                        "Order": "20",
+                        "ScheduledStopPointRef": "15627",
+                        "Name": "Mission St & Whittier St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363452",
+                        "Order": "21",
+                        "ScheduledStopPointRef": "15600",
+                        "Name": "Mission St & Lawrence Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363453",
+                        "Order": "22",
+                        "ScheduledStopPointRef": "15619",
+                        "Name": "Mission St & Sickles Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363454",
+                        "Order": "23",
+                        "ScheduledStopPointRef": "15594",
+                        "Name": "Mission St & Goethe St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363455",
+                        "Order": "24",
+                        "ScheduledStopPointRef": "15588",
+                        "Name": "Mission St & Flournoy St",
+                        "DestinationDisplayView": ""
+                    }
+                ],
+                "TimingPointInJourneyPattern": [
+                    {
+                        "TimingPointInJourneyPatternId": "15363432",
+                        "Order": "1",
+                        "ScheduledStopPointRef": "15568",
+                        "Name": "Mission St & 26th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363442",
+                        "Order": "11",
+                        "ScheduledStopPointRef": "15621",
+                        "Name": "Mission St & Silver Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363447",
+                        "Order": "16",
+                        "ScheduledStopPointRef": "15592",
+                        "Name": "Mission St & Geneva Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363450",
+                        "Order": "19",
+                        "ScheduledStopPointRef": "15602",
+                        "Name": "Mission St & Lowell St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363456",
+                        "Order": "25",
+                        "ScheduledStopPointRef": "17099",
+                        "Name": "Mission St & San Jose Ave",
+                        "DestinationDisplayView": ""
+                    }
+                ]
+            },
+            "LinksInSequence": {
+                "ServiceLinkInJourneyPattern": ""
+            },
+            "TripCount": 116
+        },
+        {
+            "serviceJourneyPatternRef": "219281",
+            "LineRef": "14",
+            "Name": "Mission St & 5th St",
+            "DirectionRef": "OB",
+            "DestinationDisplayView": {
+                "FontText": "Fifth Street"
+            },
+            "PointsInSequence": {
+                "StopPointInJourneyPattern": [
+                    {
+                        "StopPointInJourneyPatternId": "15363458",
+                        "Order": "2",
+                        "ScheduledStopPointRef": "15623",
+                        "Name": "Mission St & Spear St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363459",
+                        "Order": "3",
+                        "ScheduledStopPointRef": "15579",
+                        "Name": "Mission St & Beale St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363460",
+                        "Order": "4",
+                        "ScheduledStopPointRef": "15528",
+                        "Name": "Mission St & 1st St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363461",
+                        "Order": "5",
+                        "ScheduledStopPointRef": "15529",
+                        "Name": "Mission St & 2nd St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363462",
+                        "Order": "6",
+                        "ScheduledStopPointRef": "15532",
+                        "Name": "Mission St & 3rd St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363463",
+                        "Order": "7",
+                        "ScheduledStopPointRef": "15534",
+                        "Name": "Mission St & 4th St",
+                        "DestinationDisplayView": ""
+                    }
+                ],
+                "TimingPointInJourneyPattern": [
+                    {
+                        "TimingPointInJourneyPatternId": "15363457",
+                        "Order": "1",
+                        "ScheduledStopPointRef": "16498",
+                        "Name": "Steuart St & Mission St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363464",
+                        "Order": "8",
+                        "ScheduledStopPointRef": "15536",
+                        "Name": "Mission St & 5th St",
+                        "DestinationDisplayView": ""
+                    }
+                ]
+            },
+            "LinksInSequence": {
+                "ServiceLinkInJourneyPattern": ""
+            },
+            "TripCount": 96
+        },
+        {
+            "serviceJourneyPatternRef": "219282",
+            "LineRef": "14",
+            "Name": "Mission St & 26th St",
+            "DirectionRef": "IB",
+            "DestinationDisplayView": {
+                "FontText": "26th Street"
+            },
+            "PointsInSequence": {
+                "StopPointInJourneyPattern": [
+                    {
+                        "StopPointInJourneyPatternId": "15363466",
+                        "Order": "2",
+                        "ScheduledStopPointRef": "15585",
+                        "Name": "Mission St & Evergreen St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363467",
+                        "Order": "3",
+                        "ScheduledStopPointRef": "15574",
+                        "Name": "Mission St & Acton St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363468",
+                        "Order": "4",
+                        "ScheduledStopPointRef": "15608",
+                        "Name": "Mission St & Oliver St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363469",
+                        "Order": "5",
+                        "ScheduledStopPointRef": "15628",
+                        "Name": "Mission St & Whittier St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363471",
+                        "Order": "7",
+                        "ScheduledStopPointRef": "15595",
+                        "Name": "Mission St & Guttenberg St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363472",
+                        "Order": "8",
+                        "ScheduledStopPointRef": "15575",
+                        "Name": "Mission St & Allison St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363474",
+                        "Order": "10",
+                        "ScheduledStopPointRef": "15599",
+                        "Name": "Mission St & Italy Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363475",
+                        "Order": "11",
+                        "ScheduledStopPointRef": "15615",
+                        "Name": "Mission St & Russia Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363476",
+                        "Order": "12",
+                        "ScheduledStopPointRef": "15610",
+                        "Name": "Mission St & Persia Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363477",
+                        "Order": "13",
+                        "ScheduledStopPointRef": "15586",
+                        "Name": "Mission St & Excelsior Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363479",
+                        "Order": "15",
+                        "ScheduledStopPointRef": "15624",
+                        "Name": "Mission St & Trumbull St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363480",
+                        "Order": "16",
+                        "ScheduledStopPointRef": "15605",
+                        "Name": "Mission St & Murray St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363481",
+                        "Order": "17",
+                        "ScheduledStopPointRef": "15613",
+                        "Name": "Mission St & Richland Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363482",
+                        "Order": "18",
+                        "ScheduledStopPointRef": "15596",
+                        "Name": "Mission St & Highland Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363483",
+                        "Order": "19",
+                        "ScheduledStopPointRef": "15577",
+                        "Name": "Mission St & Appleton Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363484",
+                        "Order": "20",
+                        "ScheduledStopPointRef": "15583",
+                        "Name": "Mission St & Cortland Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363485",
+                        "Order": "21",
+                        "ScheduledStopPointRef": "15571",
+                        "Name": "Mission St & 30th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363486",
+                        "Order": "22",
+                        "ScheduledStopPointRef": "17841",
+                        "Name": "Mission St & Power St",
+                        "DestinationDisplayView": ""
+                    }
+                ],
+                "TimingPointInJourneyPattern": [
+                    {
+                        "TimingPointInJourneyPatternId": "15363465",
+                        "Order": "1",
+                        "ScheduledStopPointRef": "17099",
+                        "Name": "Mission St & San Jose Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363470",
+                        "Order": "6",
+                        "ScheduledStopPointRef": "15601",
+                        "Name": "Mission St & Lowell St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363473",
+                        "Order": "9",
+                        "ScheduledStopPointRef": "15593",
+                        "Name": "Mission St & Geneva Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363478",
+                        "Order": "14",
+                        "ScheduledStopPointRef": "15620",
+                        "Name": "Mission St & Silver Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363487",
+                        "Order": "23",
+                        "ScheduledStopPointRef": "15567",
+                        "Name": "Mission St & 26th St",
+                        "DestinationDisplayView": ""
+                    }
+                ]
+            },
+            "LinksInSequence": {
+                "ServiceLinkInJourneyPattern": ""
+            },
+            "TripCount": 116
+        },
+        {
+            "serviceJourneyPatternRef": "219283",
+            "LineRef": "14",
+            "Name": "Mission St & 26th St",
+            "DirectionRef": "IB",
+            "DestinationDisplayView": {
+                "FontText": "26th Street"
+            },
+            "PointsInSequence": {
+                "StopPointInJourneyPattern": [
+                    {
+                        "StopPointInJourneyPatternId": "15363490",
+                        "Order": "3",
+                        "ScheduledStopPointRef": "15595",
+                        "Name": "Mission St & Guttenberg St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363491",
+                        "Order": "4",
+                        "ScheduledStopPointRef": "15575",
+                        "Name": "Mission St & Allison St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363493",
+                        "Order": "6",
+                        "ScheduledStopPointRef": "15599",
+                        "Name": "Mission St & Italy Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363494",
+                        "Order": "7",
+                        "ScheduledStopPointRef": "15615",
+                        "Name": "Mission St & Russia Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363495",
+                        "Order": "8",
+                        "ScheduledStopPointRef": "15610",
+                        "Name": "Mission St & Persia Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363496",
+                        "Order": "9",
+                        "ScheduledStopPointRef": "15586",
+                        "Name": "Mission St & Excelsior Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363498",
+                        "Order": "11",
+                        "ScheduledStopPointRef": "15624",
+                        "Name": "Mission St & Trumbull St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363499",
+                        "Order": "12",
+                        "ScheduledStopPointRef": "15605",
+                        "Name": "Mission St & Murray St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363500",
+                        "Order": "13",
+                        "ScheduledStopPointRef": "15613",
+                        "Name": "Mission St & Richland Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363501",
+                        "Order": "14",
+                        "ScheduledStopPointRef": "15596",
+                        "Name": "Mission St & Highland Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363502",
+                        "Order": "15",
+                        "ScheduledStopPointRef": "15577",
+                        "Name": "Mission St & Appleton Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363503",
+                        "Order": "16",
+                        "ScheduledStopPointRef": "15583",
+                        "Name": "Mission St & Cortland Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363504",
+                        "Order": "17",
+                        "ScheduledStopPointRef": "15571",
+                        "Name": "Mission St & 30th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363505",
+                        "Order": "18",
+                        "ScheduledStopPointRef": "17841",
+                        "Name": "Mission St & Power St",
+                        "DestinationDisplayView": ""
+                    }
+                ],
+                "TimingPointInJourneyPattern": [
+                    {
+                        "TimingPointInJourneyPatternId": "15363488",
+                        "Order": "1",
+                        "ScheduledStopPointRef": "17742",
+                        "Name": "Morse St & Lowell St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363489",
+                        "Order": "2",
+                        "ScheduledStopPointRef": "15601",
+                        "Name": "Mission St & Lowell St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363492",
+                        "Order": "5",
+                        "ScheduledStopPointRef": "15593",
+                        "Name": "Mission St & Geneva Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363497",
+                        "Order": "10",
+                        "ScheduledStopPointRef": "15620",
+                        "Name": "Mission St & Silver Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363506",
+                        "Order": "19",
+                        "ScheduledStopPointRef": "15567",
+                        "Name": "Mission St & 26th St",
+                        "DestinationDisplayView": ""
+                    }
+                ]
+            },
+            "LinksInSequence": {
+                "ServiceLinkInJourneyPattern": ""
+            },
+            "TripCount": 4
+        },
+        {
+            "serviceJourneyPatternRef": "219284",
+            "LineRef": "14",
+            "Name": "Steuart St & Mission St",
+            "DirectionRef": "IB",
+            "DestinationDisplayView": {
+                "FontText": "Ferry Plaza"
+            },
+            "PointsInSequence": {
+                "StopPointInJourneyPattern": [
+                    {
+                        "StopPointInJourneyPatternId": "15363508",
+                        "Order": "2",
+                        "ScheduledStopPointRef": "15585",
+                        "Name": "Mission St & Evergreen St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363509",
+                        "Order": "3",
+                        "ScheduledStopPointRef": "15574",
+                        "Name": "Mission St & Acton St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363510",
+                        "Order": "4",
+                        "ScheduledStopPointRef": "15608",
+                        "Name": "Mission St & Oliver St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363511",
+                        "Order": "5",
+                        "ScheduledStopPointRef": "15628",
+                        "Name": "Mission St & Whittier St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363513",
+                        "Order": "7",
+                        "ScheduledStopPointRef": "15595",
+                        "Name": "Mission St & Guttenberg St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363514",
+                        "Order": "8",
+                        "ScheduledStopPointRef": "15575",
+                        "Name": "Mission St & Allison St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363516",
+                        "Order": "10",
+                        "ScheduledStopPointRef": "15599",
+                        "Name": "Mission St & Italy Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363517",
+                        "Order": "11",
+                        "ScheduledStopPointRef": "15615",
+                        "Name": "Mission St & Russia Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363518",
+                        "Order": "12",
+                        "ScheduledStopPointRef": "15610",
+                        "Name": "Mission St & Persia Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363519",
+                        "Order": "13",
+                        "ScheduledStopPointRef": "15586",
+                        "Name": "Mission St & Excelsior Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363521",
+                        "Order": "15",
+                        "ScheduledStopPointRef": "15624",
+                        "Name": "Mission St & Trumbull St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363522",
+                        "Order": "16",
+                        "ScheduledStopPointRef": "15605",
+                        "Name": "Mission St & Murray St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363523",
+                        "Order": "17",
+                        "ScheduledStopPointRef": "15613",
+                        "Name": "Mission St & Richland Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363524",
+                        "Order": "18",
+                        "ScheduledStopPointRef": "15596",
+                        "Name": "Mission St & Highland Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363525",
+                        "Order": "19",
+                        "ScheduledStopPointRef": "15577",
+                        "Name": "Mission St & Appleton Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363526",
+                        "Order": "20",
+                        "ScheduledStopPointRef": "15583",
+                        "Name": "Mission St & Cortland Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363528",
+                        "Order": "22",
+                        "ScheduledStopPointRef": "17841",
+                        "Name": "Mission St & Power St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363529",
+                        "Order": "23",
+                        "ScheduledStopPointRef": "15567",
+                        "Name": "Mission St & 26th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363531",
+                        "Order": "25",
+                        "ScheduledStopPointRef": "15561",
+                        "Name": "Mission St & 22nd St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363532",
+                        "Order": "26",
+                        "ScheduledStopPointRef": "15557",
+                        "Name": "Mission St & 20th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363533",
+                        "Order": "27",
+                        "ScheduledStopPointRef": "15553",
+                        "Name": "Mission St & 18th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363535",
+                        "Order": "29",
+                        "ScheduledStopPointRef": "15547",
+                        "Name": "Mission St & 14th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363536",
+                        "Order": "30",
+                        "ScheduledStopPointRef": "15546",
+                        "Name": "Mission St & 13th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363537",
+                        "Order": "31",
+                        "ScheduledStopPointRef": "17299",
+                        "Name": "Mission St & South Van Ness Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363539",
+                        "Order": "33",
+                        "ScheduledStopPointRef": "15542",
+                        "Name": "Mission St & 9th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363540",
+                        "Order": "34",
+                        "ScheduledStopPointRef": "15541",
+                        "Name": "Mission St & 8th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363541",
+                        "Order": "35",
+                        "ScheduledStopPointRef": "17129",
+                        "Name": "Mission St & 7th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363542",
+                        "Order": "36",
+                        "ScheduledStopPointRef": "15537",
+                        "Name": "Mission St & 6th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363544",
+                        "Order": "38",
+                        "ScheduledStopPointRef": "15533",
+                        "Name": "Mission St & 4th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363545",
+                        "Order": "39",
+                        "ScheduledStopPointRef": "15531",
+                        "Name": "Mission St & 3rd St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363546",
+                        "Order": "40",
+                        "ScheduledStopPointRef": "15530",
+                        "Name": "Mission St & 2nd St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363547",
+                        "Order": "41",
+                        "ScheduledStopPointRef": "17945",
+                        "Name": "Mission St & Fremont St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363548",
+                        "Order": "42",
+                        "ScheduledStopPointRef": "15336",
+                        "Name": "Main St & Market St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363549",
+                        "Order": "43",
+                        "ScheduledStopPointRef": "15693",
+                        "Name": "Market St & Steuart St",
+                        "DestinationDisplayView": ""
+                    }
+                ],
+                "TimingPointInJourneyPattern": [
+                    {
+                        "TimingPointInJourneyPatternId": "15363507",
+                        "Order": "1",
+                        "ScheduledStopPointRef": "17099",
+                        "Name": "Mission St & San Jose Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363512",
+                        "Order": "6",
+                        "ScheduledStopPointRef": "15601",
+                        "Name": "Mission St & Lowell St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363515",
+                        "Order": "9",
+                        "ScheduledStopPointRef": "15593",
+                        "Name": "Mission St & Geneva Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363520",
+                        "Order": "14",
+                        "ScheduledStopPointRef": "15620",
+                        "Name": "Mission St & Silver Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363527",
+                        "Order": "21",
+                        "ScheduledStopPointRef": "15571",
+                        "Name": "Mission St & 30th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363530",
+                        "Order": "24",
+                        "ScheduledStopPointRef": "15565",
+                        "Name": "Mission St & 24th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363534",
+                        "Order": "28",
+                        "ScheduledStopPointRef": "15551",
+                        "Name": "Mission St & 16th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363538",
+                        "Order": "32",
+                        "ScheduledStopPointRef": "15544",
+                        "Name": "Mission St & 11th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363543",
+                        "Order": "37",
+                        "ScheduledStopPointRef": "15535",
+                        "Name": "Mission St & 5th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363550",
+                        "Order": "44",
+                        "ScheduledStopPointRef": "16498",
+                        "Name": "Steuart St & Mission St",
+                        "DestinationDisplayView": ""
+                    }
+                ]
+            },
+            "LinksInSequence": {
+                "ServiceLinkInJourneyPattern": ""
+            },
+            "TripCount": 1104
+        },
+        {
+            "serviceJourneyPatternRef": "219285",
+            "LineRef": "14",
+            "Name": "Steuart St & Mission St",
+            "DirectionRef": "IB",
+            "DestinationDisplayView": {
+                "FontText": "Ferry Plaza"
+            },
+            "PointsInSequence": {
+                "StopPointInJourneyPattern": [
+                    {
+                        "StopPointInJourneyPatternId": "15363552",
+                        "Order": "2",
+                        "ScheduledStopPointRef": "15542",
+                        "Name": "Mission St & 9th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363553",
+                        "Order": "3",
+                        "ScheduledStopPointRef": "15541",
+                        "Name": "Mission St & 8th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363554",
+                        "Order": "4",
+                        "ScheduledStopPointRef": "17129",
+                        "Name": "Mission St & 7th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363555",
+                        "Order": "5",
+                        "ScheduledStopPointRef": "15537",
+                        "Name": "Mission St & 6th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363557",
+                        "Order": "7",
+                        "ScheduledStopPointRef": "15533",
+                        "Name": "Mission St & 4th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363558",
+                        "Order": "8",
+                        "ScheduledStopPointRef": "15531",
+                        "Name": "Mission St & 3rd St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363559",
+                        "Order": "9",
+                        "ScheduledStopPointRef": "15530",
+                        "Name": "Mission St & 2nd St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363560",
+                        "Order": "10",
+                        "ScheduledStopPointRef": "17945",
+                        "Name": "Mission St & Fremont St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363561",
+                        "Order": "11",
+                        "ScheduledStopPointRef": "15336",
+                        "Name": "Main St & Market St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363562",
+                        "Order": "12",
+                        "ScheduledStopPointRef": "15693",
+                        "Name": "Market St & Steuart St",
+                        "DestinationDisplayView": ""
+                    }
+                ],
+                "TimingPointInJourneyPattern": [
+                    {
+                        "TimingPointInJourneyPatternId": "15363551",
+                        "Order": "1",
+                        "ScheduledStopPointRef": "15544",
+                        "Name": "Mission St & 11th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363556",
+                        "Order": "6",
+                        "ScheduledStopPointRef": "15535",
+                        "Name": "Mission St & 5th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363563",
+                        "Order": "13",
+                        "ScheduledStopPointRef": "16498",
+                        "Name": "Steuart St & Mission St",
+                        "DestinationDisplayView": ""
+                    }
+                ]
+            },
+            "LinksInSequence": {
+                "ServiceLinkInJourneyPattern": ""
+            },
+            "TripCount": 100
+        },
+        {
+            "serviceJourneyPatternRef": "219286",
+            "LineRef": "14",
+            "Name": "Steuart St & Mission St",
+            "DirectionRef": "IB",
+            "DestinationDisplayView": {
+                "FontText": "Ferry Plaza"
+            },
+            "PointsInSequence": {
+                "StopPointInJourneyPattern": [
+                    {
+                        "StopPointInJourneyPatternId": "15363566",
+                        "Order": "3",
+                        "ScheduledStopPointRef": "15595",
+                        "Name": "Mission St & Guttenberg St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363567",
+                        "Order": "4",
+                        "ScheduledStopPointRef": "15575",
+                        "Name": "Mission St & Allison St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363569",
+                        "Order": "6",
+                        "ScheduledStopPointRef": "15599",
+                        "Name": "Mission St & Italy Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363570",
+                        "Order": "7",
+                        "ScheduledStopPointRef": "15615",
+                        "Name": "Mission St & Russia Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363571",
+                        "Order": "8",
+                        "ScheduledStopPointRef": "15610",
+                        "Name": "Mission St & Persia Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363572",
+                        "Order": "9",
+                        "ScheduledStopPointRef": "15586",
+                        "Name": "Mission St & Excelsior Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363574",
+                        "Order": "11",
+                        "ScheduledStopPointRef": "15624",
+                        "Name": "Mission St & Trumbull St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363575",
+                        "Order": "12",
+                        "ScheduledStopPointRef": "15605",
+                        "Name": "Mission St & Murray St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363576",
+                        "Order": "13",
+                        "ScheduledStopPointRef": "15613",
+                        "Name": "Mission St & Richland Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363577",
+                        "Order": "14",
+                        "ScheduledStopPointRef": "15596",
+                        "Name": "Mission St & Highland Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363578",
+                        "Order": "15",
+                        "ScheduledStopPointRef": "15577",
+                        "Name": "Mission St & Appleton Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363579",
+                        "Order": "16",
+                        "ScheduledStopPointRef": "15583",
+                        "Name": "Mission St & Cortland Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363581",
+                        "Order": "18",
+                        "ScheduledStopPointRef": "17841",
+                        "Name": "Mission St & Power St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363582",
+                        "Order": "19",
+                        "ScheduledStopPointRef": "15567",
+                        "Name": "Mission St & 26th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363584",
+                        "Order": "21",
+                        "ScheduledStopPointRef": "15561",
+                        "Name": "Mission St & 22nd St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363585",
+                        "Order": "22",
+                        "ScheduledStopPointRef": "15557",
+                        "Name": "Mission St & 20th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363586",
+                        "Order": "23",
+                        "ScheduledStopPointRef": "15553",
+                        "Name": "Mission St & 18th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363588",
+                        "Order": "25",
+                        "ScheduledStopPointRef": "15547",
+                        "Name": "Mission St & 14th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363589",
+                        "Order": "26",
+                        "ScheduledStopPointRef": "15546",
+                        "Name": "Mission St & 13th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363590",
+                        "Order": "27",
+                        "ScheduledStopPointRef": "17299",
+                        "Name": "Mission St & South Van Ness Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363592",
+                        "Order": "29",
+                        "ScheduledStopPointRef": "15542",
+                        "Name": "Mission St & 9th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363593",
+                        "Order": "30",
+                        "ScheduledStopPointRef": "15541",
+                        "Name": "Mission St & 8th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363594",
+                        "Order": "31",
+                        "ScheduledStopPointRef": "17129",
+                        "Name": "Mission St & 7th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363595",
+                        "Order": "32",
+                        "ScheduledStopPointRef": "15537",
+                        "Name": "Mission St & 6th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363597",
+                        "Order": "34",
+                        "ScheduledStopPointRef": "15533",
+                        "Name": "Mission St & 4th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363598",
+                        "Order": "35",
+                        "ScheduledStopPointRef": "15531",
+                        "Name": "Mission St & 3rd St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363599",
+                        "Order": "36",
+                        "ScheduledStopPointRef": "15530",
+                        "Name": "Mission St & 2nd St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363600",
+                        "Order": "37",
+                        "ScheduledStopPointRef": "17945",
+                        "Name": "Mission St & Fremont St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363601",
+                        "Order": "38",
+                        "ScheduledStopPointRef": "15336",
+                        "Name": "Main St & Market St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "StopPointInJourneyPatternId": "15363602",
+                        "Order": "39",
+                        "ScheduledStopPointRef": "15693",
+                        "Name": "Market St & Steuart St",
+                        "DestinationDisplayView": ""
+                    }
+                ],
+                "TimingPointInJourneyPattern": [
+                    {
+                        "TimingPointInJourneyPatternId": "15363564",
+                        "Order": "1",
+                        "ScheduledStopPointRef": "17742",
+                        "Name": "Morse St & Lowell St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363565",
+                        "Order": "2",
+                        "ScheduledStopPointRef": "15601",
+                        "Name": "Mission St & Lowell St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363568",
+                        "Order": "5",
+                        "ScheduledStopPointRef": "15593",
+                        "Name": "Mission St & Geneva Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363573",
+                        "Order": "10",
+                        "ScheduledStopPointRef": "15620",
+                        "Name": "Mission St & Silver Ave",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363580",
+                        "Order": "17",
+                        "ScheduledStopPointRef": "15571",
+                        "Name": "Mission St & 30th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363583",
+                        "Order": "20",
+                        "ScheduledStopPointRef": "15565",
+                        "Name": "Mission St & 24th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363587",
+                        "Order": "24",
+                        "ScheduledStopPointRef": "15551",
+                        "Name": "Mission St & 16th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363591",
+                        "Order": "28",
+                        "ScheduledStopPointRef": "15544",
+                        "Name": "Mission St & 11th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363596",
+                        "Order": "33",
+                        "ScheduledStopPointRef": "15535",
+                        "Name": "Mission St & 5th St",
+                        "DestinationDisplayView": ""
+                    },
+                    {
+                        "TimingPointInJourneyPatternId": "15363603",
+                        "Order": "40",
+                        "ScheduledStopPointRef": "16498",
+                        "Name": "Steuart St & Mission St",
+                        "DestinationDisplayView": ""
+                    }
+                ]
+            },
+            "LinksInSequence": {
+                "ServiceLinkInJourneyPattern": ""
+            },
+            "TripCount": 40
+        }
+    ]
+}

@@ -1,0 +1,57 @@
+{
+    "Siri": {
+        "ServiceDelivery": {
+            "ResponseTimestamp": "2023-09-21T06:59:59-07:00",
+            "DataObjectDelivery": {
+                "ResponseTimestamp": "2023-09-21T06:59:59-07:00",
+                "dataObjects": {
+                    "SiteFrame": {
+                        "@version": "any",
+                        "@id": "SF",
+                        "stopPlaces": {
+                            "StopPlace": {
+                                "@version": "any",
+                                "@id": "15553",
+                                "Name": "Mission St & 18th St",
+                                "Description": null,
+                                "Centroid": {
+                                    "Location": {
+                                        "Longitude": "-122.419348",
+                                        "Latitude": "37.762635"
+                                    }
+                                },
+                                "AccessibilityAssessment": {
+                                    "@version": "any",
+                                    "@id": "15553",
+                                    "MobilityImpairedAccess": "unknown",
+                                    "limitations": {
+                                        "AccessibilityLimitation": {
+                                            "WheelchairAccess": "unknown"
+                                        }
+                                    }
+                                },
+                                "PostalAddress": {
+                                    "AddressLine1": "Mission St & 18th St",
+                                    "Town": "San Francisco"
+                                },
+                                "Url": "https://www.sfmta.com/15553",
+                                "OperatorRef": {
+                                    "@ref": "SF"
+                                },
+                                "adjacentSites": {
+                                    "ParkingRef": {
+                                        "@ref": ""
+                                    }
+                                },
+                                "PublicCode": "15553",
+                                "TransportMode": "bus",
+                                "StopPlaceType": "onstreetBus"
+                            }
+                        },
+                        "parkings": null
+                    }
+                }
+            }
+        }
+    }
+}

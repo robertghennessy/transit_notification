@@ -1,0 +1,38 @@
+[
+    {
+        "Id": "14",
+        "Name": "MISSION",
+        "TransportMode": "bus",
+        "PublicCode": "14",
+        "SiriLineRef": "14",
+        "Monitored": true,
+        "OperatorRef": "SF"
+    },
+    {
+        "Id": "33",
+        "Name": "ASHBURY-18TH ST",
+        "TransportMode": "bus",
+        "PublicCode": "33",
+        "SiriLineRef": "33",
+        "Monitored": true,
+        "OperatorRef": "SF"
+    },
+    {
+        "Id": "49",
+        "Name": "VAN NESS-MISSION",
+        "TransportMode": "bus",
+        "PublicCode": "49",
+        "SiriLineRef": "49",
+        "Monitored": true,
+        "OperatorRef": "SF"
+    },
+    {
+        "Id": "F",
+        "Name": "MARKET & WHARVES",
+        "TransportMode": "metro",
+        "PublicCode": "F",
+        "SiriLineRef": "F",
+        "Monitored": true,
+        "OperatorRef": "SF"
+    }
+]

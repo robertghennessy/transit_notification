@@ -1,0 +1,365 @@
+{
+    "ServiceDelivery": {
+        "ResponseTimestamp": "2023-09-21T14:00:18Z",
+        "ProducerRef": "SF",
+        "Status": true,
+        "StopMonitoringDelivery": {
+            "version": "1.4",
+            "ResponseTimestamp": "2023-09-21T14:00:18Z",
+            "Status": true,
+            "MonitoredStopVisit": [
+                {
+                    "RecordedAtTime": "2023-09-21T14:00:08Z",
+                    "MonitoringRef": "15553",
+                    "MonitoredVehicleJourney": {
+                        "LineRef": "49",
+                        "DirectionRef": "IB",
+                        "FramedVehicleJourneyRef": {
+                            "DataFrameRef": "2023-09-21",
+                            "DatedVehicleJourneyRef": "11408888_M31"
+                        },
+                        "PublishedLineName": "VAN NESS-MISSION",
+                        "OperatorRef": "SF",
+                        "OriginRef": "15926",
+                        "OriginName": "City College Terminal",
+                        "DestinationRef": "16820",
+                        "DestinationName": "North Point & Van Ness",
+                        "Monitored": true,
+                        "InCongestion": null,
+                        "VehicleLocation": {
+                            "Longitude": "-122.41877",
+                            "Latitude": "37.7557793"
+                        },
+                        "Bearing": "345.0000000000",
+                        "Occupancy": "seatsAvailable",
+                        "VehicleRef": "6713",
+                        "MonitoredCall": {
+                            "StopPointRef": "15553",
+                            "StopPointName": "Mission St & 18th St",
+                            "VehicleLocationAtStop": "",
+                            "VehicleAtStop": "false",
+                            "DestinationDisplay": "North Point & Van Ness",
+                            "AimedArrivalTime": "2023-09-21T14:00:44Z",
+                            "ExpectedArrivalTime": "2023-09-21T14:03:04Z",
+                            "AimedDepartureTime": "2023-09-21T14:00:44Z",
+                            "ExpectedDepartureTime": null,
+                            "Distances": ""
+                        }
+                    }
+                },
+                {
+                    "RecordedAtTime": "2023-09-21T14:00:08Z",
+                    "MonitoringRef": "15553",
+                    "MonitoredVehicleJourney": {
+                        "LineRef": "14",
+                        "DirectionRef": "IB",
+                        "FramedVehicleJourneyRef": {
+                            "DataFrameRef": "2023-09-21",
+                            "DatedVehicleJourneyRef": "11395397_M31"
+                        },
+                        "PublishedLineName": "MISSION",
+                        "OperatorRef": "SF",
+                        "OriginRef": "17099",
+                        "OriginName": "Mission St & San Jose Ave",
+                        "DestinationRef": "16498",
+                        "DestinationName": "Ferry Plaza",
+                        "Monitored": true,
+                        "InCongestion": null,
+                        "VehicleLocation": {
+                            "Longitude": "-122.418755",
+                            "Latitude": "37.7557602"
+                        },
+                        "Bearing": "345.0000000000",
+                        "Occupancy": "seatsAvailable",
+                        "VehicleRef": "7204",
+                        "MonitoredCall": {
+                            "StopPointRef": "15553",
+                            "StopPointName": "Mission St & 18th St",
+                            "VehicleLocationAtStop": "",
+                            "VehicleAtStop": "false",
+                            "DestinationDisplay": "Ferry Plaza",
+                            "AimedArrivalTime": "2023-09-21T14:01:44Z",
+                            "ExpectedArrivalTime": "2023-09-21T14:03:33Z",
+                            "AimedDepartureTime": "2023-09-21T14:01:44Z",
+                            "ExpectedDepartureTime": null,
+                            "Distances": ""
+                        }
+                    }
+                },
+                {
+                    "RecordedAtTime": "2023-09-21T14:00:08Z",
+                    "MonitoringRef": "15553",
+                    "MonitoredVehicleJourney": {
+                        "LineRef": "33",
+                        "DirectionRef": "OB",
+                        "FramedVehicleJourneyRef": {
+                            "DataFrameRef": "2023-09-21",
+                            "DatedVehicleJourneyRef": "11403427_M31"
+                        },
+                        "PublishedLineName": "ASHBURY-18TH ST",
+                        "OperatorRef": "SF",
+                        "OriginRef": "13852",
+                        "OriginName": "California St & Cherry St",
+                        "DestinationRef": "13511",
+                        "DestinationName": "Potrero + 25th Street",
+                        "Monitored": true,
+                        "InCongestion": null,
+                        "VehicleLocation": {
+                            "Longitude": "-122.437996",
+                            "Latitude": "37.7607002"
+                        },
+                        "Bearing": "75.0000000000",
+                        "Occupancy": "seatsAvailable",
+                        "VehicleRef": "5781",
+                        "MonitoredCall": {
+                            "StopPointRef": "15553",
+                            "StopPointName": "Mission St & 18th St",
+                            "VehicleLocationAtStop": "",
+                            "VehicleAtStop": "false",
+                            "DestinationDisplay": "Potrero + 25th Street",
+                            "AimedArrivalTime": "2023-09-21T14:07:00Z",
+                            "ExpectedArrivalTime": "2023-09-21T14:08:37Z",
+                            "AimedDepartureTime": "2023-09-21T14:07:00Z",
+                            "ExpectedDepartureTime": null,
+                            "Distances": ""
+                        }
+                    }
+                },
+                {
+                    "RecordedAtTime": "2023-09-21T14:00:08Z",
+                    "MonitoringRef": "15553",
+                    "MonitoredVehicleJourney": {
+                        "LineRef": "49",
+                        "DirectionRef": "IB",
+                        "FramedVehicleJourneyRef": {
+                            "DataFrameRef": "2023-09-21",
+                            "DatedVehicleJourneyRef": "11408889_M31"
+                        },
+                        "PublishedLineName": "VAN NESS-MISSION",
+                        "OperatorRef": "SF",
+                        "OriginRef": "15926",
+                        "OriginName": "City College Terminal",
+                        "DestinationRef": "16820",
+                        "DestinationName": "North Point & Van Ness",
+                        "Monitored": true,
+                        "InCongestion": null,
+                        "VehicleLocation": {
+                            "Longitude": "-122.421906",
+                            "Latitude": "37.7423782"
+                        },
+                        "Bearing": "15.0000000000",
+                        "Occupancy": "seatsAvailable",
+                        "VehicleRef": "7287",
+                        "MonitoredCall": {
+                            "StopPointRef": "15553",
+                            "StopPointName": "Mission St & 18th St",
+                            "VehicleLocationAtStop": "",
+                            "VehicleAtStop": "false",
+                            "DestinationDisplay": "North Point & Van Ness",
+                            "AimedArrivalTime": "2023-09-21T14:08:44Z",
+                            "ExpectedArrivalTime": "2023-09-21T14:10:23Z",
+                            "AimedDepartureTime": "2023-09-21T14:08:44Z",
+                            "ExpectedDepartureTime": null,
+                            "Distances": ""
+                        }
+                    }
+                },
+                {
+                    "RecordedAtTime": "2023-09-21T14:00:08Z",
+                    "MonitoringRef": "15553",
+                    "MonitoredVehicleJourney": {
+                        "LineRef": "14",
+                        "DirectionRef": "IB",
+                        "FramedVehicleJourneyRef": {
+                            "DataFrameRef": "2023-09-21",
+                            "DatedVehicleJourneyRef": "11395396_M31"
+                        },
+                        "PublishedLineName": "MISSION",
+                        "OperatorRef": "SF",
+                        "OriginRef": "17099",
+                        "OriginName": "Mission St & San Jose Ave",
+                        "DestinationRef": "16498",
+                        "DestinationName": "Ferry Plaza",
+                        "Monitored": true,
+                        "InCongestion": null,
+                        "VehicleLocation": {
+                            "Longitude": "-122.426025",
+                            "Latitude": "37.7339783"
+                        },
+                        "Bearing": "30.0000000000",
+                        "Occupancy": "seatsAvailable",
+                        "VehicleRef": "7247",
+                        "MonitoredCall": {
+                            "StopPointRef": "15553",
+                            "StopPointName": "Mission St & 18th St",
+                            "VehicleLocationAtStop": "",
+                            "VehicleAtStop": "false",
+                            "DestinationDisplay": "Ferry Plaza",
+                            "AimedArrivalTime": "2023-09-21T14:10:44Z",
+                            "ExpectedArrivalTime": "2023-09-21T14:13:26Z",
+                            "AimedDepartureTime": "2023-09-21T14:10:44Z",
+                            "ExpectedDepartureTime": null,
+                            "Distances": ""
+                        }
+                    }
+                },
+                {
+                    "RecordedAtTime": "2023-09-21T14:00:08Z",
+                    "MonitoringRef": "15553",
+                    "MonitoredVehicleJourney": {
+                        "LineRef": "33",
+                        "DirectionRef": "OB",
+                        "FramedVehicleJourneyRef": {
+                            "DataFrameRef": "2023-09-21",
+                            "DatedVehicleJourneyRef": "11403420_M31"
+                        },
+                        "PublishedLineName": "ASHBURY-18TH ST",
+                        "OperatorRef": "SF",
+                        "OriginRef": "13852",
+                        "OriginName": "California St & Cherry St",
+                        "DestinationRef": "13511",
+                        "DestinationName": "Potrero + 25th Street",
+                        "Monitored": true,
+                        "InCongestion": null,
+                        "VehicleLocation": {
+                            "Longitude": "-122.453209",
+                            "Latitude": "37.7691956"
+                        },
+                        "Bearing": "75.0000000000",
+                        "Occupancy": "seatsAvailable",
+                        "VehicleRef": "5755",
+                        "MonitoredCall": {
+                            "StopPointRef": "15553",
+                            "StopPointName": "Mission St & 18th St",
+                            "VehicleLocationAtStop": "",
+                            "VehicleAtStop": "false",
+                            "DestinationDisplay": "Potrero + 25th Street",
+                            "AimedArrivalTime": "2023-09-21T14:19:00Z",
+                            "ExpectedArrivalTime": "2023-09-21T14:19:45Z",
+                            "AimedDepartureTime": "2023-09-21T14:19:00Z",
+                            "ExpectedDepartureTime": null,
+                            "Distances": ""
+                        }
+                    }
+                },
+                {
+                    "RecordedAtTime": "2023-09-21T14:00:08Z",
+                    "MonitoringRef": "15553",
+                    "MonitoredVehicleJourney": {
+                        "LineRef": "49",
+                        "DirectionRef": "IB",
+                        "FramedVehicleJourneyRef": {
+                            "DataFrameRef": "2023-09-21",
+                            "DatedVehicleJourneyRef": "11408890_M31"
+                        },
+                        "PublishedLineName": "VAN NESS-MISSION",
+                        "OperatorRef": "SF",
+                        "OriginRef": "15926",
+                        "OriginName": "City College Terminal",
+                        "DestinationRef": "16820",
+                        "DestinationName": "North Point & Van Ness",
+                        "Monitored": true,
+                        "InCongestion": null,
+                        "VehicleLocation": {
+                            "Longitude": "-122.435699",
+                            "Latitude": "37.7238426"
+                        },
+                        "Bearing": "75.0000000000",
+                        "Occupancy": "seatsAvailable",
+                        "VehicleRef": "6680",
+                        "MonitoredCall": {
+                            "StopPointRef": "15553",
+                            "StopPointName": "Mission St & 18th St",
+                            "VehicleLocationAtStop": "",
+                            "VehicleAtStop": "false",
+                            "DestinationDisplay": "North Point & Van Ness",
+                            "AimedArrivalTime": "2023-09-21T14:18:32Z",
+                            "ExpectedArrivalTime": "2023-09-21T14:20:28Z",
+                            "AimedDepartureTime": "2023-09-21T14:18:32Z",
+                            "ExpectedDepartureTime": null,
+                            "Distances": ""
+                        }
+                    }
+                },
+                {
+                    "RecordedAtTime": "2023-09-21T14:00:08Z",
+                    "MonitoringRef": "15553",
+                    "MonitoredVehicleJourney": {
+                        "LineRef": "14",
+                        "DirectionRef": "IB",
+                        "FramedVehicleJourneyRef": {
+                            "DataFrameRef": "2023-09-21",
+                            "DatedVehicleJourneyRef": "11395395_M31"
+                        },
+                        "PublishedLineName": "MISSION",
+                        "OperatorRef": "SF",
+                        "OriginRef": "17099",
+                        "OriginName": "Mission St & San Jose Ave",
+                        "DestinationRef": "16498",
+                        "DestinationName": "Ferry Plaza",
+                        "Monitored": true,
+                        "InCongestion": null,
+                        "VehicleLocation": {
+                            "Longitude": "-122.442741",
+                            "Latitude": "37.7144394"
+                        },
+                        "Bearing": "30.0000000000",
+                        "Occupancy": "seatsAvailable",
+                        "VehicleRef": "7231",
+                        "MonitoredCall": {
+                            "StopPointRef": "15553",
+                            "StopPointName": "Mission St & 18th St",
+                            "VehicleLocationAtStop": "",
+                            "VehicleAtStop": "false",
+                            "DestinationDisplay": "Ferry Plaza",
+                            "AimedArrivalTime": "2023-09-21T14:19:44Z",
+                            "ExpectedArrivalTime": "2023-09-21T14:26:40Z",
+                            "AimedDepartureTime": "2023-09-21T14:19:44Z",
+                            "ExpectedDepartureTime": null,
+                            "Distances": ""
+                        }
+                    }
+                },
+                {
+                    "RecordedAtTime": "2023-09-21T14:00:08Z",
+                    "MonitoringRef": "15553",
+                    "MonitoredVehicleJourney": {
+                        "LineRef": "33",
+                        "DirectionRef": "OB",
+                        "FramedVehicleJourneyRef": {
+                            "DataFrameRef": "2023-09-21",
+                            "DatedVehicleJourneyRef": "11403428_M31"
+                        },
+                        "PublishedLineName": "ASHBURY-18TH ST",
+                        "OperatorRef": "SF",
+                        "OriginRef": "16293",
+                        "OriginName": "Sacramento St & Cherry St",
+                        "DestinationRef": "13511",
+                        "DestinationName": "Potrero + 25th Street",
+                        "Monitored": true,
+                        "InCongestion": null,
+                        "VehicleLocation": {
+                            "Longitude": "-122.458916",
+                            "Latitude": "37.7808228"
+                        },
+                        "Bearing": "165.0000000000",
+                        "Occupancy": "seatsAvailable",
+                        "VehicleRef": "5789",
+                        "MonitoredCall": {
+                            "StopPointRef": "15553",
+                            "StopPointName": "Mission St & 18th St",
+                            "VehicleLocationAtStop": "",
+                            "VehicleAtStop": "false",
+                            "DestinationDisplay": "Potrero + 25th Street",
+                            "AimedArrivalTime": "2023-09-21T14:24:00Z",
+                            "ExpectedArrivalTime": "2023-09-21T14:28:01Z",
+                            "AimedDepartureTime": "2023-09-21T14:24:00Z",
+                            "ExpectedDepartureTime": null,
+                            "Distances": ""
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

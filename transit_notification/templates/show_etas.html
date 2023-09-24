@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <h1>{% block title %} Select Stop {% endblock %}</h1>
+    {% if error %}
+        <p class=error><strong>Error:</strong> {{ error }}
+    {% endif %}
+    <table>
+        <tbody>
+            {% for line, etas in eta_dict.items() %}
+                <tr>
+                    <td>Line: {{line}}</a></td>
+                    <td>ETAs: {{etas}}</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

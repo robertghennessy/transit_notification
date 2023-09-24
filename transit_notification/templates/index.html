@@ -10,7 +10,7 @@
         <tbody>
             {% for operator in operators %}
                 <tr>
-                    <td><a href="{{ url_for('routes.render_lines', operator_id=operator.id) }}">{{operator.name}}</a></td>
+                    <td><a href="{{ url_for('routes.render_lines', operator_id=operator.operator_id) }}">{{operator.operator_name}}</a></td>
                 </tr>
             {% endfor %}
         </tbody>

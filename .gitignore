@@ -104,5 +104,11 @@ ENV/
 # IDE settings
 .vscode/
 .idea/
-/key_api.ini
-/config.ini
+
+# other directories to ignore
+bin/
+databases/
+
+# config files
+/transit_notification/config.py
+/tests/key_api.ini

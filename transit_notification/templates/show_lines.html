@@ -11,8 +11,8 @@
         <tbody>
             {% for line in lines %}
                 <tr>
-                    <td><a href="{{ url_for('routes.render_stops', operator_id=line.operator_id, line_id=line.id) }}">{{line.id}}</a></td>
-                    <td><a href="{{ url_for('routes.render_stops', operator_id=line.operator_id, line_id=line.id) }}">{{line.name}}</a></td>
+                    <td><a href="{{ url_for('routes.render_stops', operator_id=line.operator_id, line_id=line.line_id) }}">{{line.line_id}}</a></td>
+                    <td><a href="{{ url_for('routes.render_stops', operator_id=line.operator_id, line_id=line.line_id) }}">{{line.line_name}}</a></td>
                 </tr>
             {% endfor %}
         </tbody>

@@ -11,8 +11,8 @@
         <tbody>
             {% for stop in direction_0_stops %}
                 <tr>
-                    <td><a href="{{ url_for('routes.render_stop', operator_id=line.operator_id, stop_id=stop.id) }}">{{stop.name}}</a></td>
-                    <td><a href="{{ url_for('routes.render_stop', operator_id=line.operator_id, stop_id=stop.id) }}">{{stop.id}}</a></td>
+                    <td><a href="{{ url_for('routes.render_eta', operator_id=line.operator_id, stop_id=stop.stop_id) }}">{{stop.stop_name}}</a></td>
+                    <td><a href="{{ url_for('routes.render_eta', operator_id=line.operator_id, stop_id=stop.stop_id) }}">{{stop.stop_id}}</a></td>
                 </tr>
             {% endfor %}
         </tbody>
@@ -22,8 +22,8 @@
         <tbody>
             {% for stop in direction_1_stops %}
                 <tr>
-                    <td><a href="{{ url_for('routes.render_stop', operator_id=line.operator_id, stop_id=stop.id) }}">{{stop.name}}</a></td>
-                    <td><a href="{{ url_for('routes.render_stop', operator_id=line.operator_id, stop_id=stop.id) }}">{{stop.id}}</a></td>
+                    <td><a href="{{ url_for('routes.render_eta', operator_id=line.operator_id, stop_id=stop.stop_id) }}">{{stop.stop_name}}</a></td>
+                    <td><a href="{{ url_for('routes.render_eta', operator_id=line.operator_id, stop_id=stop.stop_id) }}">{{stop.stop_id}}</a></td>
                 </tr>
             {% endfor %}
         </tbody>
