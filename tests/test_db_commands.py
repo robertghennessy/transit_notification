@@ -50,7 +50,7 @@ def test_save_stops(app):
         db_commands.save_stops(db, selected_operator, stop_dict, dt.datetime.utcnow())
         select = db.select(Stops).filter_by(operator_id=selected_operator)
         stops = db.session.execute(select).scalars().all()
-        stops_cmp_dict = remove_internal_keys(TestComparisonJsons.stop_13230.__dict__)
+        stops_cmp_dict = remove_internal_keys(TestComparisonJsons.stop_15551.__dict__)
         assert remove_internal_keys(stops[0].__dict__) == stops_cmp_dict
 
 
@@ -74,10 +74,10 @@ def test_onward_call():
                                                    vehicle_journey_ref,
                                                    dataframe_ref,
                                                    vehicle_list[0]["MonitoredVehicleJourney"])
-    assert len(onward_calls) == 16
-    assert remove_internal_keys(onward_calls[0].__dict__) == \
-           remove_internal_keys(TestComparisonJsons.vehicle_onward_calls[0].__dict__)
+    assert len(onward_calls) == 18
     assert remove_internal_keys(onward_calls[-1].__dict__) == \
+           remove_internal_keys(TestComparisonJsons.vehicle_onward_calls[0].__dict__)
+    assert remove_internal_keys(onward_calls[0].__dict__) == \
            remove_internal_keys(TestComparisonJsons.vehicle_onward_calls[1].__dict__)
 
 
@@ -99,16 +99,16 @@ def test_save_vehicle_monitoring(app):
                remove_internal_keys(TestComparisonJsons.vehicle_2.__dict__)
         select = db.select(OnwardCalls).filter_by(operator_id=selected_operator)
         onward_calls = db.session.execute(select).scalars().all()
-        assert len(onward_calls) == 124
+        assert len(onward_calls) == 108
         select = db.select(OnwardCalls).filter_by(operator_id=selected_operator, vehicle_journey_ref="Schedule_0-Est_0",
-                                                  stop_id="15551")
+                                                  stop_id="15553")
         onward_calls = db.session.execute(select).scalars().all()
         assert remove_internal_keys(onward_calls[0].__dict__) == \
                remove_internal_keys(TestComparisonJsons.vehicle_onward_calls[0].__dict__)
 
 
 def test_upcoming_vehicles(app):
-    current_time = dt.datetime(2023, 9, 21, 14, 0, 23, 0,
+    current_time = dt.datetime(2023, 9, 26, 15, 0, 0, 0,
                                dt.timezone.utc)
     with open("test_input_jsons/vehicle_monitoring_modified.json", 'r') as f:
         vehicles_dict = json.load(f)
@@ -142,7 +142,7 @@ def test_save_stop_pattern(app):
         db_commands.save_stop_pattern(db, selected_operator, pattern_id, pattern['PointsInSequence'])
         select = db.select(StopPatterns).filter_by(operator_id=selected_operator, pattern_id=pattern_id)
         stop_patterns = db.session.execute(select).scalars().all()
-        assert len(stop_patterns) == 46
+        assert len(stop_patterns) == 25
         assert remove_internal_keys(stop_patterns[0].__dict__) == \
                remove_internal_keys(TestComparisonJsons.stop_pattern_1.__dict__)
 

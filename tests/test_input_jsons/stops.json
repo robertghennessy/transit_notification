@@ -1,37 +1,22 @@
 {
     "Contents": {
-        "ResponseTimestamp": "2023-09-21T06:59:55-07:00",
+        "ResponseTimestamp": "2023-09-26T15:00:00Z",
         "dataObjects": {
             "id": "SF",
             "ScheduledStopPoint": [
                 {
-                    "id": "15829",
+                    "id": "15551",
                     "Extensions": {
                         "LocationType": null,
                         "PlatformCode": null,
                         "ParentStation": null
                     },
-                    "Name": "100 O'Shaughnessy Blvd",
+                    "Name": "Mission St & 16th St",
                     "Location": {
-                        "Longitude": "-122.450678",
-                        "Latitude": "37.744481"
+                        "Longitude": "-122.419668",
+                        "Latitude": "37.765125"
                     },
-                    "Url": "https://www.sfmta.com/15829",
-                    "StopType": "onstreetBus"
-                },
-                {
-                    "id": "13230",
-                    "Extensions": {
-                        "LocationType": null,
-                        "PlatformCode": null,
-                        "ParentStation": null
-                    },
-                    "Name": "10th Ave & Ortega St",
-                    "Location": {
-                        "Longitude": "-122.466502",
-                        "Latitude": "37.752724"
-                    },
-                    "Url": "https://www.sfmta.com/13230",
+                    "Url": "https://www.sfmta.com/15551",
                     "StopType": "onstreetBus"
                 },
                 {

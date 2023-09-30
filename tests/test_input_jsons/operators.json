@@ -1,19 +1,5 @@
 [
     {
-        "Id": "CE",
-        "Name": "Altamont Corridor Express",
-        "ShortName": "ACE",
-        "SiriOperatorRef": "null",
-        "TimeZone": "America/Vancouver",
-        "DefaultLanguage": "en",
-        "ContactTelephoneNumber": "1-800-411-7245",
-        "WebSite": "http://www.acerail.com/",
-        "PrimaryMode": "rail",
-        "PrivateCode": "CE",
-        "Monitored": false,
-        "OtherModes": ""
-    },
-    {
         "Id": "CT",
         "Name": "Caltrain",
         "ShortName": "Caltrain",
@@ -40,5 +26,19 @@
         "PrivateCode": "SF",
         "Monitored": true,
         "OtherModes": "cableway,metro"
+    },
+    {
+        "Id": "CE",
+        "Name": "San Joaquin Regional Rail Commission",
+        "ShortName": "ACE",
+        "SiriOperatorRef": "null",
+        "TimeZone": "America/Vancouver",
+        "DefaultLanguage": "en",
+        "ContactTelephoneNumber": "1-800-411-7245",
+        "WebSite": "https://acerail.com/",
+        "PrimaryMode": "rail",
+        "PrivateCode": "CE",
+        "Monitored": false,
+        "OtherModes": ""
     }
 ]

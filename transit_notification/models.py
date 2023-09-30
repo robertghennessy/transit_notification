@@ -10,6 +10,8 @@ class Operators(db.Model):
     lines_updated = db.Column(db.DateTime)
     stops_updated = db.Column(db.DateTime)
     vehicle_monitoring_updated = db.Column(db.DateTime)
+    stop_monitoring_updated = db.Column(db.DateTime)
+
     lines = db.relationship('Lines', backref='operator', lazy=True)
     patterns = db.relationship('Patterns', backref='operator', lazy=True)
     stops = db.relationship('Stops', backref='operator', lazy=True)
