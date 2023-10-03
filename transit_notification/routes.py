@@ -7,12 +7,13 @@ import transit_notification.db_commands as tndc
 
 routes = Blueprint('routes', __name__)
 
-# units are hours
-OPERATORS_REFRESH_LIMIT = 24
-LINES_REFRESH_LIMIT = 24
-STOPS_REFRESH_LIMIT = 24
-PATTERN_REFRESH_LIMIT = 24
-VEHICLE_MONITORING_REFRESH_LIMIT = 24
+# units are minutes
+OPERATORS_REFRESH_LIMIT = 24*60
+LINES_REFRESH_LIMIT = 24*60
+STOPS_REFRESH_LIMIT = 24*60
+PATTERN_REFRESH_LIMIT = 24*60
+VEHICLE_MONITORING_REFRESH_LIMIT = 1
+STOP_MONITORING_REFRESH_LIMIT = 1
 
 
 @routes.route('/setup', methods=('GET', 'POST'))
@@ -61,15 +62,12 @@ def render_lines(operator_id):
         return operator_check
     current_time = dt.datetime.now(dt.timezone.utc)
     transit_api_key, siri_base_url = tndc.read_key_api_file()
-    if tndc.refresh_needed(db, operator_id, 'lines_updated', LINES_REFRESH_LIMIT):
+    if tndc.refresh_needed(db, operator_id, 'lines_updated', LINES_REFRESH_LIMIT, current_time):
         lines_dict = tndc.get_lines_dict(transit_api_key, siri_base_url, operator_id)
         tndc.save_lines(db, operator_id, lines_dict, current_time)
-    if tndc.refresh_needed(db, operator_id, 'stops_updated', STOPS_REFRESH_LIMIT):
+    if tndc.refresh_needed(db, operator_id, 'stops_updated', STOPS_REFRESH_LIMIT, current_time):
         stops_dict = tndc.get_stops_dict(transit_api_key, siri_base_url, operator_id)
         tndc.save_stops(db, operator_id, stops_dict, current_time)
-    if tndc.refresh_needed(db, operator_id, 'vehicle_monitoring_updated', VEHICLE_MONITORING_REFRESH_LIMIT):
-        vehicle_monitoring_dict = tndc.get_vehicle_monitoring_dict(transit_api_key, siri_base_url, operator_id)
-        tndc.save_vehicle_monitoring(db, operator_id, vehicle_monitoring_dict, current_time)
     return render_template('show_lines.html',
                            lines=Lines.query.filter(Lines.operator_id == operator_id).order_by(Lines.sort_index.asc()))
 
@@ -123,16 +121,21 @@ def render_eta(operator_id, stop_id):
         return stop_check
     current_time = dt.datetime.now(dt.timezone.utc)
     transit_api_key, siri_base_url = tndc.read_key_api_file()
-    if tndc.refresh_needed(db, operator_id, 'vehicle_monitoring_updated', VEHICLE_MONITORING_REFRESH_LIMIT):
+    """if tndc.refresh_needed(db, operator_id, 'vehicle_monitoring_updated', VEHICLE_MONITORING_REFRESH_LIMIT):
         vehicle_monitoring_dict = tndc.get_vehicle_monitoring_dict(transit_api_key, siri_base_url, operator_id)
         tndc.save_vehicle_monitoring(db, operator_id, vehicle_monitoring_dict, current_time)
-    upcoming_dict = tndc.sort_response_dict(tndc.upcoming_vehicles_vm(db, operator_id, stop_id, current_time))
-    print(tndc.upcoming_vehicles_vm(db, operator_id, stop_id, current_time))
+    """
+    if tndc.refresh_needed(db, operator_id, 'stop_monitoring_updated', STOP_MONITORING_REFRESH_LIMIT, current_time):
+        stop_monitoring_dict = tndc.get_stop_monitoring_dict(transit_api_key, siri_base_url, operator_id)
+        tndc.save_stop_monitoring(db, operator_id, stop_monitoring_dict, current_time)
+
+    upcoming_dict = tndc.sort_response_dict(tndc.upcoming_vehicles(db, operator_id, stop_id, current_time))
+    print(tndc.upcoming_vehicles(db, operator_id, stop_id, current_time))
     print(upcoming_dict)
     return render_template('show_etas.html', eta_dict=upcoming_dict)
 
 
-def check_valid_operator(operator_id):
+def check_valid_operator(operator_id: str):
     operator_val = db.session.query(Operators).first()
     if operator_val is None:
         error = 'Need to setup program before using. Please provide valid api address and api key.'

@@ -113,7 +113,7 @@ class Vehicles(db.Model):
     operator_id = db.Column(db.String(2), db.ForeignKey("operators.operator_id"), nullable=False, primary_key=True)
     line_id = db.Column(db.String(10), db.ForeignKey("lines.line_id"), nullable=False)
     vehicle_journey_ref = db.Column(db.String(100), nullable=False, primary_key=True)
-    dataframe_ref_utc = db.Column(db.Date, nullable=False, primary_key=True)
+    dataframe_ref_date = db.Column(db.Date, nullable=False, primary_key=True)
     vehicle_direction = db.Column(db.String(2), nullable=False)
     vehicle_longitude = db.Column(db.Float, nullable=False)
     vehicle_latitude = db.Column(db.Float, nullable=False)
@@ -125,7 +125,7 @@ class Vehicles(db.Model):
     def __init__(self,
                  operator_id,
                  vehicle_journey_ref,
-                 dataframe_ref_utc,
+                 dataframe_ref_date,
                  line_id,
                  vehicle_direction,
                  vehicle_longitude,
@@ -133,7 +133,7 @@ class Vehicles(db.Model):
                  vehicle_bearing):
         self.operator_id = operator_id
         self.vehicle_journey_ref = vehicle_journey_ref
-        self.dataframe_ref_utc = dataframe_ref_utc
+        self.dataframe_ref_date = dataframe_ref_date
         self.line_id = line_id
         self.vehicle_direction = vehicle_direction
         self.vehicle_longitude = vehicle_longitude
@@ -141,7 +141,7 @@ class Vehicles(db.Model):
         self.vehicle_bearing = vehicle_bearing
 
     def __repr__(self):
-        return f"Vehicle : {self.vehicle_journey_ref}, DateFrameRef: {self.dataframe_ref_utc}, Line: {self.line_id}, " \
+        return f"Vehicle : {self.vehicle_journey_ref}, DateFrameRef: {self.dataframe_ref_date}, Line: {self.line_id}, " \
                f"Direction: {self.vehicle_direction}, Longitude: {self.vehicle_longitude}, " \
                f"Latitude: {self.vehicle_latitude}"
 
@@ -153,19 +153,19 @@ class OnwardCalls(db.Model):
     operator_id = db.Column(db.String(2), db.ForeignKey("operators.operator_id"), nullable=False, primary_key=True)
     stop_id = db.Column(db.String(10), db.ForeignKey("stops.stop_id"), nullable=False, primary_key=True)
     vehicle_journey_ref = db.Column(db.String(100), nullable=False, primary_key=True)
-    dataframe_ref_utc = db.Column(db.Date, nullable=False, primary_key=True)
+    dataframe_ref_date = db.Column(db.Date, nullable=False, primary_key=True)
     vehicle_at_stop = db.Column(db.Boolean, default=False, nullable=False)
     aimed_arrival_time_utc = db.Column(db.DateTime)
     expected_arrival_time_utc = db.Column(db.DateTime)
     aimed_departure_time_utc = db.Column(db.DateTime)
     expected_departure_time_utc = db.Column(db.DateTime)
-    ForeignKeyConstraint([vehicle_journey_ref, dataframe_ref_utc],
-                         [Vehicles.vehicle_journey_ref, Vehicles.dataframe_ref_utc])
+    ForeignKeyConstraint([vehicle_journey_ref, dataframe_ref_date],
+                         [Vehicles.vehicle_journey_ref, Vehicles.dataframe_ref_date])
 
     def __init__(self,
                  operator_id,
                  vehicle_journey_ref,
-                 dataframe_ref_utc,
+                 dataframe_ref_date,
                  stop_id,
                  vehicle_at_stop,
                  aimed_arrival_time_utc,
@@ -174,7 +174,7 @@ class OnwardCalls(db.Model):
                  expected_departure_time_utc):
         self.operator_id = operator_id
         self.vehicle_journey_ref = vehicle_journey_ref
-        self.dataframe_ref_utc = dataframe_ref_utc
+        self.dataframe_ref_date = dataframe_ref_date
         self.stop_id = stop_id
         self.vehicle_at_stop = vehicle_at_stop
         self.aimed_arrival_time_utc = aimed_arrival_time_utc

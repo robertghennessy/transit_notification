@@ -1,5 +1,6 @@
 import datetime as dt
-from transit_notification.models import Operators, Vehicles, OnwardCalls, Lines, Stops, StopPatterns, Patterns, StopTimetable
+from transit_notification.models import (Operators, Vehicles, OnwardCalls, Lines, Stops, StopPatterns, Patterns,
+                                         StopTimetable)
 import transit_notification.db_commands
 
 
@@ -14,45 +15,44 @@ class TestComparisonJsons:
         vehicle_monitoring_updated=None
     )
 
-
     line_14 = Lines(line_id='14', operator_id='SF', line_name="MISSION", line_monitored=True, sort_index=0)
     line_49 = Lines(line_id='49', operator_id='SF', line_name="VAN NESS-MISSION", line_monitored=True, sort_index=1)
 
     stop_15551 = Stops(operator_id='SF', stop_id='15551', stop_latitude=37.765125, stop_longitude=-122.419668,
                        stop_name='Mission St & 16th St')
-    stop_15829 = Stops(operator_id='SF', stop_id='15553', stop_latitude=37.762635, stop_longitude=-122.419348,
+    stop_15553 = Stops(operator_id='SF', stop_id='15553', stop_latitude=37.762635, stop_longitude=-122.419348,
                        stop_name="Mission St & 18th St")
 
     vehicle_0 = Vehicles(
-        dataframe_ref_utc=dt.date(2023, 9, 26),
+        dataframe_ref_date=dt.date(2023, 9, 26),
         line_id='14',
         operator_id='SF',
         vehicle_direction='IB',
         vehicle_journey_ref='Schedule_0-Est_0',
-        vehicle_latitude=37.7149849,
-        vehicle_longitude=-122.442146,
+        vehicle_latitude=37.7155266,
+        vehicle_longitude=-122.441704,
         vehicle_bearing=30.0
     )
 
     vehicle_1 = Vehicles(
-        dataframe_ref_utc=dt.date(2023, 9, 26),
+        dataframe_ref_date=dt.date(2023, 9, 26),
         line_id='14',
         operator_id='SF',
         vehicle_direction='IB',
         vehicle_journey_ref='Schedule_10-Est_13',
-        vehicle_latitude=37.7149849,
-        vehicle_longitude=-122.442146,
+        vehicle_latitude=37.7155266,
+        vehicle_longitude=-122.441704,
         vehicle_bearing=30.0
     )
 
     vehicle_2 = Vehicles(
-        dataframe_ref_utc=dt.date(2023, 9, 26),
+        dataframe_ref_date=dt.date(2023, 9, 26),
         line_id='14',
         operator_id='SF',
         vehicle_direction='IB',
         vehicle_journey_ref='Schedule_20-Est_16',
-        vehicle_latitude=37.7149849,
-        vehicle_longitude=-122.442146,
+        vehicle_latitude=37.7155266,
+        vehicle_longitude=-122.441704,
         vehicle_bearing=30.0
     )
 
@@ -60,7 +60,7 @@ class TestComparisonJsons:
         OnwardCalls(
                 operator_id='SF',
                 vehicle_journey_ref='Schedule_0-Est_0',
-                dataframe_ref_utc=transit_notification.db_commands.parse_time_str('2023-09-26').date(),
+                dataframe_ref_date=transit_notification.db_commands.parse_time_str('2023-09-26').date(),
                 stop_id='15553',
                 vehicle_at_stop=True,
                 aimed_arrival_time_utc=transit_notification.db_commands.parse_time_str('2023-09-26T15:00:00Z'),
@@ -71,11 +71,11 @@ class TestComparisonJsons:
         OnwardCalls(
             operator_id='SF',
             vehicle_journey_ref='Schedule_0-Est_0',
-            dataframe_ref_utc=transit_notification.db_commands.parse_time_str('2023-09-26').date(),
+            dataframe_ref_date=transit_notification.db_commands.parse_time_str('2023-09-26').date(),
             stop_id='15551',
             vehicle_at_stop=False,
             aimed_arrival_time_utc=transit_notification.db_commands.parse_time_str("2023-09-26T15:01:28Z"),
-            expected_arrival_time_utc=transit_notification.db_commands.parse_time_str("2023-09-26T15:01:17Z"),
+            expected_arrival_time_utc=transit_notification.db_commands.parse_time_str("2023-09-26T15:01:41Z"),
             aimed_departure_time_utc=transit_notification.db_commands.parse_time_str("2023-09-26T15:01:28Z"),
             expected_departure_time_utc=transit_notification.db_commands.parse_time_str(None)
         )
@@ -109,6 +109,37 @@ class TestComparisonJsons:
     upcoming_vehicles = {
         "14": [transit_notification.db_commands.format_eta_time(dt.timedelta(minutes=0)),
                transit_notification.db_commands.format_eta_time(dt.timedelta(minutes=13)),
+               transit_notification.db_commands.format_eta_time(dt.timedelta(minutes=16)),
+               transit_notification.db_commands.format_eta_time(dt.timedelta(minutes=40))
+               ]
+    }
+
+    stop_monitoring_vehicle = Vehicles(
+        operator_id='SF',
+        vehicle_journey_ref='Schedule_0-Est_0',
+        dataframe_ref_date=dt.date(2023, 9, 26),
+        line_id='14',
+        vehicle_direction='IB',
+        vehicle_longitude=-122.41909,
+        vehicle_latitude=37.7592278,
+        vehicle_bearing=345.0
+    )
+
+    stop_monitoring_onward_call = OnwardCalls(
+        operator_id='SF',
+        vehicle_journey_ref='Schedule_0-Est_0',
+        dataframe_ref_date=transit_notification.db_commands.parse_time_str('2023-09-26').date(),
+        stop_id='15553',
+        vehicle_at_stop=True,
+        aimed_arrival_time_utc=transit_notification.db_commands.parse_time_str('2023-09-26T15:00:00Z'),
+        expected_arrival_time_utc=transit_notification.db_commands.parse_time_str('2023-09-26T15:00:00Z'),
+        aimed_departure_time_utc=transit_notification.db_commands.parse_time_str('2023-09-26T15:00:00Z'),
+        expected_departure_time_utc=transit_notification.db_commands.parse_time_str(None)
+    )
+
+    stop_monitoring_upcoming_vehicles = {
+        '14': [transit_notification.db_commands.format_eta_time(dt.timedelta(minutes=0))],
+        '49': [transit_notification.db_commands.format_eta_time(dt.timedelta(minutes=13)),
                transit_notification.db_commands.format_eta_time(dt.timedelta(minutes=16)),
                transit_notification.db_commands.format_eta_time(dt.timedelta(minutes=40))
                ]

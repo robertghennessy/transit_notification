@@ -31,12 +31,9 @@ vehicle_test_cases = [{'Name': 'Schedule_0-Est_0',
                        'ScheduledArrival': dt.timedelta(minutes=40),
                        'EstimatedArrival': dt.timedelta(minutes=40)}]
 
-stop_monitoring_test_cases = [{'Name': 'Schedule_0-Est_0_First_Stop',
+stop_monitoring_test_cases = [{'Name': 'Schedule_0-Est_0',
                                'ScheduledArrival': dt.timedelta(minutes=0),
                                'EstimatedArrival': dt.timedelta(minutes=0)},
-                              {'Name': 'Schedule_0-Est_0_Second_Stop',
-                               'ScheduledArrival': dt.timedelta(minutes=2),
-                               'EstimatedArrival': dt.timedelta(minutes=2)},
                               {'Name': 'Schedule_10-Est_13',
                                'ScheduledArrival': dt.timedelta(minutes=10),
                                'EstimatedArrival': dt.timedelta(minutes=13)},
@@ -45,7 +42,18 @@ stop_monitoring_test_cases = [{'Name': 'Schedule_0-Est_0_First_Stop',
                                'EstimatedArrival': dt.timedelta(minutes=16)},
                               {'Name': 'Schedule_40-Est_40',
                                'ScheduledArrival': dt.timedelta(minutes=40),
+                               'EstimatedArrival': dt.timedelta(minutes=40)},
+                              {'Name': 'Schedule_50-Est_50_no_location',
+                               'ScheduledArrival': dt.timedelta(minutes=40),
                                'EstimatedArrival': dt.timedelta(minutes=40)}]
+
+stop_monitoring_test_case_second_stop = {'Name': 'Schedule_0-Est_0',
+                                         'ScheduledArrival': dt.timedelta(minutes=2),
+                                         'EstimatedArrival': dt.timedelta(minutes=2)}
+stop_monitoring_test_case_no_optional = {'Name': 'Schedule_4-Est_4_no_optional',
+                                         'ScheduledArrival': dt.timedelta(minutes=4),
+                                         'EstimatedArrival': dt.timedelta(minutes=4)}
+
 
 
 def create_operator_json(siri_client: siri_transit_api_client.siri_client.SiriClient,
@@ -241,6 +249,8 @@ def modify_vehicle(vehicle_in: dict,
     df_onward_call, next_stop = modify_onward_calls(onward_call_df, new_time_dt, scheduled_arrival, estimated_arrival)
     vehicle_in['MonitoredVehicleJourney']['OnwardCalls']['OnwardCall'] = df_onward_call.to_dict('records')
     vehicle_in['MonitoredVehicleJourney']['MonitoredCall'] = next_stop.to_dict()
+    if scheduled_arrival == dt.timedelta(0):
+        vehicle_in['MonitoredVehicleJourney']['MonitoredCall']['VehicleAtStop'] = 'true'
     vehicle_in['RecordedAtTime'] = new_time_dt.strftime('%Y-%m-%dT%H:%M:%SZ')
     vehicle_in['MonitoredVehicleJourney']['FramedVehicleJourneyRef']['DataFrameRef'] = new_time_dt.strftime('%Y-%m-%d')
     return vehicle_in
@@ -350,6 +360,7 @@ def determine_length_of_onward_calls(vehicle_dict: dict, stopping_vehicles: dict
             vehicles.append(
                 {'DatedVehicleJourneyRef': vehicle_journey_ref,
                  'len_onward_calls': len_onward_calls,
+                 'line_ref': vehicle['MonitoredVehicleJourney']['LineRef'],
                  'vehicle_dict': vehicle}
             )
     return pd.DataFrame(vehicles)
@@ -359,6 +370,7 @@ def select_vehicle_example(df: pd.DataFrame) -> dict:
     """
     Select vehicle monitoring example
     """
+    df = df[df['line_ref'] == selected_line]
     selected_vehicle = df[df['len_onward_calls'] == df['len_onward_calls'].max()]
     return selected_vehicle['vehicle_dict'].values[0]
 
@@ -403,7 +415,6 @@ def create_modified_vehicles_timetable_json(siri_client: siri_transit_api_client
     """
     stop_timetable_dict = siri_client.stop_timetable(operator, stop_code)
     vehicle_monitoring_dict = siri_client.vehicle_monitoring(operator)
-    # current_time = dt.datetime.fromisoformat(stop_timetable_dict['Siri']['ServiceDelivery']['ResponseTimestamp'])
 
     vehicles_that_stop = determine_vehicles_that_stop(stop_timetable_dict)
     vehicle_df = determine_length_of_onward_calls(vehicle_monitoring_dict, vehicles_that_stop)
@@ -458,11 +469,16 @@ def select_example_monitored_stops(input_dict: dict) -> (dict, dict, dict):
             })
 
     stop_monitor_df = pd.DataFrame(flattened_stop_monitors)
-    vehicle_visit_two_stops = stop_monitor_df['vehicle_journey_ref'].value_counts().index[0]
+
+    stop_monitor_df = stop_monitor_df.assign(
+        number_of_stops=stop_monitor_df['vehicle_journey_ref'].map(stop_monitor_df['vehicle_journey_ref'].value_counts()))
     vehicle_visit_two_stops_stop_1 = stop_monitor_df[
-        (stop_monitor_df['vehicle_journey_ref'] == vehicle_visit_two_stops) &
-        (stop_monitor_df['stop_id'] == selected_stops[0])
+        (stop_monitor_df['number_of_stops'] > 1) &
+        (stop_monitor_df['stop_id'] == selected_stops[0]) &
+        (stop_monitor_df['line_id'] == selected_line)
          ].iloc[0]['monitored_stop_visit']
+    vehicle_visit_two_stops = vehicle_visit_two_stops_stop_1['MonitoredVehicleJourney'][
+        'FramedVehicleJourneyRef']['DatedVehicleJourneyRef']
     vehicle_visit_two_stops_stop_2 = stop_monitor_df[
         (stop_monitor_df['vehicle_journey_ref'] == vehicle_visit_two_stops) &
         (stop_monitor_df['stop_id'] == selected_stops[1])
@@ -498,7 +514,20 @@ def modify_monitored_stop(monitored_stop_dict: dict,
         'AimedDepartureTime'] = aimed_departure_time.strftime('%Y-%m-%dT%H:%M:%SZ')
     if vehicle_modification_dict['EstimatedArrival'] == dt.timedelta(0):
         monitored_stop_dict['MonitoredVehicleJourney']['MonitoredCall']['VehicleAtStop'] = True
+    else:
+        monitored_stop_dict['MonitoredVehicleJourney']['MonitoredCall']['VehicleAtStop'] = ''
     return monitored_stop_dict
+
+
+def remove_mointored_stop_optional_parameters(monitored_stop_dict: dict) -> dict:
+    """
+    Create a vehicle where the optional parameters are set to no value
+    """
+    monitored_stop_dict['MonitoredVehicleJourney']['VehicleLocation']['Longitude'] = ''
+    monitored_stop_dict['MonitoredVehicleJourney']['VehicleLocation']['Latitude'] = ''
+    monitored_stop_dict['MonitoredVehicleJourney']['Bearing'] = ''
+    return monitored_stop_dict
+
 
 
 def write_stop_monitoring_json(stop_monitoring_dict: dict,
@@ -525,10 +554,13 @@ def create_modified_stop_monitoring_json(siri_client: siri_transit_api_client.si
         modify_monitored_stop(copy.deepcopy(vehicle_visit_two_stops_stop_1), new_time_dt,
                               stop_monitoring_test_cases[0]),
         modify_monitored_stop(copy.deepcopy(vehicle_visit_two_stops_stop_2), new_time_dt,
-                              stop_monitoring_test_cases[1]),
+                              stop_monitoring_test_case_second_stop),
+        modify_monitored_stop(copy.deepcopy(vehicle_other_line), new_time_dt, stop_monitoring_test_cases[1]),
         modify_monitored_stop(copy.deepcopy(vehicle_other_line), new_time_dt, stop_monitoring_test_cases[2]),
         modify_monitored_stop(copy.deepcopy(vehicle_other_line), new_time_dt, stop_monitoring_test_cases[3]),
-        modify_monitored_stop(copy.deepcopy(vehicle_other_line), new_time_dt, stop_monitoring_test_cases[4])
+        remove_mointored_stop_optional_parameters(
+            modify_monitored_stop(copy.deepcopy(vehicle_other_line), new_time_dt,
+                                  stop_monitoring_test_case_no_optional))
     ]
     stop_monitoring_dict['ServiceDelivery']['StopMonitoringDelivery']['MonitoredStopVisit'] = modified_vehicle_list
     stop_monitoring_dict['ServiceDelivery']['ResponseTimestamp'] = new_time_dt.strftime('%Y-%m-%dT%H:%M:%SZ')

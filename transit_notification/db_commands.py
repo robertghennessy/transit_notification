@@ -271,7 +271,7 @@ def parse_vehicle_dict(operator_id: str, vehicle_dict: dict) -> (Vehicles, list[
         "DatedVehicleJourneyRef"]
     vehicle = Vehicles(operator_id=operator_id,
                        vehicle_journey_ref=vehicle_journey_ref,
-                       dataframe_ref_utc=parse_time_str(dataframe_ref).date(),
+                       dataframe_ref_date=parse_time_str(dataframe_ref).date(),
                        line_id=vehicle_dict["MonitoredVehicleJourney"]["LineRef"],
                        vehicle_direction=vehicle_dict["MonitoredVehicleJourney"]["DirectionRef"],
                        vehicle_longitude=float(vehicle_dict["MonitoredVehicleJourney"]["VehicleLocation"]["Longitude"]),
@@ -311,7 +311,7 @@ def parse_vehicle_calls(operator_id: str,
     if "OnwardCalls" in vehicle_dict:
         ret_list = [OnwardCalls(operator_id=operator_id,
                                 vehicle_journey_ref=vehicle_journey_ref,
-                                dataframe_ref_utc=parse_time_str(dataframe_ref).date(),
+                                dataframe_ref_date=parse_time_str(dataframe_ref).date(),
                                 stop_id=call_json["StopPointRef"],
                                 vehicle_at_stop=False,
                                 aimed_arrival_time_utc=parse_time_str(call_json["AimedArrivalTime"]),
@@ -323,9 +323,9 @@ def parse_vehicle_calls(operator_id: str,
     if "MonitoredCall" in vehicle_dict:
         monitored_call = OnwardCalls(operator_id=operator_id,
                                      vehicle_journey_ref=vehicle_journey_ref,
-                                     dataframe_ref_utc=parse_time_str(dataframe_ref).date(),
+                                     dataframe_ref_date=parse_time_str(dataframe_ref).date(),
                                      stop_id=vehicle_dict["MonitoredCall"]["StopPointRef"],
-                                     vehicle_at_stop=bool(vehicle_dict["MonitoredCall"]["VehicleAtStop"]),
+                                     vehicle_at_stop=parse_bools(vehicle_dict["MonitoredCall"]["VehicleAtStop"]),
                                      aimed_arrival_time_utc=parse_time_str(vehicle_dict["MonitoredCall"][
                                                                                "AimedArrivalTime"]),
                                      expected_arrival_time_utc=parse_time_str(vehicle_dict["MonitoredCall"][
@@ -480,7 +480,7 @@ def get_stop_monitoring_dict(transit_api_key, siri_base_url, operator_id):
     return siri_client.stop_monitoring(agency=operator_id)
 
 
-def parse_stop_monitoring_dict(operator_id: str, stop_monitoring_dict: dict) -> dict:
+def parse_stop_monitoring_dict(operator_id: str, stop_monitoring_dict: dict) -> (Vehicles, OnwardCalls):
     """
     Parses the stop monitoring dictionary and returns a dictionary of selected items
 
@@ -490,39 +490,46 @@ def parse_stop_monitoring_dict(operator_id: str, stop_monitoring_dict: dict) -> 
     :param stop_monitoring_dict: dictionary for a vehicle to be parsed
     :type stop_monitoring_dict: dict
 
-    :return: returns Vehicles object and a list of onward calls
-    :rtype: (Vehicles, list[OnwardCalls])
-
+    :return: Vehicle object and onward call object
+    :rtype: Vehicles, OnwardCalls
     """
 
     dataframe_ref = stop_monitoring_dict["MonitoredVehicleJourney"]["FramedVehicleJourneyRef"]["DataFrameRef"]
-    stop_monitoring_dict = {
-        "dataframe_ref": dataframe_ref,
-        "vehicle_journey_ref": stop_monitoring_dict["MonitoredVehicleJourney"]["FramedVehicleJourneyRef"][
+    vehicle = Vehicles(
+        operator_id=operator_id,
+        vehicle_journey_ref=stop_monitoring_dict["MonitoredVehicleJourney"]["FramedVehicleJourneyRef"][
             "DatedVehicleJourneyRef"],
-        "operator_id": operator_id,
-        "dataframe_ref_utc": parse_time_str(dataframe_ref).date(),
-        "line_id": stop_monitoring_dict["MonitoredVehicleJourney"]["LineRef"],
-        "vehicle_direction": stop_monitoring_dict["MonitoredVehicleJourney"]["DirectionRef"],
-        "vehicle_longitude": float(stop_monitoring_dict["MonitoredVehicleJourney"]["VehicleLocation"]["Longitude"]),
-        "vehicle_latitude": float(stop_monitoring_dict["MonitoredVehicleJourney"]["VehicleLocation"]["Latitude"]),
-        "vehicle_bearing": float(stop_monitoring_dict["MonitoredVehicleJourney"]["Bearing"]),
+        dataframe_ref_date=parse_time_str(dataframe_ref).date(),
+        line_id=stop_monitoring_dict["MonitoredVehicleJourney"]["LineRef"],
+        vehicle_direction=stop_monitoring_dict["MonitoredVehicleJourney"]["DirectionRef"],
+        vehicle_longitude=parse_optional_floats(stop_monitoring_dict["MonitoredVehicleJourney"]["VehicleLocation"][
+                                                    "Longitude"]),
+        vehicle_latitude=parse_optional_floats(stop_monitoring_dict["MonitoredVehicleJourney"]["VehicleLocation"][
+                                                   "Latitude"]),
+        vehicle_bearing=parse_optional_floats(stop_monitoring_dict["MonitoredVehicleJourney"]["Bearing"])
+    )
+    onward_call = OnwardCalls(
+        operator_id=operator_id,
+        vehicle_journey_ref=stop_monitoring_dict["MonitoredVehicleJourney"]["FramedVehicleJourneyRef"][
+            "DatedVehicleJourneyRef"],
+        dataframe_ref_date=parse_time_str(dataframe_ref).date(),
+        stop_id=stop_monitoring_dict["MonitoredVehicleJourney"]["MonitoredCall"]["StopPointRef"],
+        vehicle_at_stop=parse_bools(stop_monitoring_dict["MonitoredVehicleJourney"]["MonitoredCall"]["VehicleAtStop"]),
+        aimed_arrival_time_utc=parse_time_str(stop_monitoring_dict["MonitoredVehicleJourney"]["MonitoredCall"][
+                                                      "AimedArrivalTime"]),
+        expected_arrival_time_utc=parse_time_str(stop_monitoring_dict["MonitoredVehicleJourney"]["MonitoredCall"][
+                                                    "ExpectedArrivalTime"]),
+        aimed_departure_time_utc=parse_time_str(stop_monitoring_dict["MonitoredVehicleJourney"]["MonitoredCall"][
+                                                   "AimedDepartureTime"]),
+        expected_departure_time_utc=parse_time_str(stop_monitoring_dict["MonitoredVehicleJourney"]["MonitoredCall"][
+                                                      "ExpectedDepartureTime"])
+    )
 
-        "stop_id":  stop_monitoring_dict["MonitoredCall"]["StopPointRef"],
-        "vehicle_at_stop": bool(stop_monitoring_dict["MonitoredCall"]["VehicleAtStop"]),
-        "aimed_arrival_time_utc":  parse_time_str(stop_monitoring_dict["MonitoredCall"][
-                                                "AimedArrivalTime"]),
-        "expected_arrival_time_utc": parse_time_str(stop_monitoring_dict["MonitoredCall"][
-                                                   "ExpectedArrivalTime"]),
-        "aimed_departure_time_utc": parse_time_str(stop_monitoring_dict["MonitoredCall"][
-                                                  "AimedDepartureTime"]),
-        "expected_departure_time_utc": parse_time_str(stop_monitoring_dict["MonitoredCall"][
-                                                     "ExpectedDepartureTime"])
-    }
-    return stop_monitoring_dict
+    return vehicle, onward_call
 
 
-def save_stop_monitoring(siri_db, operator_id: str,
+def save_stop_monitoring(siri_db,
+                         operator_id: str,
                          stop_monitoring: dict,
                          current_time: dt.datetime) -> None:
     """
@@ -543,11 +550,44 @@ def save_stop_monitoring(siri_db, operator_id: str,
     :return: None
     :rtype: None
     """
-    pass
+
+    monitored_stop_visits = stop_monitoring["ServiceDelivery"]["StopMonitoringDelivery"]["MonitoredStopVisit"]
+    vehicles_to_add = []
+    vehicle_tracker = set()
+    onward_calls_to_add = []
+    for monitored_stop_visit in monitored_stop_visits:
+        vehicle, onward_call = parse_stop_monitoring_dict(operator_id,  monitored_stop_visit)
+        vehicle_tuple = (vehicle.vehicle_journey_ref, vehicle.dataframe_ref_date)
+        if not vehicle.contains_none() and vehicle_tuple not in vehicle_tracker:
+            vehicles_to_add.append(vehicle)
+            vehicle_tracker.add(vehicle_tuple)
+        if onward_call:
+            onward_calls_to_add.append(onward_call)
+
+    vehicles_to_delete = sqlalchemy.delete(Vehicles).where(Vehicles.operator_id == operator_id)
+    siri_db.session.execute(vehicles_to_delete)
+    siri_db.session.commit()
+    siri_db.session.add_all(list(vehicles_to_add))
+    siri_db.session.commit()
+
+    onward_calls_to_delete = sqlalchemy.delete(OnwardCalls).where(OnwardCalls.operator_id == operator_id)
+    siri_db.session.execute(onward_calls_to_delete)
+    siri_db.session.commit()
+    siri_db.session.add_all(onward_calls_to_add)
+    siri_db.session.commit()
+
+    stmt = sqlalchemy.update(Operators).where(Operators.operator_id == operator_id).values(
+        stop_monitoring_updated=current_time)
+    siri_db.session.execute(stmt)
+    siri_db.session.commit()
+
+    return None
 
 
-def upcoming_vehicles_vm(siri_db: flask_sqlalchemy.SQLAlchemy, operator_id: str, stop_id: str,
-                         current_time: dt.datetime) -> dict:
+def upcoming_vehicles(siri_db: flask_sqlalchemy.SQLAlchemy,
+                      operator_id: str,
+                      stop_id: str,
+                      current_time: dt.datetime) -> dict:
     """
     Creates a list containing information for upcoming vehicles to a stop.
 
@@ -584,7 +624,10 @@ def upcoming_vehicles_vm(siri_db: flask_sqlalchemy.SQLAlchemy, operator_id: str,
     return response_dict
 
 
-def stop_timetable(siri_db: flask_sqlalchemy.SQLAlchemy, operator_id: str, stop_id: str, timetable_dict: dict) -> None:
+def stop_timetable(siri_db: flask_sqlalchemy.SQLAlchemy,
+                   operator_id: str,
+                   stop_id: str,
+                   timetable_dict: dict) -> None:
     """
    Store timetable for a given stop in the database.
 
@@ -610,8 +653,8 @@ def stop_timetable(siri_db: flask_sqlalchemy.SQLAlchemy, operator_id: str, stop_
                                          stop_id=timetable["MonitoringRef"],
                                          aimed_arrival_time_utc=parse_time_str(timetable["TargetedVehicleJourney"][
                                                                                    "TargetedCall"]["AimedArrivalTime"]),
-                                         aimed_departure_time_utc=parse_time_str(timetable["TargetedVehicleJourney"][
-                                                                                     "TargetedCall"]["AimedDepartureTime"])
+                                         aimed_departure_time_utc=parse_time_str(
+                                             timetable["TargetedVehicleJourney"]["TargetedCall"]["AimedDepartureTime"])
                                          )
                            for timetable in timetable_list]
 
@@ -658,6 +701,9 @@ def read_key_api_file() -> (str, str):
 def key_api_filename() -> str:
     """
     Returns the key api filename from the environmental variables
+
+    :return: filename that contains the api key
+    :rtype: str
     """
     return os.environ.get("KEY_API_FILE", "dev")
 
@@ -665,9 +711,13 @@ def key_api_filename() -> str:
 def refresh_needed(siri_db: flask_sqlalchemy.SQLAlchemy,
                    operator_id: str,
                    table_name: str,
-                   refresh_limit: float) -> bool:
+                   refresh_limit: float,
+                   current_time: dt.datetime) -> bool:
     """
     Determines if refresh of a given table is needed.
+
+    :param siri_db: database
+   :type siri_db: flask_sqlalchemy.SQLAlchemy
 
     :param operator_id: ID for the operator
     :type operator_id: str
@@ -678,22 +728,29 @@ def refresh_needed(siri_db: flask_sqlalchemy.SQLAlchemy,
     :param refresh_limit: minimum time to elapse before refreshing table
     :type refresh_limit: float
 
+    :param current_time: current time in utc
+    :type refresh_limit: dt.datetime
+
     :return: boolean for if the table should be refreshed
     :rtype: bool
     """
     operator = siri_db.session.execute(siri_db.select(Operators).filter_by(operator_id=operator_id)).scalar_one()
-    current_time = dt.datetime.utcnow()
     last_update_time = operator.__dict__[table_name]
     if last_update_time is None:
         return True
-    delta_time = current_time - last_update_time
-    return delta_time >= dt.timedelta(hours=refresh_limit)
+    delta_time = current_time.replace(tzinfo=None) - last_update_time
+    return delta_time >= dt.timedelta(minutes=refresh_limit)
 
 
-def parse_time_str(time_str: typing.Optional[str] = None):
+def parse_time_str(time_str: typing.Optional[str] = None) -> typing.Union[dt.datetime, None]:
     """
     Parses the time string and returns datetime object if time string is not none. If none, returns none.
 
+    :param time_str: string that would be converted to datetime object
+    :type time_str: str
+
+    :return: datetime object
+    :rtype: dt.datetime
     """
     if time_str is None:
         return None
@@ -705,9 +762,16 @@ def parse_time_str(time_str: typing.Optional[str] = None):
             return dt_obj
 
 
-def dt_is_timezone_aware(dt_obj):
-    # Checks if a given datetime object is timezone aware.
-    # Returns True if the datetime object is timezone aware, False otherwise.
+def dt_is_timezone_aware(dt_obj: dt.datetime) -> bool:
+    """
+    Checks if a given datetime object is timezone aware.
+
+    :param dt_obj: minimum time to elapse before refreshing table
+    :type dt_obj: dt.datetime
+
+    :return: Returns True if the datetime object is timezone aware, False otherwise.
+    :rtype: bool
+    """
     return dt_obj.tzinfo is not None and dt_obj.tzinfo.utcoffset(dt_obj) is not None
 
 
@@ -720,7 +784,6 @@ def format_eta_time(time_delta: dt.timedelta) -> str:
 
     :return: str to represent eta
     :rtype: str
-
     """
     minutes = (time_delta.total_seconds()) // 60
     if minutes == 0:
@@ -731,7 +794,52 @@ def format_eta_time(time_delta: dt.timedelta) -> str:
         return "{:.0f} mins".format(minutes)
 
 
-def sort_response_dict(input_dict):
+def parse_optional_floats(value: str) -> typing.Union[float, None]:
+    """
+    Parses the optional number string.
+
+    :param value: string that contains a number or is empty
+    :type value: str
+
+    :return: float if string contains a number or None if string is empty
+    :rtype: float or None
+    """
+    if value:
+        return float(value)
+    else:
+        return None
+
+
+def parse_bools(value: str) -> bool:
+    """
+    Convert a string that has a bool value to boolean.
+
+    :param value: string that contains a boolean or is empty
+    :type value: str
+
+    :return: boolean value
+    :rtype: bool
+    """
+    if value is True or value == 'true':
+        return True
+    elif value is False or value == 'false':
+        return False
+    elif value == '':
+        return False
+    else:
+        raise ValueError(f"parse_bools expected true or false, got {value}")
+
+
+def sort_response_dict(input_dict) -> OrderedDict:
+    """
+    Returns an ordered dict for the arrival times.
+
+    :param input_dict: dictionary that contains expected arrival times
+    :type input_dict: dict
+
+    :return: sorted dictionary of the arrival times
+    :rtype: bool
+    """
     sorted_dict = OrderedDict(sorted(input_dict.items()))
     for key in sorted_dict:
         eta_list = sorted_dict[key]
