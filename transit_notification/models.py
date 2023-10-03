@@ -9,6 +9,7 @@ class Operators(db.Model):
     operator_monitored = db.Column(db.Boolean, default=False, nullable=False)
     lines_updated = db.Column(db.DateTime)
     stops_updated = db.Column(db.DateTime)
+    patterns_updated = db.Column(db.DateTime)
     vehicle_monitoring_updated = db.Column(db.DateTime)
     stop_monitoring_updated = db.Column(db.DateTime)
 

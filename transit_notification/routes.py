@@ -65,9 +65,6 @@ def render_lines(operator_id):
     if tndc.refresh_needed(db, operator_id, 'lines_updated', LINES_REFRESH_LIMIT, current_time):
         lines_dict = tndc.get_lines_dict(transit_api_key, siri_base_url, operator_id)
         tndc.save_lines(db, operator_id, lines_dict, current_time)
-    if tndc.refresh_needed(db, operator_id, 'stops_updated', STOPS_REFRESH_LIMIT, current_time):
-        stops_dict = tndc.get_stops_dict(transit_api_key, siri_base_url, operator_id)
-        tndc.save_stops(db, operator_id, stops_dict, current_time)
     return render_template('show_lines.html',
                            lines=Lines.query.filter(Lines.operator_id == operator_id).order_by(Lines.sort_index.asc()))
 
@@ -80,9 +77,15 @@ def render_stops(operator_id, line_id):
     line_check = check_valid_line(operator_id, line_id)
     if line_check is not None:
         return line_check
+    current_time = dt.datetime.now(dt.timezone.utc)
     transit_api_key, siri_base_url = tndc.read_key_api_file()
-    pattern_dict = tndc.get_pattern_dict(transit_api_key, siri_base_url, operator_id, line_id)
-    tndc.save_patterns(db, operator_id, line_id, pattern_dict)
+    if tndc.refresh_needed(db, operator_id, 'stops_updated', STOPS_REFRESH_LIMIT, current_time):
+        stops_dict = tndc.get_stops_dict(transit_api_key, siri_base_url, operator_id)
+        tndc.save_stops(db, operator_id, stops_dict, current_time)
+    if tndc.refresh_needed(db, operator_id, 'patterns_updated', PATTERN_REFRESH_LIMIT, current_time):
+        pattern_dict = tndc.get_pattern_dict(transit_api_key, siri_base_url, operator_id, line_id)
+        tndc.save_patterns(db, operator_id, line_id, pattern_dict)
+
     operator_val = Operators.query.filter(Operators.operator_id == operator_id).first()
     line_val = Lines.query.filter(db.and_(Lines.operator_id == operator_id, Lines.line_id == line_id)).first()
 
@@ -121,17 +124,11 @@ def render_eta(operator_id, stop_id):
         return stop_check
     current_time = dt.datetime.now(dt.timezone.utc)
     transit_api_key, siri_base_url = tndc.read_key_api_file()
-    """if tndc.refresh_needed(db, operator_id, 'vehicle_monitoring_updated', VEHICLE_MONITORING_REFRESH_LIMIT):
-        vehicle_monitoring_dict = tndc.get_vehicle_monitoring_dict(transit_api_key, siri_base_url, operator_id)
-        tndc.save_vehicle_monitoring(db, operator_id, vehicle_monitoring_dict, current_time)
-    """
     if tndc.refresh_needed(db, operator_id, 'stop_monitoring_updated', STOP_MONITORING_REFRESH_LIMIT, current_time):
         stop_monitoring_dict = tndc.get_stop_monitoring_dict(transit_api_key, siri_base_url, operator_id)
         tndc.save_stop_monitoring(db, operator_id, stop_monitoring_dict, current_time)
 
     upcoming_dict = tndc.sort_response_dict(tndc.upcoming_vehicles(db, operator_id, stop_id, current_time))
-    print(tndc.upcoming_vehicles(db, operator_id, stop_id, current_time))
-    print(upcoming_dict)
     return render_template('show_etas.html', eta_dict=upcoming_dict)
 
 

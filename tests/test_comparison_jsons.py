@@ -11,6 +11,7 @@ class TestComparisonJsons:
         operator_monitored=True,
         lines_updated=None,
         stops_updated=None,
+        patterns_updated=None,
         stop_monitoring_updated=None,
         vehicle_monitoring_updated=None
     )
