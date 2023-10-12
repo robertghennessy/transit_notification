@@ -12,7 +12,7 @@ import flask_sqlalchemy
 import typing
 from collections import defaultdict, OrderedDict
 
-from transit_notification.models import (Operators, Lines, Stops, Vehicles, Patterns, StopPatterns, OnwardCalls,
+from transit_notification.models import (Operator, Line, Stop, Vehicle, Pattern, StopPattern, OnwardCall,
                                          StopTimetable)
 import siri_transit_api_client
 
@@ -49,7 +49,7 @@ def save_operators(siri_db: flask_sqlalchemy.SQLAlchemy, operators_dict: dict) -
     :rtype: None
     """
     operators_df = pd.DataFrame(operators_dict)
-    operators = [Operators(operator_id=row['Id'], operator_name=row['Name'], operator_monitored=row['Monitored'])
+    operators = [Operator(operator_id=row['Id'], operator_name=row['Name'], operator_monitored=row['Monitored'])
                  for _, row in operators_df.iterrows()]
     siri_db.session.add_all(operators)
     siri_db.session.commit()
@@ -102,19 +102,19 @@ def save_lines(siri_db: flask_sqlalchemy.SQLAlchemy, operator_id: str, lines_dic
                          inplace=True,
                          ignore_index=True
                          )
-    lines_to_add = [Lines(line_id=row['Id'],
-                          operator_id=row['OperatorRef'],
-                          line_name=row['Name'],
-                          line_monitored=row['Monitored'],
-                          sort_index=int(ind))
+    lines_to_add = [Line(line_id=row['Id'],
+                         operator_id=row['OperatorRef'],
+                         line_name=row['Name'],
+                         line_monitored=row['Monitored'],
+                         sort_index=int(ind))
                     for ind, row in lines_df.iterrows()]
 
-    lines_to_delete = sqlalchemy.delete(Lines).where(Lines.operator_id == operator_id)
+    lines_to_delete = sqlalchemy.delete(Line).where(Line.operator_id == operator_id)
     siri_db.session.execute(lines_to_delete)
     siri_db.session.commit()
     siri_db.session.add_all(lines_to_add)
     siri_db.session.commit()
-    stmt = sqlalchemy.update(Operators).where(Operators.operator_id == operator_id).values(lines_updated=current_time)
+    stmt = sqlalchemy.update(Operator).where(Operator.operator_id == operator_id).values(lines_updated=current_time)
     siri_db.session.execute(stmt)
     siri_db.session.commit()
 
@@ -162,19 +162,19 @@ def save_stops(siri_db: flask_sqlalchemy.SQLAlchemy, operator_id: str, stops_dic
     """
 
     stop_list = stops_dict['Contents']['dataObjects']['ScheduledStopPoint']
-    stops_to_add = [Stops(operator_id=operator_id,
-                          stop_id=stop["id"],
-                          stop_name=stop['Name'],
-                          stop_longitude=float(stop["Location"]["Longitude"]),
-                          stop_latitude=float(stop["Location"]["Latitude"]))
+    stops_to_add = [Stop(operator_id=operator_id,
+                         stop_id=stop["id"],
+                         stop_name=stop['Name'],
+                         stop_longitude=float(stop["Location"]["Longitude"]),
+                         stop_latitude=float(stop["Location"]["Latitude"]))
                     for stop in stop_list]
 
-    stops_to_delete = sqlalchemy.delete(Stops).where(Stops.operator_id == operator_id)
+    stops_to_delete = sqlalchemy.delete(Stop).where(Stop.operator_id == operator_id)
     siri_db.session.execute(stops_to_delete)
     siri_db.session.commit()
     siri_db.session.add_all(stops_to_add)
     siri_db.session.commit()
-    stmt = sqlalchemy.update(Operators).where(Operators.operator_id == operator_id).values(stops_updated=current_time)
+    stmt = sqlalchemy.update(Operator).where(Operator.operator_id == operator_id).values(stops_updated=current_time)
     siri_db.session.execute(stmt)
     siri_db.session.commit()
 
@@ -231,19 +231,19 @@ def save_vehicle_monitoring(siri_db, operator_id: str, vehicle_monitoring: dict,
 
     onward_calls_to_add = list(chain.from_iterable(onward_calls_to_add))
 
-    vehicles_to_delete = sqlalchemy.delete(Vehicles).where(Vehicles.operator_id == operator_id)
+    vehicles_to_delete = sqlalchemy.delete(Vehicle).where(Vehicle.operator_id == operator_id)
     siri_db.session.execute(vehicles_to_delete)
     siri_db.session.commit()
     siri_db.session.add_all(vehicles_to_add)
     siri_db.session.commit()
 
-    onward_calls_to_delete = sqlalchemy.delete(OnwardCalls).where(OnwardCalls.operator_id == operator_id)
+    onward_calls_to_delete = sqlalchemy.delete(OnwardCall).where(OnwardCall.operator_id == operator_id)
     siri_db.session.execute(onward_calls_to_delete)
     siri_db.session.commit()
     siri_db.session.add_all(onward_calls_to_add)
     siri_db.session.commit()
 
-    stmt = sqlalchemy.update(Operators).where(Operators.operator_id == operator_id).values(
+    stmt = sqlalchemy.update(Operator).where(Operator.operator_id == operator_id).values(
         vehicle_monitoring_updated=current_time)
     siri_db.session.execute(stmt)
     siri_db.session.commit()
@@ -251,9 +251,9 @@ def save_vehicle_monitoring(siri_db, operator_id: str, vehicle_monitoring: dict,
     return None
 
 
-def parse_vehicle_dict(operator_id: str, vehicle_dict: dict) -> (Vehicles, list[OnwardCalls]):
+def parse_vehicle_dict(operator_id: str, vehicle_dict: dict) -> (Vehicle, list[OnwardCall]):
     """
-    Parses the vehicle dictionary and returns Vehicles object and a list of onward calls
+    Parses the vehicle dictionary and returns Vehicle object and a list of onward calls
 
     :param operator_id: operator id
     :type operator_id: str
@@ -261,22 +261,22 @@ def parse_vehicle_dict(operator_id: str, vehicle_dict: dict) -> (Vehicles, list[
     :param vehicle_dict: dictionary for a vehicle to be parsed
     :type vehicle_dict: dict
 
-    :return: returns Vehicles object and a list of onward calls
-    :rtype: (Vehicles, list[OnwardCalls])
+    :return: returns Vehicle object and a list of onward calls
+    :rtype: (Vehicle, list[OnwardCall])
 
     """
 
     dataframe_ref = vehicle_dict["MonitoredVehicleJourney"]["FramedVehicleJourneyRef"]["DataFrameRef"]
     vehicle_journey_ref = vehicle_dict["MonitoredVehicleJourney"]["FramedVehicleJourneyRef"][
         "DatedVehicleJourneyRef"]
-    vehicle = Vehicles(operator_id=operator_id,
-                       vehicle_journey_ref=vehicle_journey_ref,
-                       dataframe_ref_date=parse_time_str(dataframe_ref).date(),
-                       line_id=vehicle_dict["MonitoredVehicleJourney"]["LineRef"],
-                       vehicle_direction=vehicle_dict["MonitoredVehicleJourney"]["DirectionRef"],
-                       vehicle_longitude=float(vehicle_dict["MonitoredVehicleJourney"]["VehicleLocation"]["Longitude"]),
-                       vehicle_latitude=float(vehicle_dict["MonitoredVehicleJourney"]["VehicleLocation"]["Latitude"]),
-                       vehicle_bearing=float(vehicle_dict["MonitoredVehicleJourney"]["Bearing"]))
+    vehicle = Vehicle(operator_id=operator_id,
+                      vehicle_journey_ref=vehicle_journey_ref,
+                      dataframe_ref_date=parse_time_str(dataframe_ref).date(),
+                      line_id=vehicle_dict["MonitoredVehicleJourney"]["LineRef"],
+                      vehicle_direction=vehicle_dict["MonitoredVehicleJourney"]["DirectionRef"],
+                      vehicle_longitude=float(vehicle_dict["MonitoredVehicleJourney"]["VehicleLocation"]["Longitude"]),
+                      vehicle_latitude=float(vehicle_dict["MonitoredVehicleJourney"]["VehicleLocation"]["Latitude"]),
+                      vehicle_bearing=float(vehicle_dict["MonitoredVehicleJourney"]["Bearing"]))
 
     onward_calls = parse_vehicle_calls(operator_id, vehicle_journey_ref, dataframe_ref,
                                        vehicle_dict["MonitoredVehicleJourney"])
@@ -287,9 +287,9 @@ def parse_vehicle_dict(operator_id: str, vehicle_dict: dict) -> (Vehicles, list[
 def parse_vehicle_calls(operator_id: str,
                         vehicle_journey_ref: str,
                         dataframe_ref: str,
-                        vehicle_dict: dict) -> list[OnwardCalls]:
+                        vehicle_dict: dict) -> list[OnwardCall]:
     """
-    Parses the monitored and onward calls for a vehicle. Returns a list of OnwardCalls Objects.
+    Parses the monitored and onward calls for a vehicle. Returns a list of OnwardCall Objects.
 
     :param operator_id: operator id
     :type operator_id: str
@@ -305,34 +305,34 @@ def parse_vehicle_calls(operator_id: str,
     :type vehicle_dict: dict
 
     :return: list containing parsed monitored and onward calls
-    :rtype: list[OnwardCalls]
+    :rtype: list[OnwardCall]
     """
     ret_list = []
     if "OnwardCalls" in vehicle_dict:
-        ret_list = [OnwardCalls(operator_id=operator_id,
-                                vehicle_journey_ref=vehicle_journey_ref,
-                                dataframe_ref_date=parse_time_str(dataframe_ref).date(),
-                                stop_id=call_json["StopPointRef"],
-                                vehicle_at_stop=False,
-                                aimed_arrival_time_utc=parse_time_str(call_json["AimedArrivalTime"]),
-                                expected_arrival_time_utc=parse_time_str(call_json["ExpectedArrivalTime"]),
-                                aimed_departure_time_utc=parse_time_str(call_json["AimedDepartureTime"]),
-                                expected_departure_time_utc=parse_time_str(call_json["ExpectedDepartureTime"]))
+        ret_list = [OnwardCall(operator_id=operator_id,
+                               vehicle_journey_ref=vehicle_journey_ref,
+                               dataframe_ref_date=parse_time_str(dataframe_ref).date(),
+                               stop_id=call_json["StopPointRef"],
+                               vehicle_at_stop=False,
+                               aimed_arrival_time_utc=parse_time_str(call_json["AimedArrivalTime"]),
+                               expected_arrival_time_utc=parse_time_str(call_json["ExpectedArrivalTime"]),
+                               aimed_departure_time_utc=parse_time_str(call_json["AimedDepartureTime"]),
+                               expected_departure_time_utc=parse_time_str(call_json["ExpectedDepartureTime"]))
                     for call_json in vehicle_dict["OnwardCalls"]["OnwardCall"]]
 
     if "MonitoredCall" in vehicle_dict:
-        monitored_call = OnwardCalls(operator_id=operator_id,
-                                     vehicle_journey_ref=vehicle_journey_ref,
-                                     dataframe_ref_date=parse_time_str(dataframe_ref).date(),
-                                     stop_id=vehicle_dict["MonitoredCall"]["StopPointRef"],
-                                     vehicle_at_stop=parse_bools(vehicle_dict["MonitoredCall"]["VehicleAtStop"]),
-                                     aimed_arrival_time_utc=parse_time_str(vehicle_dict["MonitoredCall"][
+        monitored_call = OnwardCall(operator_id=operator_id,
+                                    vehicle_journey_ref=vehicle_journey_ref,
+                                    dataframe_ref_date=parse_time_str(dataframe_ref).date(),
+                                    stop_id=vehicle_dict["MonitoredCall"]["StopPointRef"],
+                                    vehicle_at_stop=parse_bools(vehicle_dict["MonitoredCall"]["VehicleAtStop"]),
+                                    aimed_arrival_time_utc=parse_time_str(vehicle_dict["MonitoredCall"][
                                                                                "AimedArrivalTime"]),
-                                     expected_arrival_time_utc=parse_time_str(vehicle_dict["MonitoredCall"][
+                                    expected_arrival_time_utc=parse_time_str(vehicle_dict["MonitoredCall"][
                                                                                   "ExpectedArrivalTime"]),
-                                     aimed_departure_time_utc=parse_time_str(vehicle_dict["MonitoredCall"][
+                                    aimed_departure_time_utc=parse_time_str(vehicle_dict["MonitoredCall"][
                                                                                  "AimedDepartureTime"]),
-                                     expected_departure_time_utc=parse_time_str(vehicle_dict["MonitoredCall"][
+                                    expected_departure_time_utc=parse_time_str(vehicle_dict["MonitoredCall"][
                                                                                     "ExpectedDepartureTime"]))
         ret_list.append(monitored_call)
 
@@ -383,8 +383,8 @@ def save_patterns(siri_db: flask_sqlalchemy.SQLAlchemy, operator_id: str, line_i
 
     """
     directions = pattern_dict["directions"]
-    stmt = sqlalchemy.update(Lines).where(Lines.operator_id == operator_id,
-                                          Lines.line_id == line_id).values(
+    stmt = sqlalchemy.update(Line).where(Line.operator_id == operator_id,
+                                         Line.line_id == line_id).values(
         {
             "direction_0_id": directions[0]["DirectionId"],
             "direction_0_name": directions[0]["Name"],
@@ -396,16 +396,16 @@ def save_patterns(siri_db: flask_sqlalchemy.SQLAlchemy, operator_id: str, line_i
 
     patterns_to_add = []
     for pattern in pattern_dict['journeyPatterns']:
-        patterns_to_add.append(Patterns(operator_id=operator_id,
-                                        line_id=pattern['LineRef'],
-                                        pattern_id=pattern['serviceJourneyPatternRef'],
-                                        pattern_name=pattern['Name'],
-                                        pattern_direction=pattern['DirectionRef'],
-                                        pattern_trip_count=pattern['TripCount']))
+        patterns_to_add.append(Pattern(operator_id=operator_id,
+                                       line_id=pattern['LineRef'],
+                                       pattern_id=pattern['serviceJourneyPatternRef'],
+                                       pattern_name=pattern['Name'],
+                                       pattern_direction=pattern['DirectionRef'],
+                                       pattern_trip_count=pattern['TripCount']))
         save_stop_pattern(siri_db, operator_id, pattern['serviceJourneyPatternRef'], pattern['PointsInSequence'])
 
-    patterns_to_delete = sqlalchemy.delete(Patterns).where(Patterns.operator_id == operator_id,
-                                                           Patterns.line_id == line_id)
+    patterns_to_delete = sqlalchemy.delete(Pattern).where(Pattern.operator_id == operator_id,
+                                                          Pattern.line_id == line_id)
     siri_db.session.execute(patterns_to_delete)
     siri_db.session.commit()
 
@@ -437,21 +437,21 @@ def save_stop_pattern(siri_db: flask_sqlalchemy.SQLAlchemy,
     :rtype: None
     """
 
-    untimed_stops = [StopPatterns(operator_id=operator_id,
-                                  pattern_id=pattern_id,
-                                  stop_order=stop_pattern["Order"],
-                                  stop_id=stop_pattern["ScheduledStopPointRef"],
-                                  timing_point=False)
+    untimed_stops = [StopPattern(operator_id=operator_id,
+                                 pattern_id=pattern_id,
+                                 stop_order=stop_pattern["Order"],
+                                 stop_id=stop_pattern["ScheduledStopPointRef"],
+                                 timing_point=False)
                      for stop_pattern in stop_pattern_dict['StopPointInJourneyPattern']]
-    timed_stops = [StopPatterns(operator_id=operator_id,
-                                pattern_id=pattern_id,
-                                stop_order=stop_pattern["Order"],
-                                stop_id=stop_pattern["ScheduledStopPointRef"],
-                                timing_point=True)
+    timed_stops = [StopPattern(operator_id=operator_id,
+                               pattern_id=pattern_id,
+                               stop_order=stop_pattern["Order"],
+                               stop_id=stop_pattern["ScheduledStopPointRef"],
+                               timing_point=True)
                    for stop_pattern in stop_pattern_dict['TimingPointInJourneyPattern']]
 
-    stop_patterns_to_delete = sqlalchemy.delete(StopPatterns).where(StopPatterns.operator_id == operator_id,
-                                                                    StopPatterns.pattern_id == pattern_id)
+    stop_patterns_to_delete = sqlalchemy.delete(StopPattern).where(StopPattern.operator_id == operator_id,
+                                                                   StopPattern.pattern_id == pattern_id)
     siri_db.session.execute(stop_patterns_to_delete)
     siri_db.session.commit()
 
@@ -480,7 +480,7 @@ def get_stop_monitoring_dict(transit_api_key, siri_base_url, operator_id):
     return siri_client.stop_monitoring(agency=operator_id)
 
 
-def parse_stop_monitoring_dict(operator_id: str, stop_monitoring_dict: dict) -> (Vehicles, OnwardCalls):
+def parse_stop_monitoring_dict(operator_id: str, stop_monitoring_dict: dict) -> (Vehicle, OnwardCall):
     """
     Parses the stop monitoring dictionary and returns a dictionary of selected items
 
@@ -491,11 +491,11 @@ def parse_stop_monitoring_dict(operator_id: str, stop_monitoring_dict: dict) -> 
     :type stop_monitoring_dict: dict
 
     :return: Vehicle object and onward call object
-    :rtype: Vehicles, OnwardCalls
+    :rtype: Vehicle, OnwardCall
     """
 
     dataframe_ref = stop_monitoring_dict["MonitoredVehicleJourney"]["FramedVehicleJourneyRef"]["DataFrameRef"]
-    vehicle = Vehicles(
+    vehicle = Vehicle(
         operator_id=operator_id,
         vehicle_journey_ref=stop_monitoring_dict["MonitoredVehicleJourney"]["FramedVehicleJourneyRef"][
             "DatedVehicleJourneyRef"],
@@ -508,7 +508,7 @@ def parse_stop_monitoring_dict(operator_id: str, stop_monitoring_dict: dict) -> 
                                                    "Latitude"]),
         vehicle_bearing=parse_optional_floats(stop_monitoring_dict["MonitoredVehicleJourney"]["Bearing"])
     )
-    onward_call = OnwardCalls(
+    onward_call = OnwardCall(
         operator_id=operator_id,
         vehicle_journey_ref=stop_monitoring_dict["MonitoredVehicleJourney"]["FramedVehicleJourneyRef"][
             "DatedVehicleJourneyRef"],
@@ -564,19 +564,19 @@ def save_stop_monitoring(siri_db,
         if onward_call:
             onward_calls_to_add.append(onward_call)
 
-    vehicles_to_delete = sqlalchemy.delete(Vehicles).where(Vehicles.operator_id == operator_id)
+    vehicles_to_delete = sqlalchemy.delete(Vehicle).where(Vehicle.operator_id == operator_id)
     siri_db.session.execute(vehicles_to_delete)
     siri_db.session.commit()
     siri_db.session.add_all(list(vehicles_to_add))
     siri_db.session.commit()
 
-    onward_calls_to_delete = sqlalchemy.delete(OnwardCalls).where(OnwardCalls.operator_id == operator_id)
+    onward_calls_to_delete = sqlalchemy.delete(OnwardCall).where(OnwardCall.operator_id == operator_id)
     siri_db.session.execute(onward_calls_to_delete)
     siri_db.session.commit()
     siri_db.session.add_all(onward_calls_to_add)
     siri_db.session.commit()
 
-    stmt = sqlalchemy.update(Operators).where(Operators.operator_id == operator_id).values(
+    stmt = sqlalchemy.update(Operator).where(Operator.operator_id == operator_id).values(
         stop_monitoring_updated=current_time)
     siri_db.session.execute(stmt)
     siri_db.session.commit()
@@ -607,7 +607,7 @@ def upcoming_vehicles(siri_db: flask_sqlalchemy.SQLAlchemy,
     :rtype: list[dict]
     """
 
-    stmt = siri_db.select(Vehicles, OnwardCalls).join(OnwardCalls).filter(OnwardCalls.stop_id == stop_id)
+    stmt = siri_db.select(Vehicle, OnwardCall).join(OnwardCall).filter(OnwardCall.stop_id == stop_id)
     response_dict = defaultdict(list)
     for row in siri_db.session.execute(stmt):
         vehicle = row[0]
@@ -668,44 +668,14 @@ def stop_timetable(siri_db: flask_sqlalchemy.SQLAlchemy,
     return None
 
 
-def write_key_api_file(input_dict: dict) -> None:
-    """
-    Writes the key and url to the key_api_file
-
-    :param input_dict: dict containing the key and url
-    :type input_dict: dict
-
-    :return: None
-    """
-    # Add content to the file
-    config = configparser.ConfigParser()
-    for key in input_dict:
-        config[key] = input_dict[key]
-    with open(key_api_filename(), 'w') as configfile:
-        config.write(configfile)
-    return None
-
-
 def read_key_api_file() -> (str, str):
     """
-    Reads the key and url form the key_api_file
+    Reads the key and url form the enviromental variables
 
     :return: tuple containing key and url
     :rtype: tuple(str, str)
     """
-    config = configparser.ConfigParser()
-    config.read(key_api_filename())
-    return config["SIRI"]["api_key"], config["SIRI"]["base_url"]
-
-
-def key_api_filename() -> str:
-    """
-    Returns the key api filename from the environmental variables
-
-    :return: filename that contains the api key
-    :rtype: str
-    """
-    return os.environ.get("KEY_API_FILE", "dev")
+    return os.environ.get("API_KEY"), os.environ.get("BASE_URL")
 
 
 def refresh_needed(siri_db: flask_sqlalchemy.SQLAlchemy,
@@ -734,7 +704,7 @@ def refresh_needed(siri_db: flask_sqlalchemy.SQLAlchemy,
     :return: boolean for if the table should be refreshed
     :rtype: bool
     """
-    operator = siri_db.session.execute(siri_db.select(Operators).filter_by(operator_id=operator_id)).scalar_one()
+    operator = siri_db.session.execute(siri_db.select(Operator).filter_by(operator_id=operator_id)).scalar_one()
     last_update_time = operator.__dict__[table_name]
     if last_update_time is None:
         return True

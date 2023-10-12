@@ -3,7 +3,7 @@ from transit_notification import db
 from sqlalchemy import ForeignKeyConstraint
 
 
-class Operators(db.Model):
+class Operator(db.Model):
     operator_id = db.Column(db.String(2), primary_key=True)
     operator_name = db.Column(db.String(100), nullable=False)
     operator_monitored = db.Column(db.Boolean, default=False, nullable=False)
@@ -13,22 +13,22 @@ class Operators(db.Model):
     vehicle_monitoring_updated = db.Column(db.DateTime)
     stop_monitoring_updated = db.Column(db.DateTime)
 
-    lines = db.relationship('Lines', backref='operator', lazy=True)
-    patterns = db.relationship('Patterns', backref='operator', lazy=True)
-    stops = db.relationship('Stops', backref='operator', lazy=True)
-    vehicles = db.relationship('Vehicles', backref='operator', lazy=True)
-    stop_patterns = db.relationship('StopPatterns', backref='operator', lazy=True)
-    onward_calls = db.relationship('OnwardCalls', backref='operator', lazy=True)
+    lines = db.relationship('Line', backref='operator', lazy=True)
+    patterns = db.relationship('Pattern', backref='operator', lazy=True)
+    stops = db.relationship('Stop', backref='operator', lazy=True)
+    vehicles = db.relationship('Vehicle', backref='operator', lazy=True)
+    stop_patterns = db.relationship('StopPattern', backref='operator', lazy=True)
+    onward_calls = db.relationship('OnwardCall', backref='operator', lazy=True)
     stop_timetable = db.relationship('StopTimetable', backref='operator', lazy=True)
 
     def __repr__(self):
         return f"Operator Id : {self.operator_id}, Name: {self.operator_name}, Monitored: {self.operator_monitored}, " \
-               f"Lines Updated: {self.lines_updated}, "f"Stops Updated: {self.stops_updated}, " \
+               f"Line Updated: {self.lines_updated}, "f"Stop Updated: {self.stops_updated}, " \
                f"Vehicle Monitoring Updated: {self.vehicle_monitoring_updated}"
 
 
-class Lines(db.Model):
-    operator_id = db.Column(db.String(2), db.ForeignKey("operators.operator_id"), nullable=False, primary_key=True)
+class Line(db.Model):
+    operator_id = db.Column(db.String(2), db.ForeignKey("operator.operator_id"), nullable=False, primary_key=True)
     line_id = db.Column(db.String(10), primary_key=True)
     line_name = db.Column(db.String(100), nullable=False)
     line_monitored = db.Column(db.Boolean, nullable=False)
@@ -38,8 +38,8 @@ class Lines(db.Model):
     direction_1_id = db.Column(db.String(10))
     direction_1_name = db.Column(db.String(100))
 
-    patterns = db.relationship('Patterns', backref='line', lazy=True)
-    vehicles = db.relationship('Vehicles', backref='line', lazy=True)
+    patterns = db.relationship('Pattern', backref='line', lazy=True)
+    vehicles = db.relationship('Vehicle', backref='line', lazy=True)
 
     def __init__(self, line_id, operator_id, line_name, line_monitored, sort_index):
         self.line_id = line_id
@@ -54,15 +54,15 @@ class Lines(db.Model):
                f"Direction 1 Id: {self.direction_1_id}, Direction 0 Name: {self.direction_1_name}"
 
 
-class Patterns(db.Model):
-    operator_id = db.Column(db.String(2), db.ForeignKey("operators.operator_id"), nullable=False, primary_key=True)
-    line_id = db.Column(db.String(10), db.ForeignKey("lines.line_id"), nullable=False, primary_key=True)
+class Pattern(db.Model):
+    operator_id = db.Column(db.String(2), db.ForeignKey("operator.operator_id"), nullable=False, primary_key=True)
+    line_id = db.Column(db.String(10), db.ForeignKey("line.line_id"), nullable=False, primary_key=True)
     pattern_id = db.Column(db.Integer, nullable=False, primary_key=True)
     pattern_name = db.Column(db.String(100), nullable=False)
     pattern_direction = db.Column(db.String(10), nullable=False)
     pattern_trip_count = db.Column(db.Integer, nullable=False)
 
-    stop_patterns = db.relationship('StopPatterns', backref='pattern', lazy=True)
+    stop_patterns = db.relationship('StopPattern', backref='pattern', lazy=True)
 
     def __init__(self, operator_id, line_id, pattern_id, pattern_name, pattern_direction, pattern_trip_count):
         self.operator_id = operator_id
@@ -73,10 +73,10 @@ class Patterns(db.Model):
         self.pattern_trip_count = pattern_trip_count
 
 
-class StopPatterns(db.Model):
-    operator_id = db.Column(db.String(2), db.ForeignKey("operators.operator_id"), nullable=False, primary_key=True)
-    pattern_id = db.Column(db.Integer, db.ForeignKey("patterns.pattern_id"), nullable=False, primary_key=True)
-    stop_id = db.Column(db.String(10), db.ForeignKey("stops.stop_id"), nullable=False)
+class StopPattern(db.Model):
+    operator_id = db.Column(db.String(2), db.ForeignKey("operator.operator_id"), nullable=False, primary_key=True)
+    pattern_id = db.Column(db.Integer, db.ForeignKey("pattern.pattern_id"), nullable=False, primary_key=True)
+    stop_id = db.Column(db.String(10), db.ForeignKey("stop.stop_id"), nullable=False)
     stop_order = db.Column(db.Integer, nullable=False, primary_key=True)
     timing_point = db.Column(db.Boolean, default=False, nullable=False)
 
@@ -88,15 +88,15 @@ class StopPatterns(db.Model):
         self.timing_point = timing_point
 
 
-class Stops(db.Model):
-    operator_id = db.Column(db.String(2), db.ForeignKey("operators.operator_id"), nullable=False, primary_key=True)
+class Stop(db.Model):
+    operator_id = db.Column(db.String(2), db.ForeignKey("operator.operator_id"), nullable=False, primary_key=True)
     stop_id = db.Column(db.String(10), primary_key=True)
     stop_name = db.Column(db.String(100), nullable=False)
     stop_longitude = db.Column(db.Float, nullable=False)
     stop_latitude = db.Column(db.Float, nullable=False)
 
     stop_timetables = db.relationship('StopTimetable', backref='stop', lazy=True)
-    onward_calls = db.relationship('OnwardCalls', backref='stop', lazy=True)
+    onward_calls = db.relationship('OnwardCall', backref='stop', lazy=True)
 
     def __init__(self, operator_id, stop_id, stop_name, stop_longitude, stop_latitude):
         self.operator_id = operator_id
@@ -110,9 +110,9 @@ class Stops(db.Model):
                f"Latitude: {self.stop_latitude}"
 
 
-class Vehicles(db.Model):
-    operator_id = db.Column(db.String(2), db.ForeignKey("operators.operator_id"), nullable=False, primary_key=True)
-    line_id = db.Column(db.String(10), db.ForeignKey("lines.line_id"), nullable=False)
+class Vehicle(db.Model):
+    operator_id = db.Column(db.String(2), db.ForeignKey("operator.operator_id"), nullable=False, primary_key=True)
+    line_id = db.Column(db.String(10), db.ForeignKey("line.line_id"), nullable=False)
     vehicle_journey_ref = db.Column(db.String(100), nullable=False, primary_key=True)
     dataframe_ref_date = db.Column(db.Date, nullable=False, primary_key=True)
     vehicle_direction = db.Column(db.String(2), nullable=False)
@@ -120,7 +120,7 @@ class Vehicles(db.Model):
     vehicle_latitude = db.Column(db.Float, nullable=False)
     vehicle_bearing = db.Column(db.Float, nullable=False)
 
-    onward_calls = db.relationship('OnwardCalls', backref='onward_call', lazy=True)
+    onward_calls = db.relationship('OnwardCall', backref='onward_call', lazy=True)
     stop_timetables = db.relationship('StopTimetable', backref='vehicle', lazy=True)
 
     def __init__(self,
@@ -150,9 +150,9 @@ class Vehicles(db.Model):
         return None in self.__dict__.values()
 
 
-class OnwardCalls(db.Model):
-    operator_id = db.Column(db.String(2), db.ForeignKey("operators.operator_id"), nullable=False, primary_key=True)
-    stop_id = db.Column(db.String(10), db.ForeignKey("stops.stop_id"), nullable=False, primary_key=True)
+class OnwardCall(db.Model):
+    operator_id = db.Column(db.String(2), db.ForeignKey("operator.operator_id"), nullable=False, primary_key=True)
+    stop_id = db.Column(db.String(10), db.ForeignKey("stop.stop_id"), nullable=False, primary_key=True)
     vehicle_journey_ref = db.Column(db.String(100), nullable=False, primary_key=True)
     dataframe_ref_date = db.Column(db.Date, nullable=False, primary_key=True)
     vehicle_at_stop = db.Column(db.Boolean, default=False, nullable=False)
@@ -161,7 +161,7 @@ class OnwardCalls(db.Model):
     aimed_departure_time_utc = db.Column(db.DateTime)
     expected_departure_time_utc = db.Column(db.DateTime)
     ForeignKeyConstraint([vehicle_journey_ref, dataframe_ref_date],
-                         [Vehicles.vehicle_journey_ref, Vehicles.dataframe_ref_date])
+                         [Vehicle.vehicle_journey_ref, Vehicle.dataframe_ref_date])
 
     def __init__(self,
                  operator_id,
@@ -189,13 +189,13 @@ class OnwardCalls(db.Model):
 
 
 class StopTimetable(db.Model):
-    operator_id = db.Column(db.String(2), db.ForeignKey("operators.operator_id"), nullable=False, primary_key=True)
-    stop_id = db.Column(db.String(10), db.ForeignKey("stops.stop_id"), nullable=False)
+    operator_id = db.Column(db.String(2), db.ForeignKey("operator.operator_id"), nullable=False, primary_key=True)
+    stop_id = db.Column(db.String(10), db.ForeignKey("stop.stop_id"), nullable=False)
     vehicle_journey_ref = db.Column(db.String(100), nullable=False, primary_key=True)
     aimed_arrival_time_utc = db.Column(db.DateTime)
     aimed_departure_time_utc = db.Column(db.DateTime)
     ForeignKeyConstraint([vehicle_journey_ref],
-                         [Vehicles.vehicle_journey_ref])
+                         [Vehicle.vehicle_journey_ref])
 
     def __init__(self, operator_id, vehicle_journey_ref, stop_id, aimed_arrival_time_utc, aimed_departure_time_utc):
         self.operator_id = operator_id
@@ -208,3 +208,16 @@ class StopTimetable(db.Model):
         return f"Stop Timetable, Vehicle Journey Ref: {self.vehicle_journey_ref}, Stop ID: {self.stop_id}, " \
                    f"Aimed Arrival Time: {self.aimed_arrival_time_utc}, " \
                f"Aimed Departure Time: {self.aimed_departure_time_utc}"
+
+
+class Parameter(db.Model):
+    name = db.Column(db.String(100), primary_key=True)
+    value = db.Column(db.String(100))
+
+    def __init__(self, name, value):
+        self.name = name
+        self.value = value
+
+    def __repr__(self):
+        return f"name: {self.name}, value: {self.value}"
+

@@ -244,10 +244,10 @@ def modify_vehicle(vehicle_in: dict,
     Creates a modified vehicle by changing the name and updating future stops
     """
     vehicle_in['MonitoredVehicleJourney']['FramedVehicleJourneyRef']['DatedVehicleJourneyRef'] = name
-    onward_call_df = pd.DataFrame(vehicle_in['MonitoredVehicleJourney']['OnwardCalls']['OnwardCall'])
+    onward_call_df = pd.DataFrame(vehicle_in['MonitoredVehicleJourney']['OnwardCall']['OnwardCall'])
     onward_call_df = convert_onward_calls_to_deltas(onward_call_df, stop_code)
     df_onward_call, next_stop = modify_onward_calls(onward_call_df, new_time_dt, scheduled_arrival, estimated_arrival)
-    vehicle_in['MonitoredVehicleJourney']['OnwardCalls']['OnwardCall'] = df_onward_call.to_dict('records')
+    vehicle_in['MonitoredVehicleJourney']['OnwardCall']['OnwardCall'] = df_onward_call.to_dict('records')
     vehicle_in['MonitoredVehicleJourney']['MonitoredCall'] = next_stop.to_dict()
     if scheduled_arrival == dt.timedelta(0):
         vehicle_in['MonitoredVehicleJourney']['MonitoredCall']['VehicleAtStop'] = 'true'
@@ -352,8 +352,8 @@ def determine_length_of_onward_calls(vehicle_dict: dict, stopping_vehicles: dict
         vehicle_journey_ref = vehicle['MonitoredVehicleJourney']['FramedVehicleJourneyRef']['DatedVehicleJourneyRef']
 
         if vehicle_journey_ref in stopping_vehicles.keys():
-            if 'OnwardCalls' in vehicle['MonitoredVehicleJourney']:
-                len_onward_calls = len(vehicle['MonitoredVehicleJourney']['OnwardCalls']['OnwardCall'])
+            if 'OnwardCall' in vehicle['MonitoredVehicleJourney']:
+                len_onward_calls = len(vehicle['MonitoredVehicleJourney']['OnwardCall']['OnwardCall'])
             else:
                 len_onward_calls = 0
 

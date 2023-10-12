@@ -2,7 +2,7 @@ import pytest
 import json
 
 from transit_notification import create_app, db, db_commands
-from transit_notification.models import (Operators, Vehicles, OnwardCalls, Lines, Stops, StopPatterns, Patterns,
+from transit_notification.models import (Operator, Vehicle, OnwardCall, Line, Stop, StopPattern, Pattern,
                                          StopTimetable)
 import datetime as dt
 from dateutil.tz import tzutc
@@ -21,7 +21,7 @@ def test_save_operators(app):
         operators_dict = json.load(f)
     with app.app_context():
         db_commands.save_operators(db, operators_dict)
-        select = db.select(Operators).filter_by(operator_id=selected_operator)
+        select = db.select(Operator).filter_by(operator_id=selected_operator)
         operator = db.session.execute(select).scalar()
         assert remove_internal_keys(operator.__dict__) == \
                remove_internal_keys(TestComparisonJsons.operator_sf.__dict__)
@@ -35,7 +35,7 @@ def test_save_lines(app):
     with app.app_context():
         db_commands.save_operators(db, operators_dict)
         db_commands.save_lines(db, selected_operator, line_dict, current_time)
-        select = db.select(Lines).filter_by(operator_id=selected_operator)
+        select = db.select(Line).filter_by(operator_id=selected_operator)
         lines = db.session.execute(select).scalars().all()
         line_cmp_dict = remove_internal_keys(TestComparisonJsons.line_14.__dict__)
         line_cmp_dict.update({'direction_0_id': None, 'direction_0_name': None, 'direction_1_id': None,
@@ -51,7 +51,7 @@ def test_save_stops(app):
     with app.app_context():
         db_commands.save_operators(db, operators_dict)
         db_commands.save_stops(db, selected_operator, stop_dict, current_time)
-        select = db.select(Stops).filter_by(operator_id=selected_operator)
+        select = db.select(Stop).filter_by(operator_id=selected_operator)
         stops = db.session.execute(select).scalars().all()
         stops_cmp_dict = remove_internal_keys(TestComparisonJsons.stop_15551.__dict__)
         assert remove_internal_keys(stops[0].__dict__) == stops_cmp_dict
@@ -92,7 +92,7 @@ def test_save_vehicle_monitoring(app):
     with app.app_context():
         db_commands.save_operators(db, operators_dict)
         db_commands.save_vehicle_monitoring(db, selected_operator, vehicles_dict, current_time)
-        select = db.select(Vehicles).filter_by(operator_id=selected_operator)
+        select = db.select(Vehicle).filter_by(operator_id=selected_operator)
         vehicle = db.session.execute(select).scalars().all()
         assert remove_internal_keys(vehicle[0].__dict__) == \
                remove_internal_keys(TestComparisonJsons.vehicle_0.__dict__)
@@ -100,11 +100,11 @@ def test_save_vehicle_monitoring(app):
                remove_internal_keys(TestComparisonJsons.vehicle_1.__dict__)
         assert remove_internal_keys(vehicle[2].__dict__) == \
                remove_internal_keys(TestComparisonJsons.vehicle_2.__dict__)
-        select = db.select(OnwardCalls).filter_by(operator_id=selected_operator)
+        select = db.select(OnwardCall).filter_by(operator_id=selected_operator)
         onward_calls = db.session.execute(select).scalars().all()
         assert len(onward_calls) == 106
-        select = db.select(OnwardCalls).filter_by(operator_id=selected_operator, vehicle_journey_ref="Schedule_0-Est_0",
-                                                  stop_id="15553")
+        select = db.select(OnwardCall).filter_by(operator_id=selected_operator, vehicle_journey_ref="Schedule_0-Est_0",
+                                                 stop_id="15553")
         onward_calls = db.session.execute(select).scalars().all()
         assert remove_internal_keys(onward_calls[0].__dict__) == \
                remove_internal_keys(TestComparisonJsons.vehicle_onward_calls[0].__dict__)
@@ -142,7 +142,7 @@ def test_save_stop_pattern(app):
     pattern_id = pattern['serviceJourneyPatternRef']
     with app.app_context():
         db_commands.save_stop_pattern(db, selected_operator, pattern_id, pattern['PointsInSequence'])
-        select = db.select(StopPatterns).filter_by(operator_id=selected_operator, pattern_id=pattern_id)
+        select = db.select(StopPattern).filter_by(operator_id=selected_operator, pattern_id=pattern_id)
         stop_patterns = db.session.execute(select).scalars().all()
         assert len(stop_patterns) == 25
         assert remove_internal_keys(stop_patterns[0].__dict__) == \
@@ -163,7 +163,7 @@ def test_save_patterns(app):
         db_commands.save_lines(db, selected_operator, line_dict, current_time)
         db_commands.save_stops(db, selected_operator, stop_dict, current_time)
         db_commands.save_patterns(db, selected_operator, selected_line, pattern_dict)
-        select = db.select(Patterns).filter_by(operator_id=selected_operator, line_id=selected_line)
+        select = db.select(Pattern).filter_by(operator_id=selected_operator, line_id=selected_line)
         patterns = db.session.execute(select).scalars().all()
         assert len(patterns) == 9
         assert remove_internal_keys(patterns[0].__dict__) == \
@@ -215,16 +215,16 @@ def test_save_stop_monitoring(app):
     with app.app_context():
         db_commands.save_operators(db, operators_dict)
         db_commands.save_stop_monitoring(db, selected_operator, stop_monitoring_dict, current_time)
-        select = db.select(Vehicles).filter_by(operator_id=selected_operator)
+        select = db.select(Vehicle).filter_by(operator_id=selected_operator)
         vehicle = db.session.execute(select).scalars().all()
         assert len(vehicle) == 4
         assert remove_internal_keys(vehicle[0].__dict__) == \
                remove_internal_keys(TestComparisonJsons.stop_monitoring_vehicle.__dict__)
-        select = db.select(OnwardCalls).filter_by(operator_id=selected_operator)
+        select = db.select(OnwardCall).filter_by(operator_id=selected_operator)
         onward_calls = db.session.execute(select).scalars().all()
         assert len(onward_calls) == 6
-        select = db.select(OnwardCalls).filter_by(operator_id=selected_operator, vehicle_journey_ref="Schedule_0-Est_0",
-                                                  stop_id="15553")
+        select = db.select(OnwardCall).filter_by(operator_id=selected_operator, vehicle_journey_ref="Schedule_0-Est_0",
+                                                 stop_id="15553")
         onward_calls = db.session.execute(select).scalars().all()
         assert remove_internal_keys(onward_calls[0].__dict__) == \
                remove_internal_keys(TestComparisonJsons.stop_monitoring_onward_call.__dict__)

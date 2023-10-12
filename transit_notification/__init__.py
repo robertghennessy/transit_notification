@@ -5,7 +5,7 @@ from flask import Flask
 from flask.cli import with_appcontext
 from flask_sqlalchemy import SQLAlchemy
 import os
-import configparser
+from dotenv import load_dotenv
 
 
 __author__ = """Robert G Hennessy"""
@@ -14,12 +14,13 @@ __version__ = '0.1.0'
 
 db = SQLAlchemy()
 
+
 def create_app(test_config=None) -> Flask:
     app = Flask(__name__)
 
-    # some deploy systems set the database url in the environ
-    db_url = os.environ.get("DATABASE_URL")
-    db_url = 'sqlite:////Users/roberthennessy/Documents/python_project/transit_notification/tests/test_database/scratch.db'
+    load_dotenv()
+    # some deploy systems set the database url in the environment
+    db_url = os.environ.get("DATABASE_URI")
 
     if db_url is None:
         # default to a sqlite database in the instance folder
@@ -31,10 +32,7 @@ def create_app(test_config=None) -> Flask:
         SQLALCHEMY_TRACK_MODIFICATIONS=False
     )
 
-    if test_config is None:
-        # load the instance config, if it exists, when not testing
-        app.config.from_pyfile("config.py", silent=True)
-    else:
+    if test_config:
         # load the test config if passed in
         app.config.update(test_config)
 

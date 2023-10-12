@@ -4,14 +4,6 @@
   {% if error %}
     <p class=error><strong>Error:</strong> {{ error }}
   {% endif %}
-  <form method=post>
-    <dl>
-      <dt>SIRI Base URL:
-      <dd><input type=text name=siri_base_url value="{{request.form.siri_base_url}}">
-      <dt>API Key:
-      <dd><input type=api_key name=api_key value="{{request.form['api_key']}}">
-    </dl>
-    <p><input type=submit value=submit>
-  </form>
+  Directions on setting up Transit Notification.
 {% endblock %}
 

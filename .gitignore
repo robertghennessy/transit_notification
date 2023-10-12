@@ -81,7 +81,7 @@ celerybeat-schedule
 *.sage.py
 
 # dotenv
-.env
+transit_notification/.env
 
 # virtualenv
 .venv
@@ -110,5 +110,4 @@ bin/
 databases/
 
 # config files
-/transit_notification/config.py
 /tests/key_api.ini

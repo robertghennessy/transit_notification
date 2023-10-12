@@ -1,5 +1,6 @@
 from transit_notification import create_app
-
+import os
+from unittest import mock
 
 def test_config():
     """ Test create_app without passing test config. """
@@ -11,9 +12,10 @@ def test_hello(client):
     response = client.get('/hello')
     assert response.data == b'Hello World!'
 
+
+@mock.patch.dict(os.environ, {"DATABASE_URI": "sqlite:///environ"})
 def test_db_url_environ(monkeypatch):
     """Test DATABASE_URL environment variable."""
-    monkeypatch.setenv("DATABASE_URL", "sqlite:///environ")
     app = create_app()
     assert app.config["SQLALCHEMY_DATABASE_URI"] == "sqlite:///environ"
 

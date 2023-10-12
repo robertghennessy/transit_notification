@@ -1,11 +1,11 @@
 import datetime as dt
-from transit_notification.models import (Operators, Vehicles, OnwardCalls, Lines, Stops, StopPatterns, Patterns,
+from transit_notification.models import (Operator, Vehicle, OnwardCall, Line, Stop, StopPattern, Pattern,
                                          StopTimetable)
 import transit_notification.db_commands
 
 
 class TestComparisonJsons:
-    operator_sf = Operators(
+    operator_sf = Operator(
         operator_id="SF",
         operator_name="San Francisco Municipal Transportation Agency",
         operator_monitored=True,
@@ -16,15 +16,15 @@ class TestComparisonJsons:
         vehicle_monitoring_updated=None
     )
 
-    line_14 = Lines(line_id='14', operator_id='SF', line_name="MISSION", line_monitored=True, sort_index=0)
-    line_49 = Lines(line_id='49', operator_id='SF', line_name="VAN NESS-MISSION", line_monitored=True, sort_index=1)
+    line_14 = Line(line_id='14', operator_id='SF', line_name="MISSION", line_monitored=True, sort_index=0)
+    line_49 = Line(line_id='49', operator_id='SF', line_name="VAN NESS-MISSION", line_monitored=True, sort_index=1)
 
-    stop_15551 = Stops(operator_id='SF', stop_id='15551', stop_latitude=37.765125, stop_longitude=-122.419668,
-                       stop_name='Mission St & 16th St')
-    stop_15553 = Stops(operator_id='SF', stop_id='15553', stop_latitude=37.762635, stop_longitude=-122.419348,
-                       stop_name="Mission St & 18th St")
+    stop_15551 = Stop(operator_id='SF', stop_id='15551', stop_latitude=37.765125, stop_longitude=-122.419668,
+                      stop_name='Mission St & 16th St')
+    stop_15553 = Stop(operator_id='SF', stop_id='15553', stop_latitude=37.762635, stop_longitude=-122.419348,
+                      stop_name="Mission St & 18th St")
 
-    vehicle_0 = Vehicles(
+    vehicle_0 = Vehicle(
         dataframe_ref_date=dt.date(2023, 9, 26),
         line_id='14',
         operator_id='SF',
@@ -35,7 +35,7 @@ class TestComparisonJsons:
         vehicle_bearing=30.0
     )
 
-    vehicle_1 = Vehicles(
+    vehicle_1 = Vehicle(
         dataframe_ref_date=dt.date(2023, 9, 26),
         line_id='14',
         operator_id='SF',
@@ -46,7 +46,7 @@ class TestComparisonJsons:
         vehicle_bearing=30.0
     )
 
-    vehicle_2 = Vehicles(
+    vehicle_2 = Vehicle(
         dataframe_ref_date=dt.date(2023, 9, 26),
         line_id='14',
         operator_id='SF',
@@ -58,7 +58,7 @@ class TestComparisonJsons:
     )
 
     vehicle_onward_calls = [
-        OnwardCalls(
+        OnwardCall(
                 operator_id='SF',
                 vehicle_journey_ref='Schedule_0-Est_0',
                 dataframe_ref_date=transit_notification.db_commands.parse_time_str('2023-09-26').date(),
@@ -69,7 +69,7 @@ class TestComparisonJsons:
                 aimed_departure_time_utc=transit_notification.db_commands.parse_time_str('2023-09-26T15:00:00Z'),
                 expected_departure_time_utc=transit_notification.db_commands.parse_time_str(None)
         ),
-        OnwardCalls(
+        OnwardCall(
             operator_id='SF',
             vehicle_journey_ref='Schedule_0-Est_0',
             dataframe_ref_date=transit_notification.db_commands.parse_time_str('2023-09-26').date(),
@@ -82,7 +82,7 @@ class TestComparisonJsons:
         )
     ]
 
-    stop_pattern_1 = StopPatterns(
+    stop_pattern_1 = StopPattern(
         operator_id='SF',
         pattern_id=219280,
         stop_order=1,
@@ -90,7 +90,7 @@ class TestComparisonJsons:
         timing_point=True
     )
 
-    pattern_1 = Patterns(
+    pattern_1 = Pattern(
         operator_id='SF',
         line_id='14',
         pattern_id=219278,
@@ -115,7 +115,7 @@ class TestComparisonJsons:
                ]
     }
 
-    stop_monitoring_vehicle = Vehicles(
+    stop_monitoring_vehicle = Vehicle(
         operator_id='SF',
         vehicle_journey_ref='Schedule_0-Est_0',
         dataframe_ref_date=dt.date(2023, 9, 26),
@@ -126,7 +126,7 @@ class TestComparisonJsons:
         vehicle_bearing=345.0
     )
 
-    stop_monitoring_onward_call = OnwardCalls(
+    stop_monitoring_onward_call = OnwardCall(
         operator_id='SF',
         vehicle_journey_ref='Schedule_0-Est_0',
         dataframe_ref_date=transit_notification.db_commands.parse_time_str('2023-09-26').date(),
