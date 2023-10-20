@@ -26,11 +26,14 @@ def setup():
 def index():
     transit_api_key, siri_base_url = tndc.read_key_api_file()
     operator_val = db.session.query(Operator).first()
+    current_time = dt.datetime.now(dt.timezone.utc)
+    operator_refresh_needed = tndc.operator_refresh_needed(db, OPERATORS_REFRESH_LIMIT, current_time)
 
-    if operator_val is None:
+    if operator_val is None or operator_refresh_needed:
         try:
             operators_json = tndc.get_operators_dict(transit_api_key=transit_api_key, siri_base_url=siri_base_url)
             tndc.save_operators(db, operators_json)
+            tndc.save_operator_refresh_time(db, current_time)
         except siri_transit_api_client.exceptions.TransportError:
             error = 'Unable to establish connection to {0}. Please check url and resubmit.'.format(siri_base_url)
             return render_template('setup.html', error=error)

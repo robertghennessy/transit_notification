@@ -140,7 +140,8 @@ class TestComparisonJsons:
 
     stop_monitoring_upcoming_vehicles = {
         '14': [transit_notification.db_commands.format_eta_time(dt.timedelta(minutes=0))],
-        '49': [transit_notification.db_commands.format_eta_time(dt.timedelta(minutes=13)),
+        '49': [transit_notification.db_commands.format_eta_time(dt.timedelta(minutes=4)),
+               transit_notification.db_commands.format_eta_time(dt.timedelta(minutes=13)),
                transit_notification.db_commands.format_eta_time(dt.timedelta(minutes=16)),
                transit_notification.db_commands.format_eta_time(dt.timedelta(minutes=40))
                ]

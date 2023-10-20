@@ -116,9 +116,9 @@ class Vehicle(db.Model):
     vehicle_journey_ref = db.Column(db.String(100), nullable=False, primary_key=True)
     dataframe_ref_date = db.Column(db.Date, nullable=False, primary_key=True)
     vehicle_direction = db.Column(db.String(2), nullable=False)
-    vehicle_longitude = db.Column(db.Float, nullable=False)
-    vehicle_latitude = db.Column(db.Float, nullable=False)
-    vehicle_bearing = db.Column(db.Float, nullable=False)
+    vehicle_longitude = db.Column(db.Float, nullable=True)
+    vehicle_latitude = db.Column(db.Float, nullable=True)
+    vehicle_bearing = db.Column(db.Float, nullable=True)
 
     onward_calls = db.relationship('OnwardCall', backref='onward_call', lazy=True)
     stop_timetables = db.relationship('StopTimetable', backref='vehicle', lazy=True)
@@ -144,10 +144,12 @@ class Vehicle(db.Model):
     def __repr__(self):
         return f"Vehicle : {self.vehicle_journey_ref}, DateFrameRef: {self.dataframe_ref_date}, Line: {self.line_id}, " \
                f"Direction: {self.vehicle_direction}, Longitude: {self.vehicle_longitude}, " \
-               f"Latitude: {self.vehicle_latitude}"
+               f"Latitude: {self.vehicle_latitude}, Bearing: {self.vehicle_bearing}"
 
     def contains_none(self):
-        return None in self.__dict__.values()
+        return ((self.operator_id is None) or (self.vehicle_journey_ref is None) or (self.dataframe_ref_date is None) or
+                (self.line_id is None) or (self.vehicle_direction is None))
+
 
 
 class OnwardCall(db.Model):

@@ -3,11 +3,12 @@ import json
 
 from transit_notification import create_app, db, db_commands
 from transit_notification.models import (Operator, Vehicle, OnwardCall, Line, Stop, StopPattern, Pattern,
-                                         StopTimetable)
+                                         StopTimetable, Parameter)
 import datetime as dt
 from dateutil.tz import tzutc
 from tests.test_comparison_jsons import TestComparisonJsons
 from collections import defaultdict, OrderedDict
+import dateutil
 
 selected_operator = 'SF'
 selected_stop = '15553'
@@ -217,7 +218,7 @@ def test_save_stop_monitoring(app):
         db_commands.save_stop_monitoring(db, selected_operator, stop_monitoring_dict, current_time)
         select = db.select(Vehicle).filter_by(operator_id=selected_operator)
         vehicle = db.session.execute(select).scalars().all()
-        assert len(vehicle) == 4
+        assert len(vehicle) == 5
         assert remove_internal_keys(vehicle[0].__dict__) == \
                remove_internal_keys(TestComparisonJsons.stop_monitoring_vehicle.__dict__)
         select = db.select(OnwardCall).filter_by(operator_id=selected_operator)
@@ -319,3 +320,21 @@ def remove_internal_keys(input_dict):
         input_dict.pop(key, None)
     return input_dict
 
+
+def test_operator_refresh_needed(app):
+    with app.app_context():
+        assert db_commands.operator_refresh_needed(db, 1, current_time) is True
+        operator_refresh = Parameter("operator_refresh_time", current_time.isoformat())
+        db.session.add(operator_refresh)
+        db.session.commit()
+        assert db_commands.operator_refresh_needed(db, 1, current_time + dt.timedelta(minutes=0.5)) is False
+        assert db_commands.operator_refresh_needed(db, 1, current_time + dt.timedelta(minutes=1.5)) is True
+
+
+def test_save_operator_refresh_time(app):
+    with app.app_context():
+        db_commands.save_operator_refresh_time(db, current_time)
+        operator_refresh_time = db.session.execute(db.select(Parameter).filter_by(
+            name="operator_refresh_time")).scalar_one_or_none()
+        last_update_time = dateutil.parser.isoparse(operator_refresh_time.value).replace(tzinfo=None)
+        assert last_update_time == current_time.replace(tzinfo=None)

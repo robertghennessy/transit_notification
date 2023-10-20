@@ -1,8 +1,6 @@
 import pandas as pd
 import datetime as dt
-import configparser
 import numpy as np
-import sqlalchemy
 from natsort import index_natsorted, natsorted
 import os
 from itertools import chain
@@ -13,7 +11,7 @@ import typing
 from collections import defaultdict, OrderedDict
 
 from transit_notification.models import (Operator, Line, Stop, Vehicle, Pattern, StopPattern, OnwardCall,
-                                         StopTimetable)
+                                         StopTimetable, Parameter)
 import siri_transit_api_client
 
 
@@ -109,12 +107,12 @@ def save_lines(siri_db: flask_sqlalchemy.SQLAlchemy, operator_id: str, lines_dic
                          sort_index=int(ind))
                     for ind, row in lines_df.iterrows()]
 
-    lines_to_delete = sqlalchemy.delete(Line).where(Line.operator_id == operator_id)
+    lines_to_delete = siri_db.delete(Line).where(Line.operator_id == operator_id)
     siri_db.session.execute(lines_to_delete)
     siri_db.session.commit()
     siri_db.session.add_all(lines_to_add)
     siri_db.session.commit()
-    stmt = sqlalchemy.update(Operator).where(Operator.operator_id == operator_id).values(lines_updated=current_time)
+    stmt = siri_db.update(Operator).where(Operator.operator_id == operator_id).values(lines_updated=current_time)
     siri_db.session.execute(stmt)
     siri_db.session.commit()
 
@@ -169,12 +167,12 @@ def save_stops(siri_db: flask_sqlalchemy.SQLAlchemy, operator_id: str, stops_dic
                          stop_latitude=float(stop["Location"]["Latitude"]))
                     for stop in stop_list]
 
-    stops_to_delete = sqlalchemy.delete(Stop).where(Stop.operator_id == operator_id)
+    stops_to_delete = siri_db.delete(Stop).where(Stop.operator_id == operator_id)
     siri_db.session.execute(stops_to_delete)
     siri_db.session.commit()
     siri_db.session.add_all(stops_to_add)
     siri_db.session.commit()
-    stmt = sqlalchemy.update(Operator).where(Operator.operator_id == operator_id).values(stops_updated=current_time)
+    stmt = siri_db.update(Operator).where(Operator.operator_id == operator_id).values(stops_updated=current_time)
     siri_db.session.execute(stmt)
     siri_db.session.commit()
 
@@ -231,19 +229,19 @@ def save_vehicle_monitoring(siri_db, operator_id: str, vehicle_monitoring: dict,
 
     onward_calls_to_add = list(chain.from_iterable(onward_calls_to_add))
 
-    vehicles_to_delete = sqlalchemy.delete(Vehicle).where(Vehicle.operator_id == operator_id)
+    vehicles_to_delete = siri_db.delete(Vehicle).where(Vehicle.operator_id == operator_id)
     siri_db.session.execute(vehicles_to_delete)
     siri_db.session.commit()
     siri_db.session.add_all(vehicles_to_add)
     siri_db.session.commit()
 
-    onward_calls_to_delete = sqlalchemy.delete(OnwardCall).where(OnwardCall.operator_id == operator_id)
+    onward_calls_to_delete = siri_db.delete(OnwardCall).where(OnwardCall.operator_id == operator_id)
     siri_db.session.execute(onward_calls_to_delete)
     siri_db.session.commit()
     siri_db.session.add_all(onward_calls_to_add)
     siri_db.session.commit()
 
-    stmt = sqlalchemy.update(Operator).where(Operator.operator_id == operator_id).values(
+    stmt = siri_db.update(Operator).where(Operator.operator_id == operator_id).values(
         vehicle_monitoring_updated=current_time)
     siri_db.session.execute(stmt)
     siri_db.session.commit()
@@ -383,8 +381,7 @@ def save_patterns(siri_db: flask_sqlalchemy.SQLAlchemy, operator_id: str, line_i
 
     """
     directions = pattern_dict["directions"]
-    stmt = sqlalchemy.update(Line).where(Line.operator_id == operator_id,
-                                         Line.line_id == line_id).values(
+    stmt = siri_db.update(Line).where(Line.operator_id == operator_id, Line.line_id == line_id).values(
         {
             "direction_0_id": directions[0]["DirectionId"],
             "direction_0_name": directions[0]["Name"],
@@ -404,8 +401,8 @@ def save_patterns(siri_db: flask_sqlalchemy.SQLAlchemy, operator_id: str, line_i
                                        pattern_trip_count=pattern['TripCount']))
         save_stop_pattern(siri_db, operator_id, pattern['serviceJourneyPatternRef'], pattern['PointsInSequence'])
 
-    patterns_to_delete = sqlalchemy.delete(Pattern).where(Pattern.operator_id == operator_id,
-                                                          Pattern.line_id == line_id)
+    patterns_to_delete = siri_db.delete(Pattern).where(Pattern.operator_id == operator_id,
+                                                       Pattern.line_id == line_id)
     siri_db.session.execute(patterns_to_delete)
     siri_db.session.commit()
 
@@ -450,8 +447,8 @@ def save_stop_pattern(siri_db: flask_sqlalchemy.SQLAlchemy,
                                timing_point=True)
                    for stop_pattern in stop_pattern_dict['TimingPointInJourneyPattern']]
 
-    stop_patterns_to_delete = sqlalchemy.delete(StopPattern).where(StopPattern.operator_id == operator_id,
-                                                                   StopPattern.pattern_id == pattern_id)
+    stop_patterns_to_delete = siri_db.delete(StopPattern).where(StopPattern.operator_id == operator_id,
+                                                                StopPattern.pattern_id == pattern_id)
     siri_db.session.execute(stop_patterns_to_delete)
     siri_db.session.commit()
 
@@ -564,19 +561,19 @@ def save_stop_monitoring(siri_db,
         if onward_call:
             onward_calls_to_add.append(onward_call)
 
-    vehicles_to_delete = sqlalchemy.delete(Vehicle).where(Vehicle.operator_id == operator_id)
+    vehicles_to_delete = siri_db.delete(Vehicle).where(Vehicle.operator_id == operator_id)
     siri_db.session.execute(vehicles_to_delete)
     siri_db.session.commit()
     siri_db.session.add_all(list(vehicles_to_add))
     siri_db.session.commit()
 
-    onward_calls_to_delete = sqlalchemy.delete(OnwardCall).where(OnwardCall.operator_id == operator_id)
+    onward_calls_to_delete = siri_db.delete(OnwardCall).where(OnwardCall.operator_id == operator_id)
     siri_db.session.execute(onward_calls_to_delete)
     siri_db.session.commit()
     siri_db.session.add_all(onward_calls_to_add)
     siri_db.session.commit()
 
-    stmt = sqlalchemy.update(Operator).where(Operator.operator_id == operator_id).values(
+    stmt = siri_db.update(Operator).where(Operator.operator_id == operator_id).values(
         stop_monitoring_updated=current_time)
     siri_db.session.execute(stmt)
     siri_db.session.commit()
@@ -619,8 +616,9 @@ def upcoming_vehicles(siri_db: flask_sqlalchemy.SQLAlchemy,
             expected_arrival_time_utc = onward_call.expected_arrival_time_utc
             eta_time = expected_arrival_time_utc.replace(tzinfo=dt.timezone.utc) - current_time
         if eta_time >= dt.timedelta(seconds=0):
-            response_dict[vehicle.line_id].append(format_eta_time(eta_time))
-
+            response_dict[vehicle.line_id].append(eta_time)
+    for key in response_dict.keys():
+        response_dict[key] = [format_eta_time(eta_time) for eta_time in sorted(response_dict[key])]
     return response_dict
 
 
@@ -658,8 +656,8 @@ def stop_timetable(siri_db: flask_sqlalchemy.SQLAlchemy,
                                          )
                            for timetable in timetable_list]
 
-    stop_timetable_to_delete = sqlalchemy.delete(StopTimetable).where(StopTimetable.operator_id == operator_id,
-                                                                      StopTimetable.stop_id == stop_id)
+    stop_timetable_to_delete = siri_db.delete(StopTimetable).where(StopTimetable.operator_id == operator_id,
+                                                                   StopTimetable.stop_id == stop_id)
     siri_db.session.execute(stop_timetable_to_delete)
     siri_db.session.commit()
 
@@ -670,7 +668,7 @@ def stop_timetable(siri_db: flask_sqlalchemy.SQLAlchemy,
 
 def read_key_api_file() -> (str, str):
     """
-    Reads the key and url form the enviromental variables
+    Reads the key and url form the environmental variables
 
     :return: tuple containing key and url
     :rtype: tuple(str, str)
@@ -710,6 +708,53 @@ def refresh_needed(siri_db: flask_sqlalchemy.SQLAlchemy,
         return True
     delta_time = current_time.replace(tzinfo=None) - last_update_time
     return delta_time >= dt.timedelta(minutes=refresh_limit)
+
+
+def operator_refresh_needed(siri_db: flask_sqlalchemy.SQLAlchemy,
+                            refresh_limit: float,
+                            current_time: dt.datetime) -> bool:
+    """
+    Determines if refresh of a given table is needed.
+
+    :param siri_db: database
+    :type siri_db: flask_sqlalchemy.SQLAlchemy
+
+    :param refresh_limit: minimum time to elapse before refreshing table
+    :type refresh_limit: float
+
+    :param current_time: current time in utc
+    :type refresh_limit: dt.datetime
+
+    :return: boolean for if the table should be refreshed
+    :rtype: bool
+    """
+
+    operator_refresh_time = siri_db.session.execute(siri_db.select(Parameter).filter_by(
+        name="operator_refresh_time")).scalar_one_or_none()
+    if operator_refresh_time is None:
+        return True
+    last_update_time = dateutil.parser.isoparse(operator_refresh_time.value).replace(tzinfo=None)
+    delta_time = current_time.replace(tzinfo=None) - last_update_time
+    return delta_time >= dt.timedelta(minutes=refresh_limit)
+
+
+def save_operator_refresh_time(siri_db: flask_sqlalchemy.SQLAlchemy,
+                               current_time: dt.datetime) -> None:
+    """
+    Determines if refresh of a given table is needed.
+
+    :param siri_db: database
+    :type siri_db: flask_sqlalchemy.SQLAlchemy
+
+    :param current_time: current time in utc
+    :type current_time: dt.datetime
+
+    :return: boolean for if the table should be refreshed
+    :rtype: bool
+    """
+    operator_refresh = Parameter("operator_refresh_time", current_time.isoformat())
+    siri_db.session.add(operator_refresh)
+    siri_db.session.commit()
 
 
 def parse_time_str(time_str: typing.Optional[str] = None) -> typing.Union[dt.datetime, None]:
