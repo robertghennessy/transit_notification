@@ -151,7 +151,6 @@ class Vehicle(db.Model):
                 (self.line_id is None) or (self.vehicle_direction is None))
 
 
-
 class OnwardCall(db.Model):
     operator_id = db.Column(db.String(2), db.ForeignKey("operator.operator_id"), nullable=False, primary_key=True)
     stop_id = db.Column(db.String(10), db.ForeignKey("stop.stop_id"), nullable=False, primary_key=True)
@@ -222,4 +221,24 @@ class Parameter(db.Model):
 
     def __repr__(self):
         return f"name: {self.name}, value: {self.value}"
+
+
+class Shape(db.Model):
+    operator_id = db.Column(db.String(2), db.ForeignKey("operator.operator_id"), nullable=False, primary_key=True)
+    line_id = db.Column(db.Integer, db.ForeignKey("line.line_id"), nullable=False, primary_key=True)
+    shape_order = db.Column(db.Integer, nullable=False, primary_key=True)
+    shape_longitude = db.Column(db.Float, nullable=False)
+    shape_latitude = db.Column(db.Float, nullable=False)
+
+    def __init__(self, operator_id, line_id, shape_order, shape_longitude, shape_latitude):
+        self.operator_id = operator_id
+        self.line_id = line_id
+        self.shape_order = shape_order
+        self.shape_longitude = shape_longitude
+        self.shape_latitude = shape_latitude
+
+    def __repr__(self):
+        return f"Operator id : {self.operator_id}, Line Id: {self.line_id}, Shape Order: {self.shape_order}, Longitude: {self.stop_longitude}, " \
+               f"Latitude: {self.stop_latitude}"
+
 

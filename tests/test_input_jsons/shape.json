@@ -1,0 +1,29 @@
+{
+  "Content": {
+    "TimetableFrame": {
+      "version": "any",
+      "id": "TF:SF",
+      "vehicleJourneys": {
+        "ServiceJourney": {
+          "version": "any",
+          "id": "11651833_M11",
+          "LinkSequenceProjection": {
+            "version": "any",
+            "id": "609317",
+            "LineString": {
+              "srsName": "WGS84",
+              "id": "609317",
+              "pos": [
+                "37.706479 -122.459906",
+                "37.706744 -122.459069",
+                "37.707025 -122.458097",
+                "37.707306 -122.457146",
+                "37.707433 -122.456754"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

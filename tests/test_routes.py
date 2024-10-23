@@ -24,7 +24,7 @@ def test_setup_render(client):
 """ Test Index Page"""
 @responses.activate
 @mock.patch.dict(os.environ, {'API_KEY': test_key})
-def test_index_with_proper_setup(client, app):
+def test_operators_with_proper_setup(client, app):
     with open("test_input_jsons/operators.json", 'r') as f:
         operators_json = json.load(f)
     responses.add(
@@ -34,12 +34,10 @@ def test_index_with_proper_setup(client, app):
         status=200,
         content_type="application/json",
     )
-    response = client.get('/', follow_redirects=True)
-    assert response.status_code == 200
-    assert b"Select Operator" in response.data
     with app.app_context():
-        response = client.get('/', follow_redirects=True)
+        response = client.get('/operators', follow_redirects=True)
         assert response.status_code == 200
+        assert b"Please select an operator from the list below." in response.data
         # check that monitored=True exists in output
         assert b'<a href="/operator/SF">San Francisco Municipal Transportation Agency</a>' in response.data
         # check that monitored = False is not in output
@@ -48,8 +46,8 @@ def test_index_with_proper_setup(client, app):
 
 @responses.activate
 @mock.patch.dict(os.environ, {'API_KEY': test_key})
-def test_index_with_improper_setup(client, app):
-    response = client.get('/', follow_redirects=True)
+def test_operators_with_improper_setup(client, app):
+    response = client.get('/operators', follow_redirects=True)
     assert response.status_code == 200
     assert b"Directions on setting up Transit Notification." in response.data
 
@@ -63,7 +61,7 @@ def test_api_error_error(client):
         status=400,
         body="400 Error",
     )
-    response = client.get('/', follow_redirects=True)
+    response = client.get('/operators', follow_redirects=True)
     assert b"This API key provided is invalid" in response.data
 
 
@@ -104,7 +102,7 @@ def test_valid_operator(client, app):
     )
 
     with app.app_context():
-        response = client.get('/', follow_redirects=True)
+        response = client.get('/operators', follow_redirects=True)
         assert b'Please select an operator from the list below.' in response.data
         response = client.get('/operator/abc', follow_redirects=True)
         assert response.status_code == 200

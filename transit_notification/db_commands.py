@@ -11,7 +11,7 @@ import typing
 from collections import defaultdict, OrderedDict
 
 from transit_notification.models import (Operator, Line, Stop, Vehicle, Pattern, StopPattern, OnwardCall,
-                                         StopTimetable, Parameter)
+                                         StopTimetable, Parameter, Shape)
 import siri_transit_api_client
 
 
@@ -49,6 +49,10 @@ def save_operators(siri_db: flask_sqlalchemy.SQLAlchemy, operators_dict: dict) -
     operators_df = pd.DataFrame(operators_dict)
     operators = [Operator(operator_id=row['Id'], operator_name=row['Name'], operator_monitored=row['Monitored'])
                  for _, row in operators_df.iterrows()]
+
+    operators_to_delete = siri_db.delete(Operator)
+    siri_db.session.execute(operators_to_delete)
+    siri_db.session.commit()
     siri_db.session.add_all(operators)
     siri_db.session.commit()
     return None
@@ -381,13 +385,22 @@ def save_patterns(siri_db: flask_sqlalchemy.SQLAlchemy, operator_id: str, line_i
 
     """
     directions = pattern_dict["directions"]
-    stmt = siri_db.update(Line).where(Line.operator_id == operator_id, Line.line_id == line_id).values(
-        {
-            "direction_0_id": directions[0]["DirectionId"],
-            "direction_0_name": directions[0]["Name"],
-            "direction_1_id": directions[1]["DirectionId"],
-            "direction_1_name": directions[1]["Name"]
-        })
+    if len(directions) == 2:
+        stmt = siri_db.update(Line).where(Line.operator_id == operator_id, Line.line_id == line_id).values(
+            {
+                "direction_0_id": directions[0]["DirectionId"],
+                "direction_0_name": directions[0]["Name"],
+                "direction_1_id": directions[1]["DirectionId"],
+                "direction_1_name": directions[1]["Name"]
+            })
+    elif len(directions) == 1:
+        stmt = siri_db.update(Line).where(Line.operator_id == operator_id, Line.line_id == line_id).values(
+            {
+                "direction_0_id": directions[0]["DirectionId"],
+                "direction_0_name": directions[0]["Name"],
+                "direction_1_id": None,
+                "direction_1_name": None
+            })
     siri_db.session.execute(stmt)
     siri_db.session.commit()
 
@@ -579,6 +592,82 @@ def save_stop_monitoring(siri_db,
     siri_db.session.commit()
 
     return None
+
+
+def get_shapes_dict(transit_api_key: str,
+                    siri_base_url: str,
+                    operator_id: str,
+                    trip_id: str) -> dict:
+    """
+    Get shape from SIRI using api key and url
+
+    :param transit_api_key: api key
+    :type transit_api_key: api key
+
+    :param siri_base_url: url for the transit api
+    :type siri_base_url: url for the transit api
+
+    :param operator_id: operator id
+    :type operator_id: str
+
+    :param trip_id: trip id
+    :type trip_id: str
+
+    :return: dictionary containing the shape
+    :rtype: dict
+    """
+
+    siri_client = siri_transit_api_client.SiriClient(api_key=transit_api_key, base_url=siri_base_url)
+    return siri_client.shapes(operator_id, trip_id)
+
+
+def save_shapes(siri_db: flask_sqlalchemy.SQLAlchemy,
+                operator_id: str,
+                line_id: str,
+                shape_dict: dict,
+                current_time: dt.datetime) -> None:
+    """
+    Parses the stop monitoring dictionary and returns a dictionary of selected items
+
+    :param siri_db: database
+    :type siri_db: flask_sqlalchemy.SQLAlchemy
+
+    :param operator_id: operator id
+    :type operator_id: str
+
+    :param line_id: line id
+    :type line_id: str
+
+    :param shape_dict: dictionary for a vehicle to be parsed
+    :type shape_dict: dict
+
+    :param current_time: current utc time
+    :type current_time: dt.datetime
+
+    :return: None
+    :rtype: None
+    """
+
+    #TODO - add logic to delete shapes only when data is old
+
+    shape_coordinates_list = \
+    shape_dict['Content']['TimetableFrame']['vehicleJourneys']['ServiceJourney']['LinkSequenceProjection'][
+        'LineString']['pos']
+    shape_coordinates_list = [x.split() for x in shape_coordinates_list]
+    shape_coordinates_df = pd.DataFrame(shape_coordinates_list, columns=['latitude', 'longitude']).astype(float)
+    shape_coordinates = [Shape(operator_id=operator_id,
+                               line_id=line_id,
+                               shape_order=ind,
+                               shape_latitude=row['latitude'],
+                               shape_longitude=row['longitude'])
+                         for ind, row in shape_coordinates_df.iterrows()]
+
+    shapes_to_delete = siri_db.delete(Shape)
+    siri_db.session.execute(shapes_to_delete)
+    siri_db.session.commit()
+    siri_db.session.add_all(shape_coordinates)
+    siri_db.session.commit()
+
 
 
 def upcoming_vehicles(siri_db: flask_sqlalchemy.SQLAlchemy,

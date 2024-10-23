@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+
 {% block content %}
     {% if error %}
         <p class=error><strong>Error:</strong> {{ error }}
@@ -29,9 +30,6 @@
   <li class="nav-item" role="presentation">
     <button class="nav-link active" id="direction0-tab" data-bs-toggle="tab" data-bs-target="#direction0" type="button" role="tab" aria-controls="direction0" aria-selected="true">{{line.direction_0_name}}</button>
   </li>
-  <li class="nav-item" role="presentation">
-    <button class="nav-link" id="direction1-tab" data-bs-toggle="tab" data-bs-target="#direction1" type="button" role="tab" aria-controls="direction1" aria-selected="false">{{line.direction_1_name}}</button>
-  </li>
 </ul>
 <div class="tab-content" id="myTabContent">
   <div class="tab-pane fade show active" id="direction0" role="tabpanel" aria-labelledby="direction0-tab">
@@ -44,23 +42,6 @@
           </thead>
         <tbody>
             {% for stop in direction_0_stops %}
-                <tr>
-                    <td><a href="{{ url_for('routes.render_eta', operator_id=line.operator_id, stop_id=stop.stop_id) }}">{{stop.stop_name}}</a></td>
-                    <td><a href="{{ url_for('routes.render_eta', operator_id=line.operator_id, stop_id=stop.stop_id) }}">{{stop.stop_id}}</a></td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-  </div>
-  <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">Stop</th>
-              <th scope="col">Stop Id</th>
-            </tr>
-          </thead>
-        <tbody>
-            {% for stop in direction_1_stops %}
                 <tr>
                     <td><a href="{{ url_for('routes.render_eta', operator_id=line.operator_id, stop_id=stop.stop_id) }}">{{stop.stop_name}}</a></td>
                     <td><a href="{{ url_for('routes.render_eta', operator_id=line.operator_id, stop_id=stop.stop_id) }}">{{stop.stop_id}}</a></td>

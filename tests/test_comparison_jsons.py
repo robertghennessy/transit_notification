@@ -146,3 +146,9 @@ class TestComparisonJsons:
                transit_notification.db_commands.format_eta_time(dt.timedelta(minutes=40))
                ]
     }
+
+    route_shape = {'line_id': 14,
+                  'operator_id': 'SF',
+                  'shape_latitude': 37.706479,
+                  'shape_longitude': -122.459906,
+                  'shape_order': 0}

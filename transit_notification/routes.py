@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for, flash
 from transit_notification import db
 from transit_notification.models import Operator, Line, Pattern, StopPattern, Stop
 import siri_transit_api_client
@@ -16,7 +16,7 @@ VEHICLE_MONITORING_REFRESH_LIMIT = 1
 STOP_MONITORING_REFRESH_LIMIT = 1
 
 
-@routes.route('/setup', methods=('GET', 'POST'))
+@routes.route('/setup')
 def setup():
     error = None
     return render_template('setup.html', error=error)
@@ -24,8 +24,14 @@ def setup():
 
 @routes.route('/')
 def index():
+    error = None
+    return render_template('index.html', error=error)
+
+
+@routes.route('/operators')
+def show_operators():
     transit_api_key, siri_base_url = tndc.read_key_api_file()
-    operator_val = db.session.query(Operator).first()
+    operator_val = db.session.execute(db.select(Operator)).first()
     current_time = dt.datetime.now(dt.timezone.utc)
     operator_refresh_needed = tndc.operator_refresh_needed(db, OPERATORS_REFRESH_LIMIT, current_time)
 
@@ -41,8 +47,9 @@ def index():
             error = 'This API key provided is invalid.'
             return render_template('setup.html', error=error)
 
-    return render_template('index.html',
-                           operators=Operator.query.filter(Operator.operator_monitored).all())
+    return render_template('show_operators.html',
+                           operators=db.session.execute(
+                               db.select(Operator).filter(Operator.operator_monitored)).scalars().all())
 
 
 @routes.route('/operator/<operator_id>', methods=["GET"])
@@ -55,8 +62,10 @@ def render_lines(operator_id):
     if tndc.refresh_needed(db, operator_id, 'lines_updated', LINES_REFRESH_LIMIT, current_time):
         lines_dict = tndc.get_lines_dict(transit_api_key, siri_base_url, operator_id)
         tndc.save_lines(db, operator_id, lines_dict, current_time)
+    lines = db.session.execute(
+        db.select(Line).filter(Line.operator_id == operator_id).order_by(Line.sort_index.asc())).scalars().all()
     return render_template('show_lines.html',
-                           lines=Line.query.filter(Line.operator_id == operator_id).order_by(Line.sort_index.asc()))
+                           lines=lines)
 
 
 @routes.route('/operator/<operator_id>/line/<line_id>', methods=["GET"])
@@ -76,30 +85,39 @@ def render_stops(operator_id, line_id):
         pattern_dict = tndc.get_pattern_dict(transit_api_key, siri_base_url, operator_id, line_id)
         tndc.save_patterns(db, operator_id, line_id, pattern_dict)
 
-    operator_val = Operator.query.filter(Operator.operator_id == operator_id).first()
-    line_val = Line.query.filter(db.and_(Line.operator_id == operator_id, Line.line_id == line_id)).first()
+    operator_val = db.session.execute(db.select(Operator)).first()
+    line_val = db.session.execute(db.select(Line).filter(
+        db.and_(Line.operator_id == operator_id, Line.line_id == line_id))).scalar()
 
     direction_0_id = line_val.direction_0_id
+    direction_0_pattern = db.session.execute(db.select(Pattern).filter(
+        db.and_(Pattern.operator_id == operator_id,
+                Pattern.line_id == line_id,
+                Pattern.pattern_direction == direction_0_id)).order_by(Pattern.pattern_trip_count.desc())).scalar()
+    direction_0_stops = db.session.execute(
+        db.select(Stop, StopPattern).join(StopPattern, Stop.stop_id == StopPattern.stop_id
+                                          ).filter(StopPattern.pattern_id == direction_0_pattern.pattern_id
+                                                   ).order_by(StopPattern.stop_order.asc())).scalars().all()
     direction_1_id = line_val.direction_1_id
-    direction_0_pattern = Pattern.query.filter(db.and_(Pattern.operator_id == operator_id,
-                                                       Pattern.line_id == line_id,
-                                                       Pattern.pattern_direction == direction_0_id)
-                                               ).order_by(Pattern.pattern_trip_count.desc()).first()
-    direction_1_pattern = Pattern.query.filter(db.and_(Pattern.operator_id == operator_id,
-                                                       Pattern.line_id == line_id,
-                                                       Pattern.pattern_direction == direction_1_id)
-                                               ).order_by(Pattern.pattern_trip_count.desc()).first()
+    if direction_1_id is None:
+        return render_template('show_stops_single_direction.html',
+                               direction_0_stops=direction_0_stops,
+                               operator=operator_val,
+                               line=line_val)
 
-    direction_0_stops = Stop.query.join(StopPattern, Stop.stop_id == StopPattern.stop_id
-                                        ).filter(StopPattern.pattern_id == direction_0_pattern.pattern_id
-                                                 ).order_by(StopPattern.stop_order.asc())
-    direction_1_stops = Stop.query.join(StopPattern, Stop.stop_id == StopPattern.stop_id
-                                        ).filter(StopPattern.pattern_id == direction_1_pattern.pattern_id
-                                                 ).order_by(StopPattern.stop_order.asc())
+    direction_1_pattern = db.session.execute(db.select(Pattern).filter(
+        db.and_(Pattern.operator_id == operator_id,
+                Pattern.line_id == line_id,
+                Pattern.pattern_direction == direction_1_id)).order_by(Pattern.pattern_trip_count.desc())).scalar()
+    direction_1_stops = db.session.execute(
+        db.select(Stop, StopPattern).join(StopPattern, Stop.stop_id == StopPattern.stop_id
+                                          ).filter(StopPattern.pattern_id == direction_1_pattern.pattern_id
+                                                   ).order_by(StopPattern.stop_order.asc())).scalars().all()
+
 
     return render_template('show_stops.html',
-                           direction_0_stops=direction_0_stops.all(),
-                           direction_1_stops=direction_1_stops.all(),
+                           direction_0_stops=direction_0_stops,
+                           direction_1_stops=direction_1_stops,
                            operator=operator_val,
                            line=line_val)
 
@@ -123,38 +141,42 @@ def render_eta(operator_id, stop_id):
 
 
 def check_valid_operator(operator_id: str):
-    operator_val = db.session.query(Operator).first()
+    operator_val = db.session.execute(db.select(Operator)).scalars()
     if operator_val is None:
         error = 'Please use links instead of directly typing web address.'
         flash(error, 'error')
-        return redirect(url_for('routes.index'))
-    operator_val = Operator.query.filter(Operator.operator_id == operator_id).first()
+        return redirect(url_for('routes.show_operators'))
+    operator_val = db.session.execute(db.select(Operator).filter(Operator.operator_id == operator_id)).scalar_one_or_none()
     if operator_val is None:
-        error = ('Operator {0} is not in database. Check to see if monitored '
-                 'or valid operator id provided').format(operator_id)
+        error = ('Operator {0} is not in database or database not initialized. Check to see if monitored '
+                 'or valid operator id is below.').format(operator_id)
         flash(error, 'error')
-        return render_template('index.html',
-                               operators=Operator.query.filter(Operator.operator_monitored).all())
+        return redirect(url_for('routes.show_operators'))
     return None
 
 
 def check_valid_line(operator_id, line_id):
-    line_val = Line.query.filter(db.and_(Line.operator_id == operator_id, Line.line_id == line_id)).first()
+    line_val = db.session.execute(
+        db.select(Line).filter(Line.operator_id == operator_id and Line.line_id == line_id).order_by(
+            Line.sort_index.asc())).scalar()
     if line_val is None:
         error = 'Operator {0} with line {1} is not in database.'.format(operator_id, line_id)
+        lines = db.session.execute(
+            db.select(Line).filter(Line.operator_id == operator_id).order_by(Line.sort_index.asc())).scalars().all()
         return render_template('show_lines.html',
-                               lines=Line.query.filter(Line.operator_id ==
-                                                       operator_id).order_by(Line.sort_index.asc()),
+                               lines=lines,
                                error=error)
     return None
 
 
 def check_valid_stop(operator_id, stop_id):
-    stop_val = Stop.query.filter(db.and_(Stop.operator_id == operator_id, Stop.stop_id == stop_id)).first()
+    stop_val = db.session.execute(
+        db.select(Stop).filter(Stop.operator_id == operator_id and Stop.stop_id == stop_id)).scalar()
     if stop_val is None:
         error = 'Operator {0} with stop {1} is not in database.'.format(operator_id, stop_id)
+        lines = db.session.execute(
+            db.select(Line).filter(Line.operator_id == operator_id).order_by(Line.sort_index.asc())).scalars().all()
         return render_template('show_lines.html',
-                               lines=Line.query.filter(Line.operator_id ==
-                                                       operator_id).order_by(Line.sort_index.asc()),
+                               lines=lines,
                                error=error)
     return None

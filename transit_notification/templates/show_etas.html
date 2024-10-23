@@ -2,10 +2,27 @@
 
 
 {% block content %}
-    <h1>{% block title %} Select Stop {% endblock %}</h1>
     {% if error %}
         <p class=error><strong>Error:</strong> {{ error }}
     {% endif %}
+<p class="display-6">
+        Using the program:
+    </p>
+    <p>
+        The ETAs for the selected stop are shown below.
+    </p>
+    <p class="display-6">
+        What is happening:
+    </p>
+    <ul>
+        <li>
+            If the stop monitoring table is outdated or empty, query stop monitoring for the selected operator from
+            511.org and store in the vehicle and onward call table. Vehicle table contains information for a vehicle
+            and onward call contains information about a vehicle reaching a stop.
+        </li>
+    </ul>
+
+
     <table>
         <tbody>
             {% for line, etas in eta_dict.items() %}

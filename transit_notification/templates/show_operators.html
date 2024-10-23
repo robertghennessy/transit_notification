@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if error %}
+        <p class=error><strong>Error:</strong> {{ error }}
+    {% endif %}
+    <p class="display-6">
+        Using the program:
+    </p>
+    <p>
+        Please select an operator from the list below. The list contains all monitored operators on 511.org.
+    </p>
+
+    <p class="display-6">
+        What is happening:
+    </p>
+    <ul>
+        <li>
+            If the operator table is outdated or empty, query operators from 511.org and store in the operator table.
+        </li>
+    </ul>
+    <p class="display-6">
+        Monitored operators:
+    </p>
+    <table>
+        <tbody>
+            {% for operator in operators %}
+                <tr>
+                    <td><a href="{{ url_for('routes.render_lines', operator_id=operator.operator_id) }}">{{operator.operator_name}}</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+

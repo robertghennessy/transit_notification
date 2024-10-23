@@ -1,19 +1,7 @@
 {% extends 'base.html' %}
-
 {% block content %}
-    <h1>{% block title %} Select Operator {% endblock %}</h1>
-    {% if error %}
-        <p class=error><strong>Error:</strong> {{ error }}
-    {% endif %}
-    Please select an operator from the list below.
-    <table>
-        <tbody>
-            {% for operator in operators %}
-                <tr>
-                    <td><a href="{{ url_for('routes.render_lines', operator_id=operator.operator_id) }}">{{operator.operator_name}}</a></td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+  {% if error %}
+    <p class=error><strong>Error:</strong> {{ error }}
+  {% endif %}
+  Index
 {% endblock %}
-

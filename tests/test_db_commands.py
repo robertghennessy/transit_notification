@@ -3,7 +3,7 @@ import json
 
 from transit_notification import create_app, db, db_commands
 from transit_notification.models import (Operator, Vehicle, OnwardCall, Line, Stop, StopPattern, Pattern,
-                                         StopTimetable, Parameter)
+                                         StopTimetable, Parameter, Shape)
 import datetime as dt
 from dateutil.tz import tzutc
 from tests.test_comparison_jsons import TestComparisonJsons
@@ -338,3 +338,22 @@ def test_save_operator_refresh_time(app):
             name="operator_refresh_time")).scalar_one_or_none()
         last_update_time = dateutil.parser.isoparse(operator_refresh_time.value).replace(tzinfo=None)
         assert last_update_time == current_time.replace(tzinfo=None)
+
+def test_save_shape(app):
+    with open("test_input_jsons/operators.json", 'r') as f:
+        operators_dict = json.load(f)
+    with open("test_input_jsons/lines.json", 'r') as f:
+        line_dict = json.load(f)
+    with open("test_input_jsons/shape.json", 'r') as f:
+        shape_dict = json.load(f)
+    with app.app_context():
+        db_commands.save_operators(db, operators_dict)
+        db_commands.save_lines(db, selected_operator, line_dict, current_time)
+        db_commands.save_shapes(db, selected_operator, selected_line, shape_dict, current_time)
+        select = db.select(Shape).filter_by(operator_id=selected_operator,
+                                            line_id=selected_line
+                                            )
+        shape = db.session.execute(select).scalars().all()
+        assert len(shape) == 5
+        assert remove_internal_keys(shape[0].__dict__) == \
+               remove_internal_keys(TestComparisonJsons.route_shape)
