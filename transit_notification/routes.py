@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, flash
 from transit_notification import db
-from transit_notification.models import Operator, Line, Pattern, StopPattern, Stop
+from transit_notification.models import Operator, Line, Pattern, StopPattern, Stop, Shape
 import siri_transit_api_client
 import datetime as dt
 import transit_notification.db_commands as tndc
@@ -98,7 +98,42 @@ def render_stops(operator_id, line_id):
         db.select(Stop, StopPattern).join(StopPattern, Stop.stop_id == StopPattern.stop_id
                                           ).filter(StopPattern.pattern_id == direction_0_pattern.pattern_id
                                                    ).order_by(StopPattern.stop_order.asc())).scalars().all()
+    direction_0_beg_stop_id = direction_0_stops[0].stop_id
+    direction_0_end_stop_id = direction_0_stops[-1].stop_id
+
+    direction_0_beg_stop_json = tndc.get_stop_timetable_dict(transit_api_key,siri_base_url,operator_id,
+                                                             direction_0_beg_stop_id)
+    direction_0_end_stop_json = tndc.get_stop_timetable_dict(transit_api_key, siri_base_url, operator_id,
+                                                             direction_0_end_stop_id)
+
+
+    tndc.save_stop_timetable(db, operator_id, direction_0_beg_stop_id, direction_0_beg_stop_json)
+    tndc.save_stop_timetable(db, operator_id, direction_0_end_stop_id, direction_0_end_stop_json)
+
+    direction_0_vehicle_ref = tndc.determine_vehicle_ref_full_journey(db,
+                                                                      operator_id,
+                                                                      direction_0_beg_stop_id,
+                                                                      direction_0_end_stop_id)
+
+    shape_dict = tndc.get_shapes_dict(transit_api_key, siri_base_url, operator_id, direction_0_vehicle_ref)
+    tndc.save_shapes(db, operator_id, line_id, shape_dict, current_time)
+
+    shape_coordinates = db.session.execute(db.select(Shape).filter(
+        db.and_(Shape.operator_id == operator_id, Shape.line_id == line_id))).scalars().all()
+    print(type(shape_coordinates))
+    print(shape_coordinates)
+
+
+    # TODO
+    # for shapes, I need trip_id
+    # DatedVehicleJourneyRef is equivalent to trip_id. DatedVehicleJourneyRef is in vehicle and stop monitoring
+    # ETAs come from vehicles and onward calls
+    # Vehicle has vehicle_journey_ref
+    # use stoptimetable to query the stops at the beginning and end stops. find vehicle that goes to both.
+
+
     direction_1_id = line_val.direction_1_id
+
     if direction_1_id is None:
         return render_template('show_stops_single_direction.html',
                                direction_0_stops=direction_0_stops,

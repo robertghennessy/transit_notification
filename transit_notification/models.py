@@ -191,7 +191,7 @@ class OnwardCall(db.Model):
 
 class StopTimetable(db.Model):
     operator_id = db.Column(db.String(2), db.ForeignKey("operator.operator_id"), nullable=False, primary_key=True)
-    stop_id = db.Column(db.String(10), db.ForeignKey("stop.stop_id"), nullable=False)
+    stop_id = db.Column(db.String(10), db.ForeignKey("stop.stop_id"), nullable=False, primary_key=True)
     vehicle_journey_ref = db.Column(db.String(100), nullable=False, primary_key=True)
     aimed_arrival_time_utc = db.Column(db.DateTime)
     aimed_departure_time_utc = db.Column(db.DateTime)
@@ -238,7 +238,7 @@ class Shape(db.Model):
         self.shape_latitude = shape_latitude
 
     def __repr__(self):
-        return f"Operator id : {self.operator_id}, Line Id: {self.line_id}, Shape Order: {self.shape_order}, Longitude: {self.stop_longitude}, " \
-               f"Latitude: {self.stop_latitude}"
+        return f"Operator id : {self.operator_id}, Line Id: {self.line_id}, Shape Order: {self.shape_order}, Longitude: {self.shape_longitude}, " \
+               f"Latitude: {self.shape_latitude}"
 
 

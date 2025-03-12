@@ -1,0 +1,61 @@
+{
+  "Siri": {
+    "ServiceDelivery": {
+      "ResponseTimestamp": "2023-09-26T15:00:00Z",
+      "Status": true,
+      "StopTimetableDelivery": {
+        "ResponseTimestamp": "2023-09-26T15:00:00Z",
+        "TimetabledStopVisit": [
+          {
+            "RecordedAtTime": "2023-09-21T21:03:22-07:00",
+            "MonitoringRef": "15557",
+            "TargetedVehicleJourney": {
+              "LineRef": "14",
+              "DirectionRef": "IB",
+              "DatedVehicleJourneyRef": "Schedule_0-Est_0",
+              "PublishedLineName": "14",
+              "OperatorRef": "SF",
+              "OriginRef": "17742",
+              "OriginName": "Morse St & Lowell St",
+              "DestinationRef": "16498",
+              "DestinationName": "Steuart St & Mission St",
+              "VehicleJourneyName": "Ferry Plaza",
+              "TargetedCall": {
+                "StopPointRef": "15557",
+                "StopPointName": "Mission St & 20th St",
+                "DestinationDisplay": "Ferry Plaza",
+                "VisitNumber": "1",
+                "AimedArrivalTime": "2023-09-26T15:00:02+00:00",
+                "AimedDepartureTime": "2023-09-26T15:02:00+00:00"
+              }
+            }
+          },
+          {
+            "RecordedAtTime": "2023-09-21T21:03:22-07:00",
+            "MonitoringRef": "15557",
+            "TargetedVehicleJourney": {
+              "LineRef": "14",
+              "DirectionRef": "IB",
+              "DatedVehicleJourneyRef": "NotAt15533",
+              "PublishedLineName": "14",
+              "OperatorRef": "SF",
+              "OriginRef": "17742",
+              "OriginName": "Morse St & Lowell St",
+              "DestinationRef": "16498",
+              "DestinationName": "Steuart St & Mission St",
+              "VehicleJourneyName": "Ferry Plaza",
+              "TargetedCall": {
+                "StopPointRef": "15557",
+                "StopPointName": "Mission St & 20th St",
+                "DestinationDisplay": "Ferry Plaza",
+                "VisitNumber": "1",
+                "AimedArrivalTime": "2023-09-26T15:10:00+00:00",
+                "AimedDepartureTime": "2023-09-26T15:10:00+00:00"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
