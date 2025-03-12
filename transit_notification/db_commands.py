@@ -9,6 +9,7 @@ import dateutil.parser
 import flask_sqlalchemy
 import typing
 from collections import defaultdict, OrderedDict
+from sqlalchemy import func
 
 from transit_notification.models import (Operator, Line, Stop, Vehicle, Pattern, StopPattern, OnwardCall,
                                          StopTimetable, Parameter, Shape)
@@ -401,6 +402,8 @@ def save_patterns(siri_db: flask_sqlalchemy.SQLAlchemy, operator_id: str, line_i
                 "direction_1_id": None,
                 "direction_1_name": None
             })
+    else:
+        raise Exception("Only 1 or 2 directions are supported")
     siri_db.session.execute(stmt)
     siri_db.session.commit()
 
@@ -693,7 +696,8 @@ def upcoming_vehicles(siri_db: flask_sqlalchemy.SQLAlchemy,
     :rtype: list[dict]
     """
 
-    stmt = siri_db.select(Vehicle, OnwardCall).join(OnwardCall).filter(OnwardCall.stop_id == stop_id)
+    stmt = siri_db.select(Vehicle, OnwardCall).join(OnwardCall).filter(siri_db.and_(
+        OnwardCall.stop_id == stop_id, OnwardCall.operator_id == operator_id))
     response_dict = defaultdict(list)
     for row in siri_db.session.execute(stmt):
         vehicle = row[0]
@@ -711,12 +715,41 @@ def upcoming_vehicles(siri_db: flask_sqlalchemy.SQLAlchemy,
     return response_dict
 
 
-def stop_timetable(siri_db: flask_sqlalchemy.SQLAlchemy,
-                   operator_id: str,
-                   stop_id: str,
-                   timetable_dict: dict) -> None:
+def get_stop_timetable_dict(transit_api_key: str,
+                            siri_base_url: str,
+                            operator_id: str,
+                            stop_code: str
+                            ) -> dict:
     """
-   Store timetable for a given stop in the database.
+    Get shape from SIRI using api key and url
+
+    :param transit_api_key: api key
+    :type transit_api_key: api key
+
+    :param siri_base_url: url for the transit api
+    :type siri_base_url: url for the transit api
+
+    :param operator_id: operator id
+    :type operator_id: str
+
+    :param stop_code: stop id
+    :type stop_code: str
+
+    :return: dictionary containing the shape
+    :rtype: dict
+    """
+
+    siri_client = siri_transit_api_client.SiriClient(api_key=transit_api_key, base_url=siri_base_url)
+    return siri_client.stop_timetable(operator_id, stop_code)
+
+
+
+def save_stop_timetable(siri_db: flask_sqlalchemy.SQLAlchemy,
+                        operator_id: str,
+                        stop_id: str,
+                        timetable_dict: dict) -> None:
+    """
+   Store stop timetable for a given stop in the database.
 
    :param siri_db: database
    :type siri_db: flask_sqlalchemy.SQLAlchemy
@@ -752,7 +785,41 @@ def stop_timetable(siri_db: flask_sqlalchemy.SQLAlchemy,
 
     siri_db.session.add_all(stop_timetable_list)
     siri_db.session.commit()
+
     return None
+
+
+def determine_vehicle_ref_full_journey(siri_db: flask_sqlalchemy.SQLAlchemy,
+                                       operator_id: str,
+                                       beg_stop_code: str,
+                                       end_stop_code: str,
+                                       ) -> str:
+    """
+    Determine a vehicle that travels the full length of the route
+
+   :param siri_db: database
+   :type siri_db: flask_sqlalchemy.SQLAlchemy
+
+   :param operator_id: operator id
+   :type operator_id: str
+
+   :param beg_stop_code: stop id for first stop
+   :type beg_stop_code: str
+
+   :param end_stop_code: stop id for last stop
+   :type end_stop_code: str
+
+   :return: vehicl_journey_ref
+   :rtype: str
+    """
+    query = siri_db.session.query(StopTimetable.vehicle_journey_ref,
+                                  func.count(StopTimetable.vehicle_journey_ref)
+                                  ).group_by(StopTimetable.vehicle_journey_ref).having(func.count(StopTimetable.vehicle_journey_ref) > 1)
+
+    result = siri_db.session.execute(query).all()
+    return result[0][0]
+
+
 
 
 def read_key_api_file() -> (str, str):

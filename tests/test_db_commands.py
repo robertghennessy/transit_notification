@@ -5,7 +5,6 @@ from transit_notification import create_app, db, db_commands
 from transit_notification.models import (Operator, Vehicle, OnwardCall, Line, Stop, StopPattern, Pattern,
                                          StopTimetable, Parameter, Shape)
 import datetime as dt
-from dateutil.tz import tzutc
 from tests.test_comparison_jsons import TestComparisonJsons
 from collections import defaultdict, OrderedDict
 import dateutil
@@ -123,14 +122,14 @@ def test_upcoming_vehicles(app):
         stop_dict = json.load(f)
     with open("test_input_jsons/patterns.json", 'r') as f:
         pattern_dict = json.load(f)
-    with open("test_input_jsons/stop_timetable_modified.json", 'r') as f:
+    with open("test_input_jsons/stop_timetable_15553.json", 'r') as f:
         stop_timetable = json.load(f)
     with app.app_context():
         db_commands.save_operators(db, operators_dict)
         db_commands.save_lines(db, selected_operator, line_dict, current_time)
         db_commands.save_stops(db, selected_operator, stop_dict, current_time)
         db_commands.save_patterns(db, selected_operator, selected_line, pattern_dict)
-        db_commands.stop_timetable(db, selected_operator, selected_stop, stop_timetable)
+        db_commands.save_stop_timetable(db, selected_operator, selected_stop, stop_timetable)
         db_commands.save_vehicle_monitoring(db, selected_operator, vehicles_dict, current_time)
         upcoming_dict = db_commands.upcoming_vehicles(db, selected_operator, selected_stop, current_time)
         assert upcoming_dict == TestComparisonJsons.upcoming_vehicles
@@ -180,14 +179,14 @@ def test_stop_timetable(app):
         stop_dict = json.load(f)
     with open("test_input_jsons/patterns.json", 'r') as f:
         pattern_dict = json.load(f)
-    with open("test_input_jsons/stop_timetable_modified.json", 'r') as f:
+    with open("test_input_jsons/stop_timetable_15553.json", 'r') as f:
         stop_timetable = json.load(f)
     with app.app_context():
         db_commands.save_operators(db, operators_dict)
         db_commands.save_lines(db, selected_operator, line_dict, current_time)
         db_commands.save_stops(db, selected_operator, stop_dict, current_time)
         db_commands.save_patterns(db, selected_operator, '49', pattern_dict)
-        db_commands.stop_timetable(db, selected_operator, selected_stop, stop_timetable)
+        db_commands.save_stop_timetable(db, selected_operator, selected_stop, stop_timetable)
         select = db.select(StopTimetable).filter_by(operator_id=selected_operator,
                                                     vehicle_journey_ref="Schedule_0-Est_0",
                                                     stop_id=selected_stop)
@@ -198,7 +197,7 @@ def test_stop_timetable(app):
 
 
 def test_parse_stop_monitoring_dict():
-    with open("test_input_jsons/stop_monitoring_modified.json", 'r') as f:
+    with open("test_input_jsons/stop_monitoring_15553.json", 'r') as f:
         stop_monitoring_dict = json.load(f)
     monitored_stop_visit = stop_monitoring_dict['ServiceDelivery']['StopMonitoringDelivery']['MonitoredStopVisit'][0]
     vehicle, onward_call = db_commands.parse_stop_monitoring_dict(selected_operator, monitored_stop_visit)
@@ -209,7 +208,7 @@ def test_parse_stop_monitoring_dict():
 
 
 def test_save_stop_monitoring(app):
-    with open("test_input_jsons/stop_monitoring_modified.json", 'r') as f:
+    with open("test_input_jsons/stop_monitoring_15553.json", 'r') as f:
         stop_monitoring_dict = json.load(f)
     with open("test_input_jsons/operators.json", 'r') as f:
         operators_dict = json.load(f)
@@ -232,7 +231,7 @@ def test_save_stop_monitoring(app):
 
 
 def test_stop_monitoring_etas(app):
-    with open("test_input_jsons/stop_monitoring_modified.json", 'r') as f:
+    with open("test_input_jsons/stop_monitoring_15553.json", 'r') as f:
         stop_monitoring_dict = json.load(f)
     with open("test_input_jsons/operators.json", 'r') as f:
         operators_dict = json.load(f)
@@ -242,17 +241,48 @@ def test_stop_monitoring_etas(app):
         stop_dict = json.load(f)
     with open("test_input_jsons/patterns.json", 'r') as f:
         pattern_dict = json.load(f)
-    with open("test_input_jsons/stop_timetable_modified.json", 'r') as f:
+    with open("test_input_jsons/stop_timetable_15553.json", 'r') as f:
         stop_timetable = json.load(f)
     with app.app_context():
         db_commands.save_operators(db, operators_dict)
         db_commands.save_lines(db, selected_operator, line_dict, current_time)
         db_commands.save_stops(db, selected_operator, stop_dict, current_time)
         db_commands.save_patterns(db, selected_operator, selected_line, pattern_dict)
-        db_commands.stop_timetable(db, selected_operator, selected_stop, stop_timetable)
+        db_commands.save_stop_timetable(db, selected_operator, selected_stop, stop_timetable)
         db_commands.save_stop_monitoring(db, selected_operator, stop_monitoring_dict, current_time)
         upcoming_dict = db_commands.upcoming_vehicles(db, selected_operator, selected_stop, current_time)
         assert upcoming_dict == TestComparisonJsons.stop_monitoring_upcoming_vehicles
+
+def test_determine_vehicle_ref_full_journey(app):
+    with open("test_input_jsons/operators.json", 'r') as f:
+        operators_dict = json.load(f)
+    with open("test_input_jsons/lines.json", 'r') as f:
+        line_dict = json.load(f)
+    with open("test_input_jsons/stops.json", 'r') as f:
+        stop_dict = json.load(f)
+    with open("test_input_jsons/patterns.json", 'r') as f:
+        pattern_dict = json.load(f)
+    with open("test_input_jsons/stop_timetable_15553.json", 'r') as f:
+        stop_timetable_15553 = json.load(f)
+    with open("test_input_jsons/stop_timetable_15557.json", 'r') as f:
+        stop_timetable_15557 = json.load(f)
+    with app.app_context():
+        db_commands.save_operators(db, operators_dict)
+        db_commands.save_lines(db, selected_operator, line_dict, current_time)
+        db_commands.save_stops(db, selected_operator, stop_dict, current_time)
+        db_commands.save_patterns(db, selected_operator, selected_line, pattern_dict)
+        db_commands.save_stop_timetable(db, selected_operator, '15553', stop_timetable_15553)
+        db_commands.save_stop_timetable(db, selected_operator, '15557', stop_timetable_15557)
+
+        stmt = db.select('*').select_from(StopTimetable)
+        result = db.session.execute(stmt).fetchall()
+        print('\n')
+        print(result)
+
+        full_journey_vehicle = db_commands.determine_vehicle_ref_full_journey(db,'SF', '15553', '15557')
+        print(full_journey_vehicle)
+        print(type(full_journey_vehicle))
+        assert full_journey_vehicle == 'Schedule_0-Est_0'
 
 
 def test_refresh_limit(app):
@@ -354,6 +384,11 @@ def test_save_shape(app):
                                             line_id=selected_line
                                             )
         shape = db.session.execute(select).scalars().all()
+        print(shape)
+        assert True == False
         assert len(shape) == 5
         assert remove_internal_keys(shape[0].__dict__) == \
                remove_internal_keys(TestComparisonJsons.route_shape)
+
+
+
