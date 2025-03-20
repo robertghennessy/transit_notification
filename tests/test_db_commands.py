@@ -39,7 +39,7 @@ def test_save_lines(app):
         lines = db.session.execute(select).scalars().all()
         line_cmp_dict = remove_internal_keys(TestComparisonJsons.line_14.__dict__)
         line_cmp_dict.update({'direction_0_id': None, 'direction_0_name': None, 'direction_1_id': None,
-                              'direction_1_name': None})
+                              'direction_1_name': None, 'shape_updated': None})
         assert remove_internal_keys(lines[0].__dict__) == line_cmp_dict
 
 

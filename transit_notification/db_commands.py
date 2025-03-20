@@ -651,8 +651,6 @@ def save_shapes(siri_db: flask_sqlalchemy.SQLAlchemy,
     :rtype: None
     """
 
-    #TODO - add logic to delete shapes only when data is old
-
     shape_coordinates_list = \
     shape_dict['Content']['TimetableFrame']['vehicleJourneys']['ServiceJourney']['LinkSequenceProjection'][
         'LineString']['pos']
@@ -669,6 +667,12 @@ def save_shapes(siri_db: flask_sqlalchemy.SQLAlchemy,
     siri_db.session.execute(shapes_to_delete)
     siri_db.session.commit()
     siri_db.session.add_all(shape_coordinates)
+    siri_db.session.commit()
+
+    stmt = siri_db.update(Line).where(siri_db.and_(Line.operator_id == operator_id,
+                                                   Line.line_id == line_id)).values(
+        shape_updated=current_time)
+    siri_db.session.execute(stmt)
     siri_db.session.commit()
 
 

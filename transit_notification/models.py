@@ -37,6 +37,7 @@ class Line(db.Model):
     direction_0_name = db.Column(db.String(100))
     direction_1_id = db.Column(db.String(10))
     direction_1_name = db.Column(db.String(100))
+    shape_updated = db.Column(db.DateTime)
 
     patterns = db.relationship('Pattern', backref='line', lazy=True)
     vehicles = db.relationship('Vehicle', backref='line', lazy=True)
