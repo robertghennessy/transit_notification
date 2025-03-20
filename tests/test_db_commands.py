@@ -385,7 +385,6 @@ def test_save_shape(app):
                                             )
         shape = db.session.execute(select).scalars().all()
         print(shape)
-        assert True == False
         assert len(shape) == 5
         assert remove_internal_keys(shape[0].__dict__) == \
                remove_internal_keys(TestComparisonJsons.route_shape)

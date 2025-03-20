@@ -763,7 +763,7 @@ def save_stop_timetable(siri_db: flask_sqlalchemy.SQLAlchemy,
    :param timetable_dict: dictionary containing timetable for a given stop
    :type timetable_dict: dict
 
-   :return: none
+   :return: None
    :rtype: None
    """
     timetable_list = timetable_dict["Siri"]["ServiceDelivery"]["StopTimetableDelivery"]["TimetabledStopVisit"]
@@ -809,7 +809,7 @@ def determine_vehicle_ref_full_journey(siri_db: flask_sqlalchemy.SQLAlchemy,
    :param end_stop_code: stop id for last stop
    :type end_stop_code: str
 
-   :return: vehicl_journey_ref
+   :return: vehicle_journey_ref
    :rtype: str
     """
     query = siri_db.session.query(StopTimetable.vehicle_journey_ref,

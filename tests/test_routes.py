@@ -69,12 +69,8 @@ def test_operator_before_index(client, app):
     with app.app_context():
         response = client.get('/operator/SF', follow_redirects=True)
         assert response.status_code == 200
-        assert b'Please use links instead of directly typing web address.' in response.data
+        assert b'Operator SF is not in database or database not initialized.' in response.data
         assert b'<a href="/operator/SF">San Francisco Municipal Transportation Agency</a>' in response.data
-
-""" Check lines"""
-
-
 
 
 
@@ -106,7 +102,7 @@ def test_valid_operator(client, app):
         assert b'Please select an operator from the list below.' in response.data
         response = client.get('/operator/abc', follow_redirects=True)
         assert response.status_code == 200
-        assert b'Check to see if monitored or valid operator id provided' in response.data
+        assert b'Operator abc is not in database or database not initialized.' in response.data
         response = client.get('/operator/SF', follow_redirects=True)
         assert response.status_code == 200
         assert b'VAN NESS-MISSION' in response.data
