@@ -16,8 +16,7 @@ Transit notification
 
 
 
-Send out notifications for delays and next bbus or train arrival for transit operators using SIRI API (ex. Caltrain and SFMTA)
-
+Python Flask application that shows upcoming transit vehicle (i.e. bus, train and boat) by using the SIRI Transit API Client to query the Open 511 data exchange provided by the Metropolitan Transit Commission.
 
 * Free software: GNU General Public License v3
 * Documentation: https://transit-notification.readthedocs.io.

@@ -816,6 +816,7 @@ def determine_vehicle_ref_full_journey(siri_db: flask_sqlalchemy.SQLAlchemy,
    :return: vehicle_journey_ref
    :rtype: str
     """
+    #TODO - Finish completing the functionality
     query = siri_db.session.query(StopTimetable.vehicle_journey_ref,
                                   func.count(StopTimetable.vehicle_journey_ref)
                                   ).group_by(StopTimetable.vehicle_journey_ref).having(func.count(StopTimetable.vehicle_journey_ref) > 1)
