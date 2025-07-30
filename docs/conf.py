@@ -23,7 +23,7 @@ sys.path.insert(0, os.path.abspath('..'))
 
 import tomllib as toml
 
-with open("../../pyproject.toml", "rb") as f:
+with open("../pyproject.toml", "rb") as f:
     pyproject_data = toml.load(f)
 
 
