@@ -1,0 +1,44 @@
+[build-system]
+requires = ['setuptools>=61.0.0', 'setuptools-scm']
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = 'transit_notification'
+version = '0.2.0'
+description = 'Monitor estimated time of arrival for public transit usinf San Francisco Bay Area 511.org data.'
+readme = 'README.rst'
+authors = [
+    { name = 'Robert Hennessy', email = 'robertghennessy@gmail.com' },
+]
+license = { file = 'LICENSE' }
+requires-python = '>=3.11'
+dependencies = [
+    "siri-transit-api-client>= 0.2.0",
+    "Flask-SQLAlchemy==3.1.1",
+    "Flask==3.1.1",
+    "pandas==2.3.1",
+    "natsort==8.4.0",
+    "python-dotenv==1.1.1"
+]
+classifiers = [
+    'Development Status :: 4 - Beta',
+    'Intended Audience :: Developers',
+    'Intended Audience :: Science/Research',
+    'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+    'Natural Language :: English',
+    'Operating System :: OS Independent',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3 :: Only',
+    'Programming Language :: Python :: 3.11',
+    'Topic :: Scientific/Engineering'
+]
+keywords = ['511.org', 'Transit', 'Open 511 APIs', 'Public Transit Stop Monitoring',
+    'San Francisco Bay Area']
+
+[project.urls]
+homepage = 'https://github.com/robertghennessy/transit_notification'
+documentation = 'https://github.com/robertghennessy/transit_notification'
+repository = 'https://github.com/robertghennessy/transit_notification'
+
+[project.optional-dependencies]
+test = ['pytest==6.2.4']

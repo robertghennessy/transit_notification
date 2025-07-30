@@ -115,16 +115,14 @@ def render_stops(operator_id, line_id):
                                                                       direction_0_beg_stop_id,
                                                                       direction_0_end_stop_id)
 
-    shape_dict = tndc.get_shapes_dict(transit_api_key, siri_base_url, operator_id, direction_0_vehicle_ref)
-    tndc.save_shapes(db, operator_id, line_id, shape_dict, current_time)
-
-    shape_coordinates = db.session.execute(db.select(Shape).filter(
-        db.and_(Shape.operator_id == operator_id, Shape.line_id == line_id))).scalars().all()
-    print(type(shape_coordinates))
-    print(shape_coordinates)
-
-
     # TODO
+    #shape_dict = tndc.get_shapes_dict(transit_api_key, siri_base_url, operator_id, direction_0_vehicle_ref)
+    #tndc.save_shapes(db, operator_id, line_id, shape_dict, current_time)
+
+    #shape_coordinates = db.session.execute(db.select(Shape).filter(
+    #    db.and_(Shape.operator_id == operator_id, Shape.line_id == line_id))).scalars().all()
+
+    # Need to handle case where transit agency does not return a shape
     # for shapes, I need trip_id
     # DatedVehicleJourneyRef is equivalent to trip_id. DatedVehicleJourneyRef is in vehicle and stop monitoring
     # ETAs come from vehicles and onward calls

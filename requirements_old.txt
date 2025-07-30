@@ -1,0 +1,14 @@
+pip==25.1.1
+Jinja2==3.1.6
+packaging==25.0
+typing_extensions==4.14.1
+pytest==8.4.1
+responses==0.25.7
+python-dateutil==2.9.0.post0
+pandas==2.3.1
+Flask==3.1.1
+SQLAlchemy==2.0.41
+click==8.2.1
+python-dotenv==1.1.1
+numpy==2.3.2
+natsort==8.4.0

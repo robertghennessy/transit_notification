@@ -111,3 +111,11 @@ databases/
 
 # config files
 /tests/key_api.ini
+/venv_build/pyvenv.cfg
+/tests/test_database/scratch.db
+/.editorconfig
+/.travis.yml
+/dev
+/pyvenv.cfg
+/.github/ISSUE_TEMPLATE.md
+/tox.ini

@@ -6,9 +6,6 @@ Transit notification
 .. image:: https://img.shields.io/pypi/v/transit_notification.svg
         :target: https://pypi.python.org/pypi/transit_notification
 
-.. image:: https://img.shields.io/travis/robertghennessy/transit_notification.svg
-        :target: https://travis-ci.com/robertghennessy/transit_notification
-
 .. image:: https://readthedocs.org/projects/transit-notification/badge/?version=latest
         :target: https://transit-notification.readthedocs.io/en/latest/?version=latest
         :alt: Documentation Status
@@ -16,7 +13,7 @@ Transit notification
 
 
 
-Python Flask application that shows upcoming transit vehicle (i.e. bus, train and boat) by using the SIRI Transit API Client to query the Open 511 data exchange provided by the Metropolitan Transit Commission.
+Python Flask application that shows upcoming transit vehicle (i.e. bus, train and boat) by using the SIRI Transit APIClient to query the Open 511 data exchange provided by the San Francisco Bay Area Metropolitan Transit Commission.
 
 * Free software: GNU General Public License v3
 * Documentation: https://transit-notification.readthedocs.io.

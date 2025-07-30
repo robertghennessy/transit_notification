@@ -1,0 +1,7 @@
+# Database
+DATABASE_URI = Location of the database
+SECRET_KEY = Secret key for the database
+
+# SIRI Information
+API_KEY = api key from data source
+BASE_URL = base url for api (ex. https://api.511.org/Transit/)

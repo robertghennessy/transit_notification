@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 
 __author__ = """Robert G Hennessy"""
 __email__ = 'robertghennessy@gmail.com'
-__version__ = '0.1.0'
+__version__ = '0.2.0'
 
 db = SQLAlchemy()
 
@@ -19,6 +19,7 @@ def create_app(test_config=None) -> Flask:
     app = Flask(__name__)
 
     load_dotenv()
+
     # some deploy systems set the database url in the environment
     db_url = os.environ.get("DATABASE_URI")
 
