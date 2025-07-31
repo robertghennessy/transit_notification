@@ -3,8 +3,6 @@ Transit notification
 ====================
 
 
-.. image:: https://img.shields.io/pypi/v/transit_notification.svg
-        :target: https://pypi.python.org/pypi/transit_notification
 
 .. image:: https://readthedocs.org/projects/transit-notification/badge/?version=latest
         :target: https://transit-notification.readthedocs.io/en/latest/?version=latest

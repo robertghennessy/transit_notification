@@ -53,8 +53,7 @@ def create_app(test_config=None) -> Flask:
             db.drop_all()
             db.create_all()  # Create sql tables for our data models
 
-    from transit_notification import views, routes
-    app.register_blueprint(views.bp)
+    from transit_notification import routes
     app.register_blueprint(routes.routes)
 
     @app.route('/hello')

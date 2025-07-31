@@ -5,7 +5,7 @@ build-backend = 'setuptools.build_meta'
 [project]
 name = 'transit_notification'
 version = '0.2.0'
-description = 'Monitor estimated time of arrival for public transit usinf San Francisco Bay Area 511.org data.'
+description = 'Fetches real-time bus arrival data from San Francisco Bay Area 511.org and display upcoming arrivals for a specific stop.'
 readme = 'README.rst'
 authors = [
     { name = 'Robert Hennessy', email = 'robertghennessy@gmail.com' },
@@ -18,7 +18,8 @@ dependencies = [
     "Flask==3.1.1",
     "pandas==2.3.1",
     "natsort==8.4.0",
-    "python-dotenv==1.1.1"
+    "python-dotenv==1.1.1",
+    "requests==2.32.4"
 ]
 classifiers = [
     'Development Status :: 4 - Beta',
@@ -37,8 +38,42 @@ keywords = ['511.org', 'Transit', 'Open 511 APIs', 'Public Transit Stop Monitori
 
 [project.urls]
 homepage = 'https://github.com/robertghennessy/transit_notification'
-documentation = 'https://github.com/robertghennessy/transit_notification'
+documentation = 'https://transit-notification.readthedocs.io/en/latest/'
 repository = 'https://github.com/robertghennessy/transit_notification'
 
 [project.optional-dependencies]
-test = ['pytest==6.2.4']
+test = [
+    "coverage",  # testing
+    "pytest==8.4.1",  # testing
+    "responses",
+    "ruff",  # linting
+    "ty", # checking types
+    "ipdb"
+]
+
+[tool.ty]
+# All rules are enabled as "error" by default; no need to specify unless overriding.
+# Example override: relax a rule for the entire project (uncomment if needed).
+# rules.TY015 = "warn"  # For invalid-argument-type, warn instead of error.
+
+# Optional: Per-directory overrides for flexibility in boilerplates with tests or examples.
+[[tool.ty.overrides]]
+match = ["tests/**.py"]
+rules.TY016 = "ignore"  # Ignore invalid-assignment in tests, e.g., for dynamic fixtures.
+rules.TY029 = "ignore"  # Ignore invalid-return-type in tests.
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # Pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+]
+
+[tool.uv]
+package = true

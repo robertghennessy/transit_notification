@@ -18,7 +18,7 @@ test_key = "fake-key"
 def test_setup_render(client):
     response = client.get('/setup')
     assert response.status_code == 200
-    assert b"Directions on setting up Transit Notification." in response.data
+    assert b"Directions on setting up Transit Notification" in response.data
 
 
 """ Test Index Page"""
@@ -49,7 +49,7 @@ def test_operators_with_proper_setup(client, app):
 def test_operators_with_improper_setup(client, app):
     response = client.get('/operators', follow_redirects=True)
     assert response.status_code == 200
-    assert b"Directions on setting up Transit Notification." in response.data
+    assert b"Directions on setting up Transit Notification" in response.data
 
 
 @responses.activate

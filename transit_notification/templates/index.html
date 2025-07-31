@@ -3,5 +3,56 @@
   {% if error %}
     <p class=error><strong>Error:</strong> {{ error }}
   {% endif %}
-  Index
+
+<p class="display-6">
+    Description
+</p>
+
+<p>
+    Transit notification fetches real-time bus arrival data from San Francisco Bay Area 511.org and displays upcoming
+    arrivals for a specific stop. The data is stored in a database using SQLAlchemy and shown via flask app. The website
+    uses boostrap to implement UI experience.
+</p>
+
+<p class="display-6">
+    Documentation
+</p>
+<p>
+    Documentation is located at <a href="https://transit-notification.readthedocs.io/en/latest/" class="link-primary">https://transit-notification.readthedocs.io/en/latest/</a>
+
+
+</p>
+
+<p class="display-6">
+    GitHub Repo
+</p>
+<p>
+    GitHub is located at <a href="https://github.com/robertghennessy/transit_notification" class="link-primary">https://github.com/robertghennessy/transit_notification</a>
+</p>
+
+
+
+<p class="display-6">
+    What happens:
+</p>
+    <ul>
+        <li>
+             If the operator table is outdated or empty, query operators from 511.org and store in the operator table.
+        </li>
+        <li>
+             If the line table is outdated or empty, query lines for the selected operator from 511.org and
+            store in the line table.
+        </li>
+        <li>
+            If the stop table is outdated or empty, query stops for the selected operator from 511.org and
+            store in the stop table. Stop table provide information on stop name and location.
+        </li>
+        <li>
+            If the stop monitoring table is outdated or empty, query stop monitoring for the selected operator from
+            511.org and store in the vehicle and onward call table. Vehicle table contains information for a vehicle
+            and onward call contains information about a vehicle reaching a stop.
+        </li>
+    </ul>
+
+
 {% endblock %}
